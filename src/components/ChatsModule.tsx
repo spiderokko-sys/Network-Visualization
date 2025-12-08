@@ -121,9 +121,9 @@ export const ChatsModule = ({ selectedChatId, setSelectedChatId }: any) => {
 	};
 
 	return (
-		<div className="p-0 md:p-4 space-y-0 md:space-y-4 animate-in fade-in h-full flex gap-4">
+		<div className="p-0 md:p-4 space-y-0 md:space-y-4 animate-in fade-in h-full flex gap-4 min-h-0">
 			{/* Chat List */}
-			<div className={`glass-panel h-full flex flex-col rounded-none md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 ${selectedChatId ? 'hidden md:flex md:w-80 lg:w-96' : 'w-full'}`}>
+			<div className={`glass-panel h-full flex flex-col rounded-none md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 min-h-0 ${selectedChatId ? 'hidden md:flex md:w-80 lg:w-96' : 'w-full'}`}>
 				<div className="p-5 sticky top-0 bg-slate-900/80 backdrop-blur-xl z-20 border-b border-white/5">
 					<h2 className="text-2xl font-bold text-white flex items-center gap-2.5 mb-5"><MessageSquare size={28} className="text-indigo-400" /> Chats</h2>
 					<div className="flex bg-black/30 p-1 rounded-xl">

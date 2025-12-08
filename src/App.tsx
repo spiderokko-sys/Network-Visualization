@@ -413,7 +413,7 @@ export default function App() {
 				)}
 
 				{/* View Content */}
-				<div className="flex-1 overflow-hidden relative">
+				<div className="flex-1 overflow-hidden relative min-h-0">
 					{renderContent()}
 				</div>
 

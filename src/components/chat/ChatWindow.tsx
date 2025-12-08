@@ -158,7 +158,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 	};
 
 	return (
-		<div className="glass-panel flex flex-col h-full rounded-none md:rounded-2xl overflow-hidden overflow-x-hidden relative shadow-2xl pb-0 border-x-0 md:border-x border-y-0 md:border-y">
+		<div className="glass-panel flex flex-col h-full rounded-none md:rounded-2xl overflow-hidden overflow-x-hidden relative shadow-2xl pb-0 border-x-0 md:border-x border-y-0 md:border-y min-h-0">
 			{/* Header */}
 			<div className="px-4 py-3 md:py-4 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between sticky top-0 z-10 relative">
 				{showBackgroundPicker && (

@@ -185,7 +185,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 	};
 
 	const ChannelList = () => (
-		<div className="glass-panel h-full flex flex-col rounded-2xl overflow-hidden">
+		<div className="glass-panel h-full flex flex-col rounded-2xl overflow-hidden min-h-0">
 			<div className="p-4 border-b border-white/5 bg-slate-900/50 backdrop-blur sticky top-0 z-10">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-xl font-bold text-white flex items-center gap-2"><Megaphone size={24} className="text-indigo-400" /> Channels</h2>
@@ -219,7 +219,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 	);
 
 	const ChannelFeed = () => (
-		<div className="glass-panel h-full flex flex-col rounded-2xl overflow-hidden relative">
+		<div className="glass-panel h-full flex flex-col rounded-2xl overflow-hidden relative min-h-0">
 			<div className="p-3 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl flex justify-between items-center sticky top-0 z-20">
 				<div className="flex items-center gap-2 min-w-0">
 					<button
@@ -297,7 +297,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 	);
 
 	return (
-		<div className="p-4 space-y-4 animate-in fade-in h-full">
+		<div className="p-4 space-y-4 animate-in fade-in h-full min-h-0">
 			{!selectedChannel ? <ChannelList /> : <ChannelFeed />}
 
 			{showCreateModal && <CreateChannelModal onClose={() => setShowCreateModal(false)} onSave={handleCreateChannel} />}
