@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     Users, Calendar, MessageSquare, Plus, X, ChevronLeft,
     Share2, MapPin, Briefcase, Zap, Heart, Star,
-    MoreVertical, UserPlus
+    MoreVertical, UserPlus, ZoomIn, ZoomOut, RotateCcw, Move
 } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -21,8 +21,8 @@ interface Circle {
     category: 'Occupation' | 'Interests' | 'Location' | 'Custom';
     description: string;
     members: Member[];
-    color: string; // Tailwind class component for color theme
-    position: { top: string; left: string }; // simple absolute positioning %
+    color: string;
+    position: { x: number; y: number }; // Pixel coordinates relative to center
     size: 'lg' | 'md' | 'sm';
 }
 
@@ -41,6 +41,7 @@ const MOCK_MEMBERS: Member[] = [
     { id: 10, name: 'Leo', avatar: 'L', status: 'online' },
 ];
 
+// Spreading out circles more for the zoomable canvas
 const MOCK_CIRCLES: Circle[] = [
     {
         id: 'c1',
@@ -49,7 +50,7 @@ const MOCK_CIRCLES: Circle[] = [
         description: 'Colleagues and industry peers in Artificial Intelligence.',
         members: [MOCK_MEMBERS[0], MOCK_MEMBERS[1], MOCK_MEMBERS[3]],
         color: 'emerald',
-        position: { top: '15%', left: '60%' },
+        position: { x: 350, y: -250 },
         size: 'lg'
     },
     {
@@ -59,7 +60,7 @@ const MOCK_CIRCLES: Circle[] = [
         description: 'Book club and movie nights.',
         members: [MOCK_MEMBERS[2], MOCK_MEMBERS[3], MOCK_MEMBERS[0]],
         color: 'sky',
-        position: { top: '20%', left: '25%' },
+        position: { x: -400, y: -200 },
         size: 'lg'
     },
     {
@@ -69,7 +70,7 @@ const MOCK_CIRCLES: Circle[] = [
         description: 'Friends from the downtown area.',
         members: [MOCK_MEMBERS[1], MOCK_MEMBERS[2], MOCK_MEMBERS[7]],
         color: 'blue',
-        position: { top: '55%', left: '75%' },
+        position: { x: 450, y: 150 },
         size: 'md'
     },
     {
@@ -79,7 +80,7 @@ const MOCK_CIRCLES: Circle[] = [
         description: 'Immediate family members.',
         members: [MOCK_MEMBERS[4], MOCK_MEMBERS[5], MOCK_MEMBERS[8], MOCK_MEMBERS[9]],
         color: 'orange',
-        position: { top: '65%', left: '40%' },
+        position: { x: -150, y: 350 },
         size: 'lg'
     },
     {
@@ -89,7 +90,7 @@ const MOCK_CIRCLES: Circle[] = [
         description: 'Planning group for the New Years trip.',
         members: [MOCK_MEMBERS[7], MOCK_MEMBERS[6], MOCK_MEMBERS[0]],
         color: 'purple',
-        position: { top: '70%', left: '15%' },
+        position: { x: -500, y: 150 },
         size: 'md'
     }
 ];
@@ -144,11 +145,15 @@ const CircleNode = ({ circle, onClick }: { circle: Circle, onClick: () => void }
     return (
         <div
             className={`absolute flex flex-col items-center justify-center cursor-pointer group transition-all duration-500 hover:scale-105`}
-            style={{ top: circle.position.top, left: circle.position.left, transform: 'translate(-50%, -50%)' }}
-            onClick={onClick}
+            style={{
+                left: '50%',
+                top: '50%',
+                transform: `translate(calc(-50% + ${circle.position.x}px), calc(-50% + ${circle.position.y}px))`
+            }}
+            onClick={(e) => { e.stopPropagation(); onClick(); }}
         >
             {/* Label */}
-            <div className={`absolute -top-10 text-center w-60 opacity-80 group-hover:opacity-100 transition-opacity`}>
+            <div className={`absolute -top-12 text-center w-60 opacity-80 group-hover:opacity-100 transition-opacity`}>
                 <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5">{circle.category}</div>
                 <div className="text-lg font-bold text-white leading-tight drop-shadow-md">{circle.name}</div>
             </div>
@@ -159,8 +164,6 @@ const CircleNode = ({ circle, onClick }: { circle: Circle, onClick: () => void }
                 backdrop-blur-sm border shadow-[0_0_30px_rgba(0,0,0,0.2)] relative
                 group-hover:shadow-[0_0_50px_rgba(99,102,241,0.3)] transition-all ease-out duration-500
             `}>
-                {/* Connecting lines drawn visually via SVG in parent, but we simulate structure here */}
-
                 {/* Members */}
                 {circle.members.map((m, i) => (
                     <div
@@ -178,7 +181,7 @@ const CircleNode = ({ circle, onClick }: { circle: Circle, onClick: () => void }
                 </div>
             </div>
 
-            {/* Connection Line to Center (Visual Only - simulated with absolute div if needed, or SVG in parent) */}
+            {/* Connecting line to "You" is handled in parent SVG for correctness during zoom */}
         </div>
     );
 };
@@ -187,12 +190,12 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
     if (!circle) return null;
 
     return (
-        <div className="absolute top-4 right-4 bottom-4 w-96 glass-panel rounded-2xl shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col z-30">
+        <div className="absolute top-4 right-4 bottom-4 w-96 glass-panel rounded-2xl shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col z-30 pointer-events-auto">
             {/* Header */}
             <div className={`h-32 bg-gradient-to-br relative shrink-0 overflow-hidden ${circle.color === 'emerald' ? 'from-emerald-900 to-slate-900' :
-                    circle.color === 'orange' ? 'from-orange-900 to-slate-900' :
-                        circle.color === 'purple' ? 'from-purple-900 to-slate-900' :
-                            'from-indigo-900 to-slate-900'
+                circle.color === 'orange' ? 'from-orange-900 to-slate-900' :
+                    circle.color === 'purple' ? 'from-purple-900 to-slate-900' :
+                        'from-indigo-900 to-slate-900'
                 }`}>
                 <div className="absolute top-4 right-4">
                     <button onClick={onClose} className="p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors"><X size={18} /></button>
@@ -260,10 +263,44 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
 
 export const NetworkCircles = ({ onBack, setActiveView, setSelectedChannel }: { onBack: () => void, setActiveView: (v: string) => void, setSelectedChannel: (c: any) => void }) => {
     const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
+    const [transform, setTransform] = useState({ x: 0, y: 0, scale: 0.8 });
+    const [isDragging, setIsDragging] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const lastPos = useRef({ x: 0, y: 0 });
+
+    const handleWheel = (e: React.WheelEvent) => {
+        e.preventDefault(); // Prevent page scrolling
+        const scaleAmount = -e.deltaY * 0.001;
+        const newScale = Math.min(Math.max(transform.scale + scaleAmount, 0.4), 2);
+        setTransform(prev => ({ ...prev, scale: newScale }));
+    };
+
+    const handlePointerDown = (e: React.PointerEvent) => {
+        if (e.button !== 0) return; // Only left click
+        setIsDragging(true);
+        lastPos.current = { x: e.clientX, y: e.clientY };
+        (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    };
+
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (!isDragging) return;
+        const dx = e.clientX - lastPos.current.x;
+        const dy = e.clientY - lastPos.current.y;
+        setTransform(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
+        lastPos.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handlePointerUp = (e: React.PointerEvent) => {
+        setIsDragging(false);
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    };
+
+    const handleZoom = (amount: number) => {
+        setTransform(prev => ({ ...prev, scale: Math.min(Math.max(prev.scale + amount, 0.4), 2) }));
+    };
 
     const handleJoinChannel = () => {
         if (!selectedCircle) return;
-        // Mock navigate to channel
         const mockChannel = {
             id: selectedCircle.id,
             name: selectedCircle.name,
@@ -279,32 +316,6 @@ export const NetworkCircles = ({ onBack, setActiveView, setSelectedChannel }: { 
 
     return (
         <div className="h-full w-full relative bg-slate-950 overflow-hidden animate-in fade-in duration-700">
-            {/* Background Effects */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[150px]" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-900/10 blur-[150px]" />
-
-                {/* SVG Connections Layer */}
-                <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none">
-                    <defs>
-                        <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#6366f1" stopOpacity="0" />
-                            <stop offset="50%" stopColor="#6366f1" stopOpacity="1" />
-                            <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-                        </linearGradient>
-                    </defs>
-                    {MOCK_CIRCLES.map(c => (
-                        <line
-                            key={c.id}
-                            x1="50%" y1="50%"
-                            x2={c.position.left} y2={c.position.top}
-                            stroke="url(#line-grad)"
-                            strokeWidth="2"
-                        />
-                    ))}
-                </svg>
-            </div>
-
             {/* Back Button */}
             <div className="absolute top-6 left-6 z-20">
                 <button onClick={onBack} className="glass-button flex items-center gap-2">
@@ -318,29 +329,86 @@ export const NetworkCircles = ({ onBack, setActiveView, setSelectedChannel }: { 
                 <p className="text-slate-400 text-sm">Dynamic & Custom Circles</p>
             </div>
 
-            {/* Main Interactive Graph Area */}
-            <div className="absolute inset-0 z-0">
-                {/* You Node */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 group cursor-default">
-                    <div className="w-32 h-32 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center shadow-[0_0_50px_rgba(255,255,255,0.2)] relative z-20">
-                        <span className="text-slate-900 font-extrabold text-2xl">You</span>
-                    </div>
-                    {/* Ripple Effect */}
-                    <div className="absolute inset-0 -m-8 rounded-full border border-white/20 animate-ping opacity-20" />
-                    <div className="absolute inset-0 -m-16 rounded-full border border-white/10 animate-ping opacity-10 animation-delay-500" />
-                </div>
-
-                {/* Circles */}
-                {MOCK_CIRCLES.map(circle => (
-                    <CircleNode
-                        key={circle.id}
-                        circle={circle}
-                        onClick={() => setSelectedCircle(circle)}
-                    />
-                ))}
+            {/* Background Effects (Fixed) */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[150px]" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-900/10 blur-[150px]" />
             </div>
 
-            {/* Details Panel Overlay */}
+            {/* Interactive Canvas */}
+            <div
+                ref={containerRef}
+                className={`absolute inset-0 cursor-grab active:cursor-grabbing ${isDragging ? '' : 'transition-transform duration-100'}`}
+                onWheel={handleWheel}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerUp}
+            >
+                <div
+                    className="absolute inset-0 w-full h-full transform-gpu origin-center transition-transform duration-75 ease-out"
+                    style={{
+                        transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`
+                    }}
+                >
+                    {/* SVG Connections Layer */}
+                    <svg className="absolute -inset-[200%] w-[500%] h-[500%] pointer-events-none visible">
+                        <defs>
+                            <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#6366f1" stopOpacity="0" />
+                                <stop offset="50%" stopColor="#6366f1" stopOpacity="0.4" />
+                                <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
+                            </linearGradient>
+                        </defs>
+                        {MOCK_CIRCLES.map(c => (
+                            <line
+                                key={c.id}
+                                x1="50%" y1="50%"
+                                // Coordinates are relative to center 50%, 50% plus the offset
+                                x2={`calc(50% + ${c.position.x}px)`}
+                                y2={`calc(50% + ${c.position.y}px)`}
+                                stroke="url(#line-grad)"
+                                strokeWidth="2"
+                            />
+                        ))}
+                    </svg>
+
+                    {/* Nodes Layer */}
+                    {/* You Node */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-default">
+                        <div className="w-32 h-32 rounded-full border-4 border-slate-900 bg-slate-800 flex items-center justify-center shadow-[0_0_50px_rgba(99,102,241,0.5)] relative z-20 overflow-hidden">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=MyUser" alt="You" className="w-full h-full object-cover" />
+                        </div>
+                        {/* Ripple Effect */}
+                        <div className="absolute inset-0 -m-8 rounded-full border border-indigo-500/20 animate-ping opacity-20" />
+                        <div className="absolute inset-0 -m-16 rounded-full border border-indigo-500/10 animate-ping opacity-10 animation-delay-500" />
+                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white font-bold text-lg bg-black/40 px-3 py-1 rounded-full backdrop-blur">You</div>
+                    </div>
+
+                    {/* Circles */}
+                    {MOCK_CIRCLES.map(circle => (
+                        <CircleNode
+                            key={circle.id}
+                            circle={circle}
+                            onClick={() => setSelectedCircle(circle)}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Controls (Fixed UI) */}
+            <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-20">
+                <Button size="icon" className="rounded-full h-10 w-10 glass-button" onClick={() => handleZoom(0.2)}><ZoomIn size={20} /></Button>
+                <Button size="icon" className="rounded-full h-10 w-10 glass-button" onClick={() => handleZoom(-0.2)}><ZoomOut size={20} /></Button>
+                <Button size="icon" className="rounded-full h-10 w-10 glass-button" onClick={() => setTransform({ x: 0, y: 0, scale: 0.8 })}><RotateCcw size={20} /></Button>
+            </div>
+            <div className="absolute bottom-6 left-6 z-20 pointer-events-none md:block hidden">
+                <div className="glass-panel px-3 py-2 flex items-center gap-2 text-xs text-slate-400">
+                    <Move size={14} /> Drag to pan • Scroll to zoom
+                </div>
+            </div>
+
+            {/* Details Panel Overlay (Fixed UI) */}
             {selectedCircle && (
                 <DetailsPanel
                     circle={selectedCircle}
