@@ -25,6 +25,7 @@ import { ChannelsModule } from './components/ChannelsModule';
 import { BusinessDashboard } from './components/BusinessDashboard';
 import { GlobeWithUI } from './components/GlobeMap';
 import { NetworkCircles } from './components/NetworkCircles';
+import { EventsScreen } from './components/EventsScreen';
 
 import { WalletScreen } from './components/WalletScreen';
 
@@ -146,6 +147,8 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 									setActiveView('intents_globe');
 								} else if (link.title === 'Wallet') {
 									setActiveView('wallet');
+								} else if (link.title === 'Events') {
+									setActiveView('events');
 								} else {
 									// Default fallback or placeholder
 								}
@@ -226,6 +229,8 @@ export default function App() {
 				return <IntentsGlobeView key="intents-globe-view" onBack={() => setActiveView('dashboard')} />;
 			case 'wallet':
 				return <WalletScreen />;
+			case 'events':
+				return <EventsScreen />;
 			case 'dashboard':
 			default:
 				return <BusinessDashboard customers={MOCK_CUSTOMERS} initialTab={dashboardTab} />;
