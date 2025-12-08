@@ -379,7 +379,11 @@ export default function App() {
 								<span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-slate-950 shadow-[0_0_8px_#f43f5e]"></span>
 							</button>
 
-							<div className="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[2px] ring-2 ring-transparent hover:ring-white/20 transition-all cursor-pointer">
+							<div
+								className="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[2px] ring-2 ring-transparent hover:ring-white/20 transition-all cursor-pointer hover:scale-105 active:scale-95"
+								onClick={() => setActiveView('dashboard')}
+								title="Go to Dashboard"
+							>
 								<div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
 									<User size={16} className="text-cyan-400" />
 								</div>
@@ -396,10 +400,10 @@ export default function App() {
 				{/* Mobile Navigation Bar */}
 				{!isFullScreenView && (
 					<div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-slate-950/90 backdrop-blur-xl border-t border-white/10 z-50 flex items-center justify-around px-2 pb-safe">
-						<SidebarItem icon={LayoutDashboard} label="Home" isActive={activeView === 'dashboard'} onClick={() => setActiveView('dashboard')} collapsed={true} />
+						<SidebarItem icon={Phone} label="Calls" isActive={activeView === 'calls'} onClick={() => setActiveView('calls')} collapsed={true} />
 						<SidebarItem icon={MessageSquare} label="Chats" isActive={activeView === 'chats'} onClick={() => setActiveView('chats')} collapsed={true} />
 						<SidebarItem icon={Search} label="Explore" isActive={showExploreMenu} onClick={() => setShowExploreMenu(true)} collapsed={true} />
-						<SidebarItem icon={User} label="Profile" isActive={false} onClick={() => { }} collapsed={true} />
+						<SidebarItem icon={User} label="Profile" isActive={false} onClick={() => setActiveView('dashboard')} collapsed={true} />
 					</div>
 				)}
 			</main>
