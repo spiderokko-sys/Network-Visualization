@@ -212,7 +212,7 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
             </div>
 
             {/* Content */}
-            <div className="p-6 flex-1 overflow-y-auto no-scrollbar space-y-6">
+            <div className="p-6 flex-1 overflow-y-auto no-scrollbar space-y-6 min-h-0">
                 <div>
                     <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Description</h3>
                     <p className="text-sm text-slate-300 leading-relaxed">{circle.description}</p>

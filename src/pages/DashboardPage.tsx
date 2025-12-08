@@ -138,7 +138,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 	};
 
 	return (
-		<div className="h-full overflow-y-auto no-scrollbar">
+		<div className="h-full overflow-y-auto no-scrollbar min-h-0">
 			<div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
 
 				{/* Tabs */}
