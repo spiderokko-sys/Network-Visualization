@@ -43,7 +43,7 @@ interface ContactsScreenProps {
 }
 
 // ... imports
-import { ContactForm } from './ContactForm';
+import { ContactForm } from '../components/ContactForm';
 import { Pencil, Trash2 } from 'lucide-react';
 
 // ... interfaces

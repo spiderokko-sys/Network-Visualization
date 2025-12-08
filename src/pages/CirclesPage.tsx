@@ -4,7 +4,7 @@ import {
     MapPin, Briefcase, Zap, Heart, Star,
     MoreVertical, UserPlus, ZoomIn, ZoomOut, RotateCcw, Move
 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../components/ui/button';
 
 // --- Types ---
 interface Member {
@@ -261,7 +261,10 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
     );
 };
 
-export const NetworkCircles = ({ setActiveView, setSelectedChannel }: { setActiveView: (v: string) => void, setSelectedChannel: (c: any) => void }) => {
+import { useNavigate } from 'react-router-dom';
+
+export const NetworkCircles = () => {
+    const navigate = useNavigate();
     const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
     const [transform, setTransform] = useState({ x: 0, y: 0, scale: 0.8 });
     const [isDragging, setIsDragging] = useState(false);
@@ -301,17 +304,7 @@ export const NetworkCircles = ({ setActiveView, setSelectedChannel }: { setActiv
 
     const handleJoinChannel = () => {
         if (!selectedCircle) return;
-        const mockChannel = {
-            id: selectedCircle.id,
-            name: selectedCircle.name,
-            type: 'private',
-            description: selectedCircle.description,
-            subscribers: selectedCircle.members.length,
-            isOwner: true,
-            posts: []
-        };
-        setSelectedChannel(mockChannel);
-        setActiveView('channels');
+        navigate(`/channels?id=${selectedCircle.id}`);
     };
 
     return (

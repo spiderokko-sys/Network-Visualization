@@ -22,7 +22,13 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         /* Relaxing strictness to match current code state */
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        }
     },
     "include": [
         "src"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Wallet,
     ArrowUpRight,
@@ -11,13 +11,13 @@ import {
     DollarSign,
     MoreHorizontal
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { ScrollArea } from './ui/scroll-area';
-import { TransactionDetails } from './TransactionDetails';
-import { TransactionHistory } from './TransactionHistory';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { ScrollArea } from '../components/ui/scroll-area';
+import { TransactionDetails } from '../components/wallet/TransactionDetails';
+import { TransactionHistory } from '../components/wallet/TransactionHistory';
 
 const MOCK_TRANSACTIONS = [
     { id: 1, type: 'receive', name: 'Alice M.', amount: 45.50, date: 'Today, 10:23 AM', status: 'Completed', avatar: 'AM' },
@@ -28,7 +28,7 @@ const MOCK_TRANSACTIONS = [
 ];
 
 export const WalletScreen = () => {
-    const [balance, setBalance] = useState(1250.75);
+    const [balance] = useState(1250.75);
     const [amount, setAmount] = useState('');
     const [activeTab, setActiveTab] = useState('send');
 

@@ -15,8 +15,14 @@ import {
     Briefcase
 } from 'lucide-react';
 
-export const ProfileScreen = ({ navigateToSettings }: { navigateToSettings: () => void }) => {
+import { useNavigate } from 'react-router-dom';
+
+export const ProfileScreen = () => {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('overview');
+
+    const navigateToSettings = () => navigate('/settings');
+
 
     const currentUser = {
         name: "Alex Morgan",

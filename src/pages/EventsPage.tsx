@@ -3,7 +3,7 @@ import {
     CalendarDays, MapPin, Users, Edit2, Trash2, X, Target, Layers, Circle, CheckCircle2, PlusCircle, Image as ImageIcon, Upload,
     Bell, Share2, Heart, MessageSquare, Send, ChevronLeft, Clock, Search, Filter, AlertTriangle
 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../components/ui/button';
 
 // Mock Data (Reused from BusinessDashboard structure)
 const INITIAL_CIRCLES = [

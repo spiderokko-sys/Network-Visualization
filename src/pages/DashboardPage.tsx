@@ -5,12 +5,12 @@ import {
 	Edit2, Trash2, Circle, Check, Megaphone, Globe, Target, MapPin, Tag,
 	Send, CheckCircle2, TrendingUp, Activity
 } from 'lucide-react';
-import { QRModal } from './modals/QRModal';
-import { FinancialModal } from './modals/FinancialModal';
-import { AddCustomerModal } from './modals/AddCustomerModal';
-import { EditCircleModal } from './modals/EditCircleModal';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { Button } from './ui/button';
+import { QRModal } from '../components/modals/QRModal';
+import { FinancialModal } from '../components/modals/FinancialModal';
+import { AddCustomerModal } from '../components/modals/AddCustomerModal';
+import { EditCircleModal } from '../components/modals/EditCircleModal';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
+import { Button } from '../components/ui/button';
 
 const BUSINESS_STATS = {
 	l1_count: 142,

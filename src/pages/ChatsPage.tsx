@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MessageSquare, User, Users, Heart } from 'lucide-react';
-import { ChatWindow } from './chat/ChatWindow';
+import { ChatWindow } from '../components/chat/ChatWindow';
 
 const MOCK_CHATS = [
 	{ id: 1, name: 'Alice M.', lastMessage: "See you next week!", unread: 1, timestamp: '1m ago', isNode: true, tags: ['L1', 'VIP'], isGroup: false, isFavorite: true },
@@ -67,7 +67,12 @@ const ChatListItem = ({ chat, isSelected, onClick }: any) => {
 	);
 };
 
-export const ChatsModule = ({ selectedChatId, setSelectedChatId }: any) => {
+import { useSearchParams } from 'react-router-dom';
+
+export const ChatsModule = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const selectedChatId = searchParams.get('id') ? parseInt(searchParams.get('id')!) : null;
+
 	const [chats, setChats] = useState(MOCK_CHATS);
 	const [allMessages, setAllMessages] = useState(MOCK_MESSAGES);
 	const [filter, setFilter] = useState('all');
@@ -116,7 +121,7 @@ export const ChatsModule = ({ selectedChatId, setSelectedChatId }: any) => {
 	};
 
 	const selectChat = (id: number) => {
-		setSelectedChatId(id);
+		setSearchParams({ id: id.toString() });
 		setChats(prev => prev.map(c => c.id === id ? { ...c, unread: 0 } : c));
 	};
 
@@ -160,7 +165,7 @@ export const ChatsModule = ({ selectedChatId, setSelectedChatId }: any) => {
 							onSendMessage={handleSendMessage}
 							onReaction={(msgId: number, emoji: string) => handleReaction(selectedChatId, msgId, emoji)}
 							onChatUpdate={(updates: any) => handleChatUpdate(selectedChatId, updates)}
-							onBack={() => setSelectedChatId(null)}
+							onBack={() => setSearchParams({})}
 						/>
 					)}
 				</div>

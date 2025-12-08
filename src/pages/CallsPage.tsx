@@ -3,7 +3,7 @@ import {
 	Phone, Users, Video, PlusSquare, CalendarIcon, Monitor, Plus,
 	Search, Filter, Eye, ArrowUpRight, Clock, UserPlus, X
 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../components/ui/button';
 
 const MOCK_CALL_HISTORY = [
 	{ id: 1, type: 'inbound', customer: 'Alice M.', time: '10:30 AM', date: 'Today', duration: '2:15', status: 'completed', color: 'emerald' },

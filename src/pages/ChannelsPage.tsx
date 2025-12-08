@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
 	Megaphone, Plus, Search, Send, Eye, ThumbsUp, ChevronLeft,
 	MoreVertical, Globe, Lock, X, Share2, Edit2, Image as ImageIcon
 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../components/ui/button';
 
 const MOCK_CHANNELS = [
 	{
@@ -141,12 +141,28 @@ const ChannelInfoModal = ({ channel, onClose }: any) => {
 	);
 };
 
-export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => {
+import { useSearchParams } from 'react-router-dom';
+
+export const ChannelsModule = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const selectedChannelId = searchParams.get('id');
+
 	const [channels, setChannels] = useState(MOCK_CHANNELS);
 	const [showCreateModal, setShowCreateModal] = useState(false);
 	const [showInfoModal, setShowInfoModal] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [broadcastText, setBroadcastText] = useState('');
+
+	const selectedChannel = channels.find(c => c.id === selectedChannelId) || null;
+
+	const setSelectedChannel = (channel: any) => {
+		if (channel) {
+			setSearchParams({ id: channel.id });
+		} else {
+			setSearchParams({});
+		}
+	};
+
 
 	const filteredChannels = channels.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -165,7 +181,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 	};
 
 	const handleBroadcast = () => {
-		if (!broadcastText.trim()) return;
+		if (!broadcastText.trim() || !selectedChannel) return;
 		const newPost = {
 			id: Date.now(),
 			text: broadcastText,
@@ -174,13 +190,13 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 			date: 'Just now'
 		};
 		const updatedChannels = channels.map(c => {
-			if (c.id === selectedChannel.id) {
+			if (c.id === selectedChannel!.id) {
 				return { ...c, posts: [newPost, ...c.posts] };
 			}
 			return c;
 		});
 		setChannels(updatedChannels);
-		setSelectedChannel(updatedChannels.find(c => c.id === selectedChannel.id));
+		setSelectedChannel(updatedChannels.find(c => c.id === selectedChannel!.id));
 		setBroadcastText('');
 	};
 
@@ -218,83 +234,86 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 		</div>
 	);
 
-	const ChannelFeed = () => (
-		<div className="glass-panel h-full flex flex-col rounded-2xl overflow-hidden relative">
-			<div className="p-3 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl flex justify-between items-center sticky top-0 z-20">
-				<div className="flex items-center gap-2 min-w-0">
-					<button
-						onClick={(e) => {
-							e.stopPropagation();
-							setSelectedChannel(null);
-						}}
-						className="p-2 mr-1 text-slate-400 hover:text-white rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
-					>
-						<ChevronLeft size={22} />
-					</button>
+	const ChannelFeed = () => {
+		if (!selectedChannel) return null;
+		return (
+			<div className="glass-panel h-full flex flex-col rounded-2xl overflow-hidden relative">
+				<div className="p-3 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl flex justify-between items-center sticky top-0 z-20">
+					<div className="flex items-center gap-2 min-w-0">
+						<button
+							onClick={(e) => {
+								e.stopPropagation();
+								setSelectedChannel(null);
+							}}
+							className="p-2 mr-1 text-slate-400 hover:text-white rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
+						>
+							<ChevronLeft size={22} />
+						</button>
 
-					<div
-						className="flex items-center gap-3 cursor-pointer hover:opacity-80 min-w-0 overflow-hidden group"
-						onClick={() => setShowInfoModal(true)}
-					>
-						<div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-md border border-white/10">
-							{selectedChannel.name[0]}
-						</div>
-						<div className="min-w-0 max-w-[150px] sm:max-w-xs">
-							<h3 className="text-white font-bold truncate group-hover:text-indigo-200 transition-colors">{selectedChannel.name}</h3>
-							<p className="text-xs text-slate-400">{selectedChannel.subscribers.toLocaleString()} subscribers</p>
-						</div>
-					</div>
-				</div>
-				<div className="flex gap-1 flex-shrink-0">
-					<Button size="icon" variant="ghost" className="rounded-full hover:bg-white/10 text-slate-400 hover:text-white"><Search size={20} /></Button>
-					<Button size="icon" variant="ghost" onClick={() => setShowInfoModal(true)} className="rounded-full hover:bg-white/10 text-slate-400 hover:text-white"><MoreVertical size={20} /></Button>
-				</div>
-			</div>
-
-			<div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 no-scrollbar min-h-0 bg-black/20 pb-24 md:pb-6">
-				{selectedChannel.posts.map((post: any) => (
-					<div key={post.id} className="glass-card p-5 max-w-2xl mx-auto shadow-lg border-white/5 animate-in fade-in slide-in-from-bottom-2 duration-500">
-						<p className="text-slate-100 text-sm leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
-						<div className="mt-4 flex justify-between items-center text-slate-500 text-xs border-t border-white/5 pt-3">
-							<div className="flex gap-4">
-								<span className="flex items-center gap-1.5"><Eye size={14} className="text-slate-600" /> {post.views.toLocaleString()}</span>
-								<button className="flex items-center gap-1.5 hover:text-indigo-400 cursor-pointer transition-colors"><ThumbsUp size={14} /> {post.likes}</button>
+						<div
+							className="flex items-center gap-3 cursor-pointer hover:opacity-80 min-w-0 overflow-hidden group"
+							onClick={() => setShowInfoModal(true)}
+						>
+							<div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-md border border-white/10">
+								{selectedChannel.name[0]}
 							</div>
-							<span className="font-mono opacity-70">{post.date}</span>
+							<div className="min-w-0 max-w-[150px] sm:max-w-xs">
+								<h3 className="text-white font-bold truncate group-hover:text-indigo-200 transition-colors">{selectedChannel.name}</h3>
+								<p className="text-xs text-slate-400">{selectedChannel.subscribers.toLocaleString()} subscribers</p>
+							</div>
 						</div>
 					</div>
-				))}
-				{selectedChannel.posts.length === 0 && (
-					<div className="text-center text-slate-500 mt-20">
-						<div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/5">
-							<Megaphone size={40} className="opacity-30" />
+					<div className="flex gap-1 flex-shrink-0">
+						<Button size="icon" variant="ghost" className="rounded-full hover:bg-white/10 text-slate-400 hover:text-white"><Search size={20} /></Button>
+						<Button size="icon" variant="ghost" onClick={() => setShowInfoModal(true)} className="rounded-full hover:bg-white/10 text-slate-400 hover:text-white"><MoreVertical size={20} /></Button>
+					</div>
+				</div>
+
+				<div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 no-scrollbar min-h-0 bg-black/20 pb-24 md:pb-6">
+					{selectedChannel.posts.map((post: any) => (
+						<div key={post.id} className="glass-card p-5 max-w-2xl mx-auto shadow-lg border-white/5 animate-in fade-in slide-in-from-bottom-2 duration-500">
+							<p className="text-slate-100 text-sm leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
+							<div className="mt-4 flex justify-between items-center text-slate-500 text-xs border-t border-white/5 pt-3">
+								<div className="flex gap-4">
+									<span className="flex items-center gap-1.5"><Eye size={14} className="text-slate-600" /> {post.views.toLocaleString()}</span>
+									<button className="flex items-center gap-1.5 hover:text-indigo-400 cursor-pointer transition-colors"><ThumbsUp size={14} /> {post.likes}</button>
+								</div>
+								<span className="font-mono opacity-70">{post.date}</span>
+							</div>
 						</div>
-						<p>No messages yet.</p>
+					))}
+					{selectedChannel.posts.length === 0 && (
+						<div className="text-center text-slate-500 mt-20">
+							<div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/5">
+								<Megaphone size={40} className="opacity-30" />
+							</div>
+							<p>No messages yet.</p>
+						</div>
+					)}
+				</div>
+
+				{selectedChannel.isOwner ? (
+					<div className="p-4 border-t border-white/5 bg-slate-900/90 backdrop-blur sticky bottom-20 md:bottom-0 z-20 flex-shrink-0">
+						<div className="flex gap-3 items-end max-w-3xl mx-auto">
+							<textarea
+								value={broadcastText}
+								onChange={e => setBroadcastText(e.target.value)}
+								placeholder="Broadcast a message..."
+								className="flex-1 bg-black/40 border border-white/10 rounded-2xl p-4 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none text-sm h-14 max-h-32 transition-colors"
+							/>
+							<Button onClick={handleBroadcast} disabled={!broadcastText.trim()} className="h-14 w-14 rounded-2xl bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-500/20">
+								<Send size={22} />
+							</Button>
+						</div>
+					</div>
+				) : (
+					<div className="p-4 bg-slate-900/50 border-t border-white/5 text-center text-xs text-slate-500 uppercase font-bold tracking-widest flex-shrink-0 backdrop-blur">
+						Broadcast Channel • Read Only
 					</div>
 				)}
 			</div>
-
-			{selectedChannel.isOwner ? (
-				<div className="p-4 border-t border-white/5 bg-slate-900/90 backdrop-blur sticky bottom-20 md:bottom-0 z-20 flex-shrink-0">
-					<div className="flex gap-3 items-end max-w-3xl mx-auto">
-						<textarea
-							value={broadcastText}
-							onChange={e => setBroadcastText(e.target.value)}
-							placeholder="Broadcast a message..."
-							className="flex-1 bg-black/40 border border-white/10 rounded-2xl p-4 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-none text-sm h-14 max-h-32 transition-colors"
-						/>
-						<Button onClick={handleBroadcast} disabled={!broadcastText.trim()} className="h-14 w-14 rounded-2xl bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-500/20">
-							<Send size={22} />
-						</Button>
-					</div>
-				</div>
-			) : (
-				<div className="p-4 bg-slate-900/50 border-t border-white/5 text-center text-xs text-slate-500 uppercase font-bold tracking-widest flex-shrink-0 backdrop-blur">
-					Broadcast Channel • Read Only
-				</div>
-			)}
-		</div>
-	);
+		);
+	};
 
 	return (
 		<div className="p-4 space-y-4 animate-in fade-in h-full">
