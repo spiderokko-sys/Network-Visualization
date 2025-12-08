@@ -29,6 +29,8 @@ import { EventsScreen } from './components/EventsScreen';
 import { ContactsScreen } from './components/ContactsScreen';
 
 import { WalletScreen } from './components/WalletScreen';
+import { ProfileScreen } from './components/ProfileScreen';
+import { SettingsScreen } from './components/SettingsScreen';
 
 // --- Mock Data Constants (kept from original) ---
 const MOCK_CUSTOMERS = [
@@ -152,6 +154,10 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 									setActiveView('events');
 								} else if (link.title === 'Contacts') {
 									setActiveView('contacts');
+								} else if (link.title === 'Profile') {
+									setActiveView('profile');
+								} else if (link.title === 'Settings') {
+									setActiveView('settings');
 								} else {
 									// Default fallback or placeholder
 								}
@@ -231,6 +237,10 @@ export default function App() {
 				return <EventsScreen />;
 			case 'contacts':
 				return <ContactsScreen contacts={MOCK_CUSTOMERS} />;
+			case 'profile':
+				return <ProfileScreen navigateToSettings={() => setActiveView('settings')} />;
+			case 'settings':
+				return <SettingsScreen />;
 			case 'dashboard':
 			default:
 				return <BusinessDashboard customers={MOCK_CUSTOMERS} initialTab={dashboardTab} />;
@@ -283,8 +293,8 @@ export default function App() {
 						<SidebarItem
 							icon={LayoutDashboard}
 							label="Dashboard"
-							isActive={activeView === 'dashboard'}
-							onClick={() => setActiveView('dashboard')}
+							isActive={activeView === 'profile'}
+							onClick={() => setActiveView('profile')}
 							collapsed={sidebarCollapsed}
 						/>
 						<SidebarItem
@@ -292,6 +302,20 @@ export default function App() {
 							label="Chats"
 							isActive={activeView === 'chats'}
 							onClick={() => setActiveView('chats')}
+							collapsed={sidebarCollapsed}
+						/>
+						<SidebarItem
+							icon={Layers}
+							label="Circles"
+							isActive={activeView === 'network_circles'}
+							onClick={() => setActiveView('network_circles')}
+							collapsed={sidebarCollapsed}
+						/>
+						<SidebarItem
+							icon={Target}
+							label="Intents"
+							isActive={activeView === 'intents_globe'}
+							onClick={() => setActiveView('intents_globe')}
 							collapsed={sidebarCollapsed}
 						/>
 						<SidebarItem
@@ -377,8 +401,8 @@ export default function App() {
 
 							<div
 								className="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[2px] ring-2 ring-transparent hover:ring-white/20 transition-all cursor-pointer hover:scale-105 active:scale-95"
-								onClick={() => setActiveView('dashboard')}
-								title="Go to Dashboard"
+								onClick={() => setActiveView('profile')}
+								title="Go to Profile"
 							>
 								<div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
 									<User size={16} className="text-cyan-400" />

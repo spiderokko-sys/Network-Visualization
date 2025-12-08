@@ -97,35 +97,35 @@ export const WalletScreen = () => {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-6 overflow-hidden">
+            <div className="flex-1 flex flex-col gap-6 overflow-y-auto lg:overflow-hidden pb-20 lg:pb-0">
 
                 {/* Balance Card Section (Full Width) */}
                 <div className="shrink-0 animate-in slide-in-from-left-4 duration-500 delay-100">
-                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-700 p-8 shadow-2xl">
+                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-700 p-5 md:p-8 shadow-2xl">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
                             <div>
                                 <h3 className="text-indigo-100/80 font-medium text-lg mb-1">Total Balance</h3>
-                                <div className="text-5xl font-bold text-white tracking-tight">
+                                <div className="text-3xl md:text-5xl font-bold text-white tracking-tight">
                                     ${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                 </div>
                             </div>
 
-                            <div className="flex flex-wrap gap-4">
+                            <div className="flex flex-wrap gap-3 md:gap-4">
                                 <Button
-                                    className={`h-12 px-6 rounded-xl font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95 border-0 ${activeTab === 'deposit' ? 'bg-white text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-500/30 text-white hover:bg-indigo-500/40'}`}
+                                    className={`h-10 md:h-12 px-4 md:px-6 rounded-xl font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95 border-0 ${activeTab === 'deposit' ? 'bg-white text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-500/30 text-white hover:bg-indigo-500/40'}`}
                                     onClick={() => setActiveTab('deposit')}
                                 >
                                     <Plus className="mr-2 h-5 w-5" /> Deposit
                                 </Button>
                                 <Button
-                                    className={`h-12 px-6 rounded-xl font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95 border-0 ${activeTab === 'send' ? 'bg-white text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-500/30 text-white hover:bg-indigo-500/40'}`}
+                                    className={`h-10 md:h-12 px-4 md:px-6 rounded-xl font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95 border-0 ${activeTab === 'send' ? 'bg-white text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-500/30 text-white hover:bg-indigo-500/40'}`}
                                     onClick={() => setActiveTab('send')}
                                 >
                                     <ArrowUpRight className="mr-2 h-5 w-5" /> Send
                                 </Button>
                                 <Button
-                                    className={`h-12 px-6 rounded-xl font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95 border-0 ${activeTab === 'request' ? 'bg-white text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-500/30 text-white hover:bg-indigo-500/40'}`}
+                                    className={`h-10 md:h-12 px-4 md:px-6 rounded-xl font-semibold shadow-lg transition-transform hover:scale-105 active:scale-95 border-0 ${activeTab === 'request' ? 'bg-white text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-500/30 text-white hover:bg-indigo-500/40'}`}
                                     onClick={() => setActiveTab('request')}
                                 >
                                     <ArrowDownLeft className="mr-2 h-5 w-5" /> Request
@@ -139,7 +139,7 @@ export const WalletScreen = () => {
                 <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in slide-in-from-bottom-4 duration-500 delay-200">
 
                     {/* Actions Panel */}
-                    <Card className="flex flex-col h-full bg-slate-900/50 border-white/5 backdrop-blur-xl">
+                    <Card className="flex flex-col h-[600px] lg:h-full bg-slate-900/50 border-white/5 backdrop-blur-xl">
                         <CardContent className="p-6 h-full flex flex-col">
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
                                 <TabsList className="grid w-full grid-cols-4 bg-slate-950/50 p-1 mb-6 rounded-xl shrink-0">
@@ -266,7 +266,7 @@ export const WalletScreen = () => {
                     </Card>
 
                     {/* Recent Activity Card */}
-                    <Card className="flex flex-col h-full bg-slate-900/50 border-white/5 backdrop-blur-xl">
+                    <Card className="flex flex-col h-[600px] lg:h-full bg-slate-900/50 border-white/5 backdrop-blur-xl">
                         <CardHeader className="shrink-0">
                             <CardTitle className="text-lg font-medium text-white">Recent Activity</CardTitle>
                             <CardDescription className="text-slate-400">Latest transactions</CardDescription>
