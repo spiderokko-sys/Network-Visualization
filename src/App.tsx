@@ -382,7 +382,7 @@ export default function App() {
 						<SidebarItem icon={Phone} label="Calls" isActive={activeView === 'calls'} onClick={() => setActiveView('calls')} collapsed={true} />
 						<SidebarItem icon={MessageSquare} label="Chats" isActive={activeView === 'chats'} onClick={() => setActiveView('chats')} collapsed={true} />
 						<SidebarItem icon={Search} label="Explore" isActive={showExploreMenu} onClick={() => setShowExploreMenu(true)} collapsed={true} />
-						<SidebarItem icon={User} label="Profile" isActive={false} onClick={() => setActiveView('dashboard')} collapsed={true} />
+						<SidebarItem icon={List} label="Channels" isActive={activeView === 'channels'} onClick={() => setActiveView('channels')} collapsed={true} />
 					</div>
 				)}
 			</main>
