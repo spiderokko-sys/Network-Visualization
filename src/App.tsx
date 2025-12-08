@@ -26,6 +26,7 @@ import { BusinessDashboard } from './components/BusinessDashboard';
 import { GlobeWithUI } from './components/GlobeMap';
 import { NetworkCircles } from './components/NetworkCircles';
 import { EventsScreen } from './components/EventsScreen';
+import { ContactsScreen } from './components/ContactsScreen';
 
 import { WalletScreen } from './components/WalletScreen';
 
@@ -109,35 +110,35 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 			/>
 
 			{/* Center Panel */}
-			<div className="relative glass-panel w-full max-w-2xl rounded-3xl p-6 md:p-8 pt-12 md:pt-12 overflow-y-auto max-h-[85vh] animate-in zoom-in-95 duration-300">
+			<div className="relative glass-panel w-full max-w-lg rounded-2xl p-6 overflow-y-auto max-h-[85vh] animate-in zoom-in-95 duration-300">
 
 				{/* Background Splashes */}
-				<div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none" />
-				<div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none" />
+				<div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-[60px] pointer-events-none" />
+				<div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-[60px] pointer-events-none" />
 
 				{/* Header */}
-				<div className="flex justify-between items-center mb-10 relative z-10">
+				<div className="flex justify-between items-center mb-6 relative z-10">
 					<div>
-						<h3 className="text-3xl font-bold text-white flex items-center gap-3 tracking-tight">
-							<span className="p-2.5 bg-indigo-500/20 rounded-xl text-indigo-400 ring-1 ring-indigo-500/30"><Maximize2 size={24} /></span>
+						<h3 className="text-xl font-bold text-white flex items-center gap-2 tracking-tight">
+							<span className="p-1.5 bg-indigo-500/20 rounded-lg text-indigo-400 ring-1 ring-indigo-500/30"><Maximize2 size={18} /></span>
 							Command Center
 						</h3>
-						<p className="text-base text-slate-400 mt-2 ml-1">Navigate your GigMind tools</p>
+						<p className="text-sm text-slate-400 mt-1 ml-1">Navigate your GigMind tools</p>
 					</div>
 					<button
 						onClick={onClose}
-						className="p-2.5 bg-white/5 hover:bg-white/10 rounded-full text-slate-300 transition-colors border border-white/5 active:scale-95 cursor-pointer"
+						className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full text-slate-300 transition-colors border border-white/5 active:scale-95 cursor-pointer"
 					>
-						<X size={24} />
+						<X size={20} />
 					</button>
 				</div>
 
 				{/* Grid Links */}
-				<div className="grid grid-cols-2 sm:grid-cols-4 gap-6 relative z-10">
+				<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 relative z-10">
 					{EXPLORE_LINKS.map((link) => (
 						<button
 							key={link.title}
-							className="group flex flex-col items-center justify-center gap-3 p-4 rounded-2xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/5 cursor-pointer active:scale-95"
+							className="group flex flex-col items-center justify-center gap-2.5 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/5 cursor-pointer active:scale-95"
 							onClick={() => {
 								if (link.title === 'Business') {
 									setActiveView('dashboard');
@@ -149,18 +150,20 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 									setActiveView('wallet');
 								} else if (link.title === 'Events') {
 									setActiveView('events');
+								} else if (link.title === 'Contacts') {
+									setActiveView('contacts');
 								} else {
 									// Default fallback or placeholder
 								}
 								onClose();
 							}}
 						>
-							<div className={`w-20 h-20 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300 shadow-lg`}>
-								<link.icon size={32} className={`${link.color} drop-shadow-md`} />
+							<div className={`w-14 h-14 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-300 shadow-lg`}>
+								<link.icon size={24} className={`${link.color} drop-shadow-md`} />
 							</div>
 							<div className="text-center">
-								<div className="text-slate-200 font-semibold text-lg group-hover:text-white transition-colors">{link.title}</div>
-								<div className="text-slate-500 text-xs mt-1 group-hover:text-slate-400">{link.subtitle}</div>
+								<div className="text-slate-200 font-semibold text-sm group-hover:text-white transition-colors">{link.title}</div>
+								<div className="text-slate-500 text-[10px] mt-0.5 group-hover:text-slate-400">{link.subtitle}</div>
 							</div>
 						</button>
 					))}
@@ -226,6 +229,8 @@ export default function App() {
 				return <WalletScreen />;
 			case 'events':
 				return <EventsScreen />;
+			case 'contacts':
+				return <ContactsScreen contacts={MOCK_CUSTOMERS} />;
 			case 'dashboard':
 			default:
 				return <BusinessDashboard customers={MOCK_CUSTOMERS} initialTab={dashboardTab} />;

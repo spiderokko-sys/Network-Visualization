@@ -125,7 +125,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 	return (
 		<div className="h-full overflow-y-auto no-scrollbar">
-			<div className="p-4 md:p-6 space-y-6 pb-28 max-w-7xl mx-auto">
+			<div className="px-4 md:px-6 pt-0 space-y-6 pb-28 max-w-7xl mx-auto">
 
 				{/* Tabs */}
 				<div className="glass-panel p-1 rounded-xl flex overflow-x-auto no-scrollbar gap-1 mb-6 sticky top-16 z-20 w-full sm:static">
