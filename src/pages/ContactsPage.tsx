@@ -106,15 +106,15 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
     const ContactCard = ({ contact }: { contact: Contact }) => (
         <div
             onClick={() => { setSelectedContact(contact); setIsEditing(false); }}
-            className="group relative flex flex-col p-5 rounded-2xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-sm"
+            className="group relative flex flex-col p-5 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-indigo-400 dark:hover:border-indigo-500/30 hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-sm"
         >
             {/* Hover Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-indigo-500/0 to-indigo-500/5 group-hover:via-indigo-500/5 group-hover:to-indigo-500/10 transition-all duration-500" />
 
             <div className="flex items-start justify-between relative z-10 mb-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-400 to-cyan-400 p-[2px]">
-                        <div className="h-full w-full rounded-full bg-slate-800 dark:bg-slate-900 flex items-center justify-center text-lg font-bold text-white">
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 p-[2px] shadow-md">
+                        <div className="h-full w-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center text-lg font-bold text-indigo-600 dark:text-white">
                             {contact.name.charAt(0)}
                         </div>
                     </div>
@@ -126,7 +126,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                         </p>
                     </div>
                 </div>
-                <button className="text-slate-500 hover:text-white transition-colors">
+                <button className="text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
                     <MoreHorizontal size={18} />
                 </button>
             </div>
@@ -173,13 +173,13 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                     <div className="hidden sm:flex items-center gap-1 p-1 rounded-lg bg-slate-200 dark:bg-white/5 border border-slate-200 dark:border-white/5">
                         <button
                             onClick={() => setFilterType('all')}
-                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'all' ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'all' ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
                         >
                             All
                         </button>
                         <button
                             onClick={() => setFilterType('favorites')}
-                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'favorites' ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'favorites' ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
                         >
                             Favorites
                         </button>
@@ -199,7 +199,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                     </div>
                     <button
                         onClick={startNewContact}
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600/90 hover:bg-indigo-600 text-white rounded-xl text-sm font-medium transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] active:scale-95"
+                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 active:scale-95"
                     >
                         <Plus size={18} />
                         <span className="hidden sm:inline">Add Contact</span>
@@ -272,14 +272,14 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => setIsEditing(true)}
-                                            className="p-2 rounded-lg bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 transition-colors"
+                                            className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-500/30 transition-colors"
                                             title="Edit Contact"
                                         >
                                             <Pencil size={18} />
                                         </button>
                                         <button
                                             onClick={() => handleDeleteContact(selectedContact.id)}
-                                            className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                                            className="p-2 rounded-lg bg-rose-100 dark:bg-red-500/10 text-rose-600 dark:text-red-400 hover:bg-rose-200 dark:hover:bg-red-500/20 transition-colors"
                                             title="Delete Contact"
                                         >
                                             <Trash2 size={18} />

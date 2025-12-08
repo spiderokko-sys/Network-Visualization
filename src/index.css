@@ -106,7 +106,12 @@
 @layer components {
 
   .glass-panel {
-    @apply bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-black/20;
+    @apply bg-white/70 dark:bg-slate-900/40 backdrop-blur-2xl border border-slate-300/60 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-black/20;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .dark .glass-panel {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
   }
 
   .glass-card {

@@ -75,7 +75,7 @@ export default function MainLayout() {
                 <div className="h-20 flex items-center px-6 border-b border-white/5">
                     <div
                         className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/business')}
                     >
                         <div className="h-10 w-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)] ring-1 ring-white/10 shrink-0">
                             <Radar className="text-white" size={22} />
@@ -97,8 +97,8 @@ export default function MainLayout() {
                     <SidebarItem
                         icon={LayoutDashboard}
                         label="Dashboard"
-                        isActive={isActive('/profile')}
-                        onClick={() => navigate('/profile')}
+                        isActive={isActive('/business')}
+                        onClick={() => navigate('/business')}
                         collapsed={sidebarCollapsed}
                     />
                     <SidebarItem
@@ -172,7 +172,7 @@ export default function MainLayout() {
                     {/* Mobile Menu Toggle (Visible only on mobile) */}
                     <div
                         className="md:hidden flex items-center gap-3 cursor-pointer"
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/business')}
                     >
                         <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                             <Radar className="text-white" size={16} />
