@@ -82,9 +82,9 @@ export const CallsModule = ({ customers }: any) => {
 	const favorites = customers.filter((c: any) => c.isFavorite);
 
 	return (
-		<div className="p-6 space-y-6 animate-in fade-in slide-in-from-right-4 pb-28">
+		<div className="p-4 md:p-6 space-y-6 animate-in fade-in slide-in-from-right-4 pb-28">
 			{/* Header */}
-			<div className="flex justify-between items-center sticky top-0 z-20 bg-slate-950/80 backdrop-blur-xl py-4 -mx-6 px-6 border-b border-white/5">
+			<div className="flex justify-between items-center sticky top-0 z-20 bg-slate-950/80 backdrop-blur-xl py-4 -mx-4 px-4 md:-mx-6 md:px-6 border-b border-white/5">
 				<h2 className="text-2xl font-bold text-white tracking-tight">Calls</h2>
 				<div className="flex gap-2">
 					<label className="text-xs text-slate-500 uppercase font-bold mb-2 block">Channel Type</label>

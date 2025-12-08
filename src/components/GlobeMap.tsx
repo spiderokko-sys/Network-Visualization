@@ -435,10 +435,10 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
 
       {/* Main View Area */}
       {view === 'dashboard' && (
-        <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-6">
 
           {/* Control Bar */}
-          <div className="flex flex-col md:flex-row gap-4 sticky top-14 md:top-0 z-10 pb-2 pt-2 md:pt-0 bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-6 px-6 md:mx-0 md:px-0">
+          <div className="flex flex-col md:flex-row gap-4 sticky top-14 md:top-0 z-10 pb-2 pt-2 md:pt-0 bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
             <div className="glass-panel p-1 rounded-xl flex shrink-0">
               <button onClick={() => setActiveTab('incoming')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'incoming' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>Feed</button>
               <button onClick={() => setActiveTab('mine')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'mine' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>My Signals</button>
@@ -499,9 +499,8 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
         <div className="h-full flex flex-col animate-in slide-in-from-right duration-300">
           <div className="p-4 border-b border-white/5 flex items-center gap-4 bg-slate-900/50 backdrop-blur-xl sticky top-0 z-10">
             <Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full h-10 w-10"><ArrowLeft /></Button>
-            <h2 className="font-bold text-lg text-white">Signal Details</h2>
           </div>
-          <div className="flex-1 overflow-y-auto p-6 max-w-3xl mx-auto w-full">
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 max-w-3xl mx-auto w-full">
             {/* Header */}
             <div className="flex items-start gap-4 sm:gap-5 mb-6 sm:mb-8">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 shadow-[0_0_30px_rgba(79,70,229,0.3)] flex items-center justify-center text-white text-xl sm:text-2xl font-bold border border-white/20 shrink-0">

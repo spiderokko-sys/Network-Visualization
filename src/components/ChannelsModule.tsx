@@ -251,7 +251,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 				</div>
 			</div>
 
-			<div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar min-h-0 bg-black/20">
+			<div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 no-scrollbar min-h-0 bg-black/20">
 				{selectedChannel.posts.map((post: any) => (
 					<div key={post.id} className="glass-card p-5 max-w-2xl mx-auto shadow-lg border-white/5 animate-in fade-in slide-in-from-bottom-2 duration-500">
 						<p className="text-slate-100 text-sm leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
