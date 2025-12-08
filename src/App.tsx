@@ -24,6 +24,7 @@ import { ChatsModule } from './components/ChatsModule';
 import { ChannelsModule } from './components/ChannelsModule';
 import { BusinessDashboard } from './components/BusinessDashboard';
 import { GlobeWithUI } from './components/GlobeMap';
+import { NetworkCircles } from './components/NetworkCircles';
 
 // --- Mock Data Constants (kept from original) ---
 const MOCK_CUSTOMERS = [
@@ -162,25 +163,7 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 	);
 };
 
-const NetworkCirclesView = ({ onBack }: { onBack: () => void }) => {
-	// Simple recreation of the network circles for visual fidelity within new system
-	return (
-		<div className="h-full flex flex-col relative animate-in fade-in duration-500">
-			<div className="absolute inset-0 bg-slate-950 -z-10" />
-			<div className="p-6">
-				<button onClick={onBack} className="glass-button mb-4">
-					<ChevronLeft size={16} /> Back to Dashboard
-				</button>
-				<h2 className="text-3xl font-bold text-white mb-2">Network Circles</h2>
-				<p className="text-slate-400">Visualizing your connections</p>
-			</div>
-			<div className="flex-1 flex items-center justify-center relative overflow-hidden">
-				{/* Just a placeholder for the circle viz for now, as we focus on layout */}
-				<div className="text-slate-500 animate-pulse">Network Visualization Component Placeholder</div>
-			</div>
-		</div>
-	);
-};
+
 
 const IntentsGlobeView = ({ onBack }: { onBack: () => void }) => {
 	return (
@@ -234,7 +217,7 @@ export default function App() {
 			case 'channels':
 				return <ChannelsModule selectedChannel={selectedChannel} setSelectedChannel={setSelectedChannel} />;
 			case 'network_circles':
-				return <NetworkCirclesView onBack={() => setActiveView('dashboard')} />;
+				return <NetworkCircles onBack={() => setActiveView('dashboard')} setActiveView={setActiveView} setSelectedChannel={setSelectedChannel} />;
 			case 'intents_globe':
 				return <IntentsGlobeView key="intents-globe-view" onBack={() => setActiveView('dashboard')} />;
 			case 'dashboard':
