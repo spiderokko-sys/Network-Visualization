@@ -125,10 +125,10 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 	return (
 		<div className="h-full overflow-y-auto no-scrollbar">
-			<div className="px-4 md:px-6 pt-0 space-y-6 pb-28 max-w-7xl mx-auto">
+			<div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
 
 				{/* Tabs */}
-				<div className="glass-panel p-1 rounded-xl flex overflow-x-auto no-scrollbar gap-1 mb-6 sticky top-16 z-20 w-full sm:static">
+				<div className="glass-panel p-1 rounded-xl flex overflow-x-auto no-scrollbar gap-1 mb-4 md:mb-6 sticky top-0 z-20 w-full sm:static">
 					{['overview', 'intents', 'calendar', 'contacts', 'circles', 'marketing'].map(tab => (
 						<button
 							key={tab}
@@ -146,14 +146,14 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 				</div>
 
 				{activeInternalTab === 'overview' && (
-					<div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+					<div className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 						{/* Hero Card */}
-						<div className="glass-panel rounded-3xl p-6 relative overflow-hidden group">
+						<div className="glass-panel rounded-3xl p-4 md:p-6 relative overflow-hidden group">
 							<div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none">
 								<QrCode size={200} className="text-white rotate-12" />
 							</div>
 
-							<div className="flex flex-col md:flex-row md:items-center gap-6 mb-8 relative z-10">
+							<div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-4 md:mb-8 relative z-10">
 								<div className="h-24 w-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-[0_0_30px_rgba(79,70,229,0.3)] ring-1 ring-white/20">
 									<span className="text-4xl font-bold">J</span>
 								</div>
@@ -167,7 +167,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								</div>
 							</div>
 
-							<div className="grid grid-cols-2 gap-3 sm:gap-4 border-t border-white/5 pt-6 mb-6">
+							<div className="grid grid-cols-2 gap-3 sm:gap-4 border-t border-white/5 pt-4 md:pt-6 mb-4 md:mb-6">
 								<div className="text-center p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
 									<div className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold tracking-wider mb-1 sm:mb-2">L1 Direct</div>
 									<div className="text-2xl sm:text-4xl font-bold text-white text-glow">{BUSINESS_STATS.l1_count}</div>
