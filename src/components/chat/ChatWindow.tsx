@@ -149,7 +149,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 	return (
 		<div className="glass-panel flex flex-col h-full rounded-2xl overflow-hidden relative shadow-2xl pb-20 md:pb-0">
 			{/* Header */}
-			<div className="p-4 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between sticky top-0 z-10 min-h-[76px] relative">
+			<div className="px-4 py-2 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between sticky top-0 z-10 relative">
 				{showBackgroundPicker && (
 					<div className="absolute top-full right-4 mt-2 p-3 glass-panel rounded-xl shadow-2xl animate-in fade-in slide-in-from-top-2 z-50 w-48">
 						<h5 className="text-xs font-bold text-slate-400 uppercase mb-2 px-2">Backgrounds</h5>
@@ -210,7 +210,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 			</div>
 
 			{/* Input Area */}
-			<div className="p-4 bg-slate-900/80 border-t border-white/5 flex-shrink-0 backdrop-blur-xl relative">
+			<div className="p-4 bg-slate-900/80 border-t border-white/5 flex-shrink-0 backdrop-blur-xl sticky bottom-0 z-30 overflow-hidden">
 				{replyTo && (
 					<div className="flex items-center justify-between bg-white/5 p-3 rounded-t-2xl -mt-4 border-b border-white/5 animate-in slide-in-from-bottom-2 mx-4">
 						<div className="flex items-center gap-3 overflow-hidden">
@@ -282,7 +282,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 									handleSend();
 								}
 							}}
-							className="flex-1 bg-black/40 border border-white/10 rounded-3xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm min-h-[56px] max-h-32 resize-none leading-relaxed transition-colors shadow-inner no-scrollbar"
+							className="flex-1 bg-black/40 border border-white/10 rounded-3xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm min-h-[56px] max-h-32 resize-none leading-relaxed transition-colors shadow-inner no-scrollbar overflow-x-hidden break-words"
 							placeholder="Broadcast secure message..."
 							rows={1}
 						/>
