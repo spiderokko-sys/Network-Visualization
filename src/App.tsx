@@ -26,6 +26,8 @@ import { BusinessDashboard } from './components/BusinessDashboard';
 import { GlobeWithUI } from './components/GlobeMap';
 import { NetworkCircles } from './components/NetworkCircles';
 
+import { WalletScreen } from './components/WalletScreen';
+
 // --- Mock Data Constants (kept from original) ---
 const MOCK_CUSTOMERS = [
 	{
@@ -142,6 +144,8 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 									setActiveView('network_circles');
 								} else if (link.title === 'Intents') {
 									setActiveView('intents_globe');
+								} else if (link.title === 'Wallet') {
+									setActiveView('wallet');
 								} else {
 									// Default fallback or placeholder
 								}
@@ -220,6 +224,8 @@ export default function App() {
 				return <NetworkCircles onBack={() => setActiveView('dashboard')} setActiveView={setActiveView} setSelectedChannel={setSelectedChannel} />;
 			case 'intents_globe':
 				return <IntentsGlobeView key="intents-globe-view" onBack={() => setActiveView('dashboard')} />;
+			case 'wallet':
+				return <WalletScreen />;
 			case 'dashboard':
 			default:
 				return <BusinessDashboard customers={MOCK_CUSTOMERS} initialTab={dashboardTab} />;
