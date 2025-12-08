@@ -141,15 +141,26 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 							))}
 						</div>
 					)}
+
+					{/* Mobile Friendly Reply Button */}
+					<button
+						onClick={(e) => {
+							e.stopPropagation();
+							setReplyTo(message);
+						}}
+						className={`absolute bottom-1 ${message.isMe ? 'left-2' : 'right-2'} p-1.5 rounded-full bg-black/20 text-white/50 hover:text-white hover:bg-black/40 transition-all opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100`}
+					>
+						<CornerUpLeft size={12} />
+					</button>
 				</div>
 			</div>
 		);
 	};
 
 	return (
-		<div className="glass-panel flex flex-col h-full rounded-2xl overflow-hidden relative shadow-2xl pb-20 md:pb-0">
+		<div className="glass-panel flex flex-col h-full rounded-none md:rounded-2xl overflow-hidden overflow-x-hidden relative shadow-2xl pb-0 border-x-0 md:border-x border-y-0 md:border-y">
 			{/* Header */}
-			<div className="px-4 py-2 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between sticky top-0 z-10 relative">
+			<div className="px-4 py-3 md:py-4 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between sticky top-0 z-10 relative">
 				{showBackgroundPicker && (
 					<div className="absolute top-full right-4 mt-2 p-3 glass-panel rounded-xl shadow-2xl animate-in fade-in slide-in-from-top-2 z-50 w-48">
 						<h5 className="text-xs font-bold text-slate-400 uppercase mb-2 px-2">Backgrounds</h5>
@@ -204,7 +215,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 			</div>
 
 			{/* Messages */}
-			<div className={`flex-1 p-4 md:p-6 overflow-y-auto no-scrollbar flex flex-col min-h-0 ${chat.background || 'bg-black/20'} transition-colors duration-500`}>
+			<div className={`flex-1 p-4 md:p-6 overflow-y-auto no-scrollbar overflow-x-hidden flex flex-col min-h-0 ${chat.background || 'bg-black/20'} transition-colors duration-500`}>
 				{messages.map((msg: any) => <MessageBubble key={msg.id} message={msg} />)}
 				<div ref={messagesEndRef} />
 			</div>
