@@ -100,28 +100,13 @@ export const CallsModule = ({ customers }: any) => {
 			</div>
 
 			{/* Main Actions */}
-			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-				<button className="relative overflow-hidden p-6 rounded-2xl bg-gradient-to-br from-orange-500/20 to-rose-600/20 border border-orange-500/30 flex flex-col justify-between min-h-[160px] group transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-					<div className="absolute -right-6 -bottom-6 opacity-20 rotate-12 group-hover:rotate-0 transition-transform duration-500"><Video size={120} className="text-orange-400" /></div>
-					<div className="glass-panel w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-						<Video size={28} className="text-white" />
-					</div>
-					<div className="text-left z-10">
-						<div className="text-white font-bold text-xl leading-tight mb-1">New Meeting</div>
-						<div className="text-orange-200/70 text-sm">Start instant call</div>
-					</div>
-				</button>
-
-				<button className="relative overflow-hidden p-6 rounded-2xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-indigo-500/30 flex flex-col justify-between min-h-[160px] group transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(79,70,229,0.3)]">
-					<div className="absolute -right-6 -bottom-6 opacity-20 rotate-12 group-hover:rotate-0 transition-transform duration-500"><PlusSquare size={120} className="text-indigo-400" /></div>
-					<div className="glass-panel w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-						<PlusSquare size={28} className="text-white" />
-					</div>
-					<div className="text-left z-10">
-						<div className="text-white font-bold text-xl leading-tight mb-1">Join</div>
-						<div className="text-indigo-200/70 text-sm">Enter code</div>
-					</div>
-				</button>
+			<div className="flex gap-4">
+				<Button className="flex-1 h-14 glass-button-primary bg-indigo-600 hover:bg-indigo-500 text-lg">
+					<Video className="mr-2" size={20} /> New Meeting
+				</Button>
+				<Button className="flex-1 h-14 glass-button text-lg">
+					<PlusSquare className="mr-2" size={20} /> Join
+				</Button>
 			</div>
 
 			{/* Secondary Actions */}

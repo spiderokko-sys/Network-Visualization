@@ -213,11 +213,7 @@ const SidebarItem = ({ icon: Icon, label, isActive, onClick, collapsed }: any) =
 		)}
 
 		{/* Tooltip for collapsed state */}
-		{collapsed && (
-			<div className="absolute left-full ml-4 px-2 py-1 bg-slate-800 text-slate-200 text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap border border-white/10 z-50">
-				{label}
-			</div>
-		)}
+
 	</button>
 );
 
@@ -398,7 +394,7 @@ export default function App() {
 				</div>
 
 				{/* Mobile Navigation Bar */}
-				{!isFullScreenView && (
+				{!isFullScreenView && !(activeView === 'chats' && selectedChatId) && (
 					<div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-slate-950/90 backdrop-blur-xl border-t border-white/10 z-50 flex items-center justify-around px-2 pb-safe">
 						<SidebarItem icon={Phone} label="Calls" isActive={activeView === 'calls'} onClick={() => setActiveView('calls')} collapsed={true} />
 						<SidebarItem icon={MessageSquare} label="Chats" isActive={activeView === 'chats'} onClick={() => setActiveView('chats')} collapsed={true} />
