@@ -38,28 +38,28 @@ const ChatListItem = ({ chat, isSelected, onClick }: any) => {
 				p-4 flex items-center gap-4 border rounded-2xl cursor-pointer transition-all min-h-[80px] group
 				${isSelected
 					? 'glass-card-active border-indigo-500/50 bg-indigo-900/20'
-					: 'glass-card border-transparent hover:bg-white/5 hover:border-white/10'
+					: 'glass-card border-transparent hover:bg-white/5 hover:border-slate-200 dark:border-white/10'
 				}
 			`}
 			onClick={() => onClick(chat.id)}
 		>
-			<div className={`h-14 w-14 rounded-full flex items-center justify-center font-bold text-xl relative flex-shrink-0 border border-white/10 shadow-lg transition-transform group-hover:scale-105 ${chat.isGroup ? 'bg-emerald-900/40 text-emerald-400' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white'}`}>
+			<div className={`h-14 w-14 rounded-full flex items-center justify-center font-bold text-xl relative flex-shrink-0 border border-slate-200 dark:border-white/10 shadow-lg transition-transform group-hover:scale-105 ${chat.isGroup ? 'bg-emerald-900/40 text-emerald-400' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-slate-900 dark:text-white'}`}>
 				{chat.isGroup ? <AvatarIcon size={24} /> : chat.name[0]}
 				{chat.unread > 0 && (
-					<span className="absolute -top-1 -right-1 h-5 w-5 bg-rose-500 rounded-full text-[10px] flex items-center justify-center text-white ring-2 ring-slate-950 font-bold shadow-lg">
+					<span className="absolute -top-1 -right-1 h-5 w-5 bg-rose-500 rounded-full text-[10px] flex items-center justify-center text-slate-900 dark:text-white ring-2 ring-slate-950 font-bold shadow-lg">
 						{chat.unread}
 					</span>
 				)}
 			</div>
 			<div className="flex-1 min-w-0">
 				<div className="flex justify-between items-center mb-1">
-					<h4 className={`text-base font-bold truncate flex items-center gap-1.5 ${isSelected ? 'text-white' : 'text-slate-200 group-hover:text-white'}`}>
+					<h4 className={`text-base font-bold truncate flex items-center gap-1.5 ${isSelected ? 'text-slate-900 dark:text-white' : 'text-slate-200 dark:text-slate-200 group-hover:text-slate-900 dark:text-white'}`}>
 						{chat.name}
 						{chat.isFavorite && <Heart size={14} className="text-rose-500 fill-rose-500" />}
 					</h4>
-					<span className="text-xs text-slate-500 whitespace-nowrap ml-2 font-medium">{chat.timestamp}</span>
+					<span className="text-xs text-slate-500 dark:text-slate-500 whitespace-nowrap ml-2 font-medium">{chat.timestamp}</span>
 				</div>
-				<p className={`text-sm truncate font-medium ${isSelected ? 'text-indigo-200' : 'text-slate-500 group-hover:text-slate-400'}`}>
+				<p className={`text-sm truncate font-medium ${isSelected ? 'text-indigo-200' : 'text-slate-500 dark:text-slate-500 group-hover:text-slate-600 dark:text-slate-400'}`}>
 					{chat.lastMessage}
 				</p>
 			</div>
@@ -129,15 +129,15 @@ export const ChatsModule = () => {
 		<div className="p-0 md:p-4 space-y-0 md:space-y-4 animate-in fade-in h-full flex gap-4 min-h-0">
 			{/* Chat List */}
 			<div className={`glass-panel h-full flex flex-col rounded-none md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 min-h-0 ${selectedChatId ? 'hidden md:flex md:w-80 lg:w-96' : 'w-full'}`}>
-				<div className="p-5 sticky top-0 bg-slate-900/80 backdrop-blur-xl z-20 border-b border-white/5">
-					<h2 className="text-2xl font-bold text-white flex items-center gap-2.5 mb-5"><MessageSquare size={28} className="text-indigo-400" /> Chats</h2>
-					<div className="flex bg-black/30 p-1 rounded-xl">
+				<div className="p-5 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-20 border-b border-slate-200 dark:border-white/5">
+					<h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5 mb-5"><MessageSquare size={28} className="text-indigo-400" /> Chats</h2>
+					<div className="flex bg-slate-100 dark:bg-black/30 p-1 rounded-xl">
 						{['All', 'Personal', 'Groups'].map(f => (
 							<button
 								key={f}
 								onClick={() => setFilter(f.toLowerCase())}
 								className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
-									${filter === f.toLowerCase() ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-white hover:bg-white/5'}
+									${filter === f.toLowerCase() ? 'bg-indigo-600 text-slate-900 dark:text-white shadow-lg' : 'text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:text-white hover:bg-white/5'}
 								`}
 							>
 								{f}
@@ -150,7 +150,7 @@ export const ChatsModule = () => {
 						<ChatListItem key={chat.id} chat={chat} isSelected={chat.id === selectedChatId} onClick={selectChat} />
 					))}
 					{filteredChats.length === 0 && (
-						<div className="text-center text-slate-500 py-20 text-sm">No chats found.</div>
+						<div className="text-center text-slate-500 dark:text-slate-500 py-20 text-sm">No chats found.</div>
 					)}
 				</div>
 			</div>
@@ -173,11 +173,11 @@ export const ChatsModule = () => {
 				/* Splash screen for desktop when no chat selected */
 				<div className="hidden md:flex flex-1 glass-panel rounded-2xl items-center justify-center p-8 text-center">
 					<div>
-						<div className="h-32 w-32 bg-black/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
+						<div className="h-32 w-32 bg-black/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-200 dark:border-white/5">
 							<MessageSquare size={64} className="text-slate-600 opacity-50" />
 						</div>
-						<h3 className="text-xl font-bold text-white mb-2">Select a Conversation</h3>
-						<p className="text-slate-500 max-w-xs mx-auto">Choose a contact from the list to view your encrypted message history.</p>
+						<h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Select a Conversation</h3>
+						<p className="text-slate-500 dark:text-slate-500 max-w-xs mx-auto">Choose a contact from the list to view your encrypted message history.</p>
 					</div>
 				</div>
 			)}

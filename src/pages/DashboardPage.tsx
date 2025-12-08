@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
 	QrCode, Layers, Clock, ChevronRight, Star, Award, AlertTriangle, Zap,
 	DollarSign, FileText, Users, CalendarDays, Heart, Phone, PlusCircle,
-	Edit2, Trash2, Circle, Check, Megaphone, Globe, Target, MapPin, Tag,
-	Send, CheckCircle2, TrendingUp, Activity
+	Edit2, Trash2, Circle, CheckCircle2, TrendingUp, Activity, Megaphone, Globe, Target, Send
 } from 'lucide-react';
 import { QRModal } from '../components/modals/QRModal';
 import { FinancialModal } from '../components/modals/FinancialModal';
 import { AddCustomerModal } from '../components/modals/AddCustomerModal';
 import { EditCircleModal } from '../components/modals/EditCircleModal';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 
 const BUSINESS_STATS = {
@@ -35,8 +34,6 @@ const RECENT_ACTIVITY = [
 	{ id: 5, type: 'alert', msg: 'Unusual activity detected in L2', time: '4h ago', icon: AlertTriangle, color: 'rose' },
 ];
 
-const INTEREST_TAGS = ['Tech', 'Creative', 'Foodie', 'Nightlife', 'Outdoors', 'Wellness', 'Finance', 'Student'];
-
 export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'overview' }: any) => {
 	const [activeInternalTab, setActiveInternalTab] = useState(initialTab);
 	const [circles, setCircles] = useState(INITIAL_CIRCLES);
@@ -45,8 +42,8 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 	const [selectedMarketingCircles, setSelectedMarketingCircles] = useState(['l1']);
 	const [showLargeQR, setShowLargeQR] = useState(false);
 	const [campaignMode, setCampaignMode] = useState('retention');
-	const [geoScope, setGeoScope] = useState<string | null>('city');
-	const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+	const [geoScope] = useState<string | null>('city');
+	const [selectedInterests] = useState<string[]>([]);
 	const [messagePayload, setMessagePayload] = useState('');
 	const [customers, setCustomers] = useState(initialCustomers);
 	const [showAddCustomer, setShowAddCustomer] = useState(false);
@@ -56,7 +53,6 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 	// Helpers
 	const toggleMarketingCircle = (id: string) => setSelectedMarketingCircles(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
-	const toggleInterest = (tag: string) => setSelectedInterests(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
 
 	const getTotalReach = () => {
 		if (campaignMode === 'retention') return BUSINESS_STATS.l1_count.toLocaleString();
@@ -150,8 +146,8 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 							className={`
 							px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all whitespace-nowrap flex-shrink-0
 							${activeInternalTab === tab
-									? 'bg-indigo-600/80 text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/20'
-									: 'text-slate-400 hover:text-white hover:bg-white/5'}
+									? 'bg-indigo-600/80 text-slate-900 dark:text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/20'
+									: 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-slate-50 dark:bg-white/5'}
 						`}
 						>
 							{tab}
@@ -165,17 +161,17 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 						<div className="glass-panel rounded-2xl p-4 relative overflow-hidden group">
 							{/* Decorative BG */}
 							<div className="absolute -top-10 -right-10 p-6 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
-								<QrCode size={180} className="text-white rotate-12" />
+								<QrCode size={180} className="text-slate-900 dark:text-white rotate-12" />
 							</div>
 
 							<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
 								{/* Left: Identity */}
 								<div className="flex items-center gap-4">
-									<div className="h-14 w-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg ring-1 ring-white/20 shrink-0">
+									<div className="h-14 w-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-slate-900 dark:text-white shadow-lg ring-1 ring-white/20 shrink-0">
 										<span className="text-xl font-bold">J</span>
 									</div>
 									<div>
-										<h2 className="text-xl font-bold text-white leading-tight">Joe's Coffee</h2>
+										<h2 className="text-xl font-bold text-slate-900 dark:text-white leading-tight">Joe's Coffee</h2>
 										<div className="flex items-center gap-2 mt-1">
 											<span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide flex items-center gap-1">
 												<CheckCircle2 size={10} /> Verified
@@ -185,24 +181,24 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								</div>
 
 								{/* Right: Stats & Action */}
-								<div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-white/5">
+								<div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-200 dark:border-white/5">
 									{/* Compact Stats */}
 									<div className="flex items-center gap-4">
 										<div>
-											<div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">L1 Direct</div>
-											<div className="text-lg font-bold text-white leading-none">{BUSINESS_STATS.l1_count}</div>
+											<div className="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-wider">L1 Direct</div>
+											<div className="text-lg font-bold text-slate-900 dark:text-white leading-none">{BUSINESS_STATS.l1_count}</div>
 										</div>
-										<div className="w-px h-6 bg-white/10"></div>
+										<div className="w-px h-6 bg-slate-100 dark:bg-white/10"></div>
 										<div>
-											<div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Network</div>
-											<div className="text-lg font-bold text-white leading-none">25.4k</div>
+											<div className="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-wider">Network</div>
+											<div className="text-lg font-bold text-slate-900 dark:text-white leading-none">25.4k</div>
 										</div>
 									</div>
 
 									{/* QR Button */}
 									<Button
 										size="sm"
-										className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
+										className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
 										onClick={() => setShowLargeQR(true)}
 									>
 										<QrCode size={16} className="mr-2" />
@@ -214,7 +210,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 						{/* Feed */}
 						<div>
-							<h3 className="text-slate-400 text-sm uppercase tracking-wider font-bold mb-4 pl-1">Live Feed</h3>
+							<h3 className="text-slate-600 dark:text-slate-400 text-sm uppercase tracking-wider font-bold mb-4 pl-1">Live Feed</h3>
 							<div className="space-y-3">
 								{RECENT_ACTIVITY.map(item => (
 									<div key={item.id} className="glass-card p-4 flex items-center gap-4 group cursor-pointer">
@@ -222,12 +218,12 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 											<item.icon size={20} />
 										</div>
 										<div className="flex-1 min-w-0">
-											<div className="text-white font-medium mb-0.5">{item.msg}</div>
-											<div className="text-xs text-slate-500 flex items-center gap-1">
+											<div className="text-slate-900 dark:text-white font-medium mb-0.5">{item.msg}</div>
+											<div className="text-xs text-slate-500 dark:text-slate-500 flex items-center gap-1">
 												<Clock size={12} /> {item.time}
 											</div>
 										</div>
-										<ChevronRight size={18} className="text-slate-600 group-hover:text-white transition-colors" />
+										<ChevronRight size={18} className="text-slate-600 group-hover:text-slate-900 dark:text-white transition-colors" />
 									</div>
 								))}
 							</div>
@@ -243,8 +239,8 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								<Target className="text-rose-400" size={24} />
 							</div>
 							<div>
-								<h3 className="text-2xl font-bold text-white">Global Intents</h3>
-								<p className="text-sm text-slate-400">Network statistics and activity</p>
+								<h3 className="text-2xl font-bold text-slate-900 dark:text-white">Global Intents</h3>
+								<p className="text-sm text-slate-600 dark:text-slate-400">Network statistics and activity</p>
 							</div>
 						</div>
 
@@ -252,21 +248,21 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 							<Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-900/5 border-emerald-500/20">
 								<CardContent className="p-5">
-									<div className="text-3xl font-bold text-white mb-1">12.5k</div>
+									<div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">12.5k</div>
 									<div className="text-sm text-emerald-300 font-medium flex items-center gap-1.5 mb-2"><Activity size={16} /> Active Nodes</div>
 									<div className="flex items-center gap-1 text-xs text-emerald-400 bg-emerald-900/40 px-2 py-1 rounded w-fit"><TrendingUp size={12} /><span>+12% growth</span></div>
 								</CardContent>
 							</Card>
 							<Card className="bg-gradient-to-br from-indigo-900/20 to-indigo-900/5 border-indigo-500/20">
 								<CardContent className="p-5">
-									<div className="text-3xl font-bold text-white mb-1">148</div>
+									<div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">148</div>
 									<div className="text-sm text-indigo-300 font-medium flex items-center gap-1.5 mb-2"><Globe size={16} /> Countries</div>
 									<div className="text-xs text-indigo-400 bg-indigo-900/40 px-2 py-1 rounded w-fit">8 major cities</div>
 								</CardContent>
 							</Card>
 							<Card className="bg-gradient-to-br from-amber-900/20 to-amber-900/5 border-amber-500/20">
 								<CardContent className="p-5">
-									<div className="text-3xl font-bold text-white mb-1">$2.4M</div>
+									<div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">$2.4M</div>
 									<div className="text-sm text-amber-300 font-medium flex items-center gap-1.5 mb-2"><DollarSign size={16} /> Value Flow</div>
 									<div className="flex items-center gap-1 text-xs text-amber-400 bg-amber-900/40 px-2 py-1 rounded w-fit"><TrendingUp size={12} /><span>+8% volume</span></div>
 								</CardContent>
@@ -276,8 +272,8 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 						{/* List */}
 						<div className="glass-panel p-6 rounded-2xl">
 							<div className="flex justify-between items-center mb-6">
-								<h4 className="text-white font-bold text-lg">Top Active Cities</h4>
-								<span className="text-xs font-medium text-slate-500 bg-slate-800/50 px-2 py-1 rounded">24h</span>
+								<h4 className="text-slate-900 dark:text-white font-bold text-lg">Top Active Cities</h4>
+								<span className="text-xs font-medium text-slate-500 dark:text-slate-500 bg-slate-800/50 px-2 py-1 rounded">24h</span>
 							</div>
 							<div className="space-y-3">
 								{[
@@ -287,18 +283,18 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 									{ city: 'Mumbai', country: 'India', users: 1980, activity: 'High' },
 									{ city: 'Toronto', country: 'Canada', users: 1240, activity: 'Medium' }
 								].map((city, idx) => (
-									<div key={idx} className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 group">
+									<div key={idx} className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:bg-white/5 transition-colors border border-transparent hover:border-slate-200 dark:border-white/5 group">
 										<div className="flex items-center gap-4">
-											<div className="w-8 h-8 rounded-lg bg-slate-800/50 flex items-center justify-center text-xs font-bold text-slate-400 group-hover:text-white group-hover:bg-indigo-500/20 group-hover:text-indigo-300 transition-all">{idx + 1}</div>
+											<div className="w-8 h-8 rounded-lg bg-slate-800/50 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:text-white group-hover:bg-indigo-500/20 group-hover:text-indigo-300 transition-all">{idx + 1}</div>
 											<div>
-												<div className="text-sm font-bold text-white">{city.city}</div>
-												<div className="text-xs text-slate-500">{city.country}</div>
+												<div className="text-sm font-bold text-slate-900 dark:text-white">{city.city}</div>
+												<div className="text-xs text-slate-500 dark:text-slate-500">{city.country}</div>
 											</div>
 										</div>
 										<div className="flex items-center gap-4">
 											<div className="text-right">
 												<div className="text-sm font-bold text-slate-200">{city.users.toLocaleString()}</div>
-												<div className="text-[10px] text-slate-500 uppercase">Users</div>
+												<div className="text-[10px] text-slate-500 dark:text-slate-500 uppercase">Users</div>
 											</div>
 											<div className={`px-2 py-1 rounded text-[10px] font-bold ${city.activity.includes('High') ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
 												{city.activity}
@@ -314,7 +310,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 				{activeInternalTab === 'circles' && (
 					<div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 						<div className="flex justify-between items-center gap-4">
-							<h3 className="text-2xl font-bold text-white">Network Circles</h3>
+							<h3 className="text-2xl font-bold text-slate-900 dark:text-white">Network Circles</h3>
 							<Button size="sm" variant="outline" className="glass-button"><PlusCircle size={16} className="mr-2" /> New Circle</Button>
 						</div>
 
@@ -323,7 +319,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								<div key={circle.id} className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 relative group overflow-hidden">
 									{/* Type Label */}
 									{circle.type === 'custom' && (
-										<div className="absolute top-0 right-0 px-2 py-1 sm:px-3 bg-indigo-600/80 text-[10px] font-bold text-white rounded-bl-xl shadow-lg z-10">
+										<div className="absolute top-0 right-0 px-2 py-1 sm:px-3 bg-indigo-600/80 text-[10px] font-bold text-slate-900 dark:text-white rounded-bl-xl shadow-lg z-10">
 											CUSTOM
 										</div>
 									)}
@@ -335,29 +331,29 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 										{/* Mobile Only: Title next to icon */}
 										<div className="sm:hidden flex-1 min-w-0">
-											<h4 className="text-base font-bold text-white mb-0.5 group-hover:text-indigo-300 transition-colors">{circle.name}</h4>
-											<p className="text-xs text-slate-400 truncate">{circle.desc}</p>
+											<h4 className="text-base font-bold text-slate-900 dark:text-white mb-0.5 group-hover:text-indigo-300 transition-colors">{circle.name}</h4>
+											<p className="text-xs text-slate-600 dark:text-slate-400 truncate">{circle.desc}</p>
 										</div>
 									</div>
 
 									<div className="hidden sm:block flex-1 min-w-0">
-										<h4 className="text-lg font-bold text-white mb-1 group-hover:text-indigo-300 transition-colors">{circle.name}</h4>
-										<p className="text-sm text-slate-400">{circle.desc}</p>
+										<h4 className="text-lg font-bold text-slate-900 dark:text-white mb-1 group-hover:text-indigo-300 transition-colors">{circle.name}</h4>
+										<p className="text-sm text-slate-600 dark:text-slate-400">{circle.desc}</p>
 									</div>
 
-									<div className="w-full sm:w-auto flex justify-between items-center sm:block sm:text-right sm:pl-4 sm:border-l border-white/5">
-										<span className="sm:hidden text-xs font-bold text-slate-500 uppercase">Total Nodes</span>
+									<div className="w-full sm:w-auto flex justify-between items-center sm:block sm:text-right sm:pl-4 sm:border-l border-slate-200 dark:border-white/5">
+										<span className="sm:hidden text-xs font-bold text-slate-500 dark:text-slate-500 uppercase">Total Nodes</span>
 										<div>
-											<div className="text-2xl sm:text-3xl font-bold text-white">{circle.count.toLocaleString()}</div>
-											<div className="hidden sm:block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Nodes</div>
+											<div className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{circle.count.toLocaleString()}</div>
+											<div className="hidden sm:block text-[10px] font-bold text-slate-500 dark:text-slate-500 uppercase tracking-wider">Nodes</div>
 										</div>
 									</div>
 
 									{/* Actions Overlay */}
 									{circle.type === 'custom' && (
 										<div className="absolute right-2 bottom-2 sm:right-4 sm:bottom-4 flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-											<button onClick={(e) => { e.stopPropagation(); openEditCircle(circle); }} className="p-2 bg-slate-800 hover:bg-indigo-600 text-white rounded-lg transition-colors"><Edit2 size={14} /></button>
-											<button onClick={(e) => { e.stopPropagation(); handleDeleteCircle(circle.id); }} className="p-2 bg-slate-800 hover:bg-rose-600 text-white rounded-lg transition-colors"><Trash2 size={14} /></button>
+											<button onClick={(e) => { e.stopPropagation(); openEditCircle(circle); }} className="p-2 bg-slate-800 hover:bg-indigo-600 text-slate-900 dark:text-white rounded-lg transition-colors"><Edit2 size={14} /></button>
+											<button onClick={(e) => { e.stopPropagation(); handleDeleteCircle(circle.id); }} className="p-2 bg-slate-800 hover:bg-rose-600 text-slate-900 dark:text-white rounded-lg transition-colors"><Trash2 size={14} /></button>
 										</div>
 									)}
 								</div>
@@ -385,7 +381,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 						</div>
 
 						<div className="flex justify-between items-center mt-8">
-							<h3 className="text-xl font-bold text-white">L1 Direct Nodes</h3>
+							<h3 className="text-xl font-bold text-slate-900 dark:text-white">L1 Direct Nodes</h3>
 							<Button size="sm" variant="ghost" className="text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20" onClick={() => { setEditingCustomer(null); setShowAddCustomer(true); }}>
 								<PlusCircle size={16} className="mr-2" /> Add Contact
 							</Button>
@@ -396,20 +392,20 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								<div
 									key={cust.id}
 									className={`
-									p-4 flex items-center gap-4 hover:bg-white/5 transition-colors cursor-pointer group
-									${idx !== customers.length - 1 ? 'border-b border-white/5' : ''}
+									p-4 flex items-center gap-4 hover:bg-slate-50 dark:bg-white/5 transition-colors cursor-pointer group
+									${idx !== customers.length - 1 ? 'border-b border-slate-200 dark:border-white/5' : ''}
 								`}
 								>
-									<div className="h-12 w-12 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-lg font-bold text-white shadow-inner">
+									<div className="h-12 w-12 rounded-full bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-center text-lg font-bold text-slate-900 dark:text-white shadow-inner">
 										{cust.name[0]}
 									</div>
 
 									<div className="flex-1 min-w-0">
 										<div className="flex items-center gap-2 mb-1">
-											<span className="font-bold text-white text-base group-hover:text-indigo-300 transition-colors">{cust.name}</span>
+											<span className="font-bold text-slate-900 dark:text-white text-base group-hover:text-indigo-300 transition-colors">{cust.name}</span>
 											{cust.isFavorite && <Heart size={12} className="text-rose-500 fill-rose-500" />}
 										</div>
-										<div className="flex items-center gap-3 text-xs text-slate-400">
+										<div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
 											{cust.phones && cust.phones[0] && (
 												<span className="flex items-center gap-1"><Phone size={10} /> {cust.phones[0].value}</span>
 											)}
@@ -419,14 +415,14 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 									<div className="flex items-center gap-2">
 										{cust.tags && cust.tags.slice(0, 2).map((tag: string, i: number) => (
-											<span key={i} className="text-[10px] px-2 py-0.5 rounded border border-white/10 bg-white/5 text-slate-300 font-medium">
+											<span key={i} className="text-[10px] px-2 py-0.5 rounded border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-300 font-medium">
 												{tag}
 											</span>
 										))}
-										<Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-white" onClick={(e) => { e.stopPropagation(); setEditingCustomer(cust); setShowAddCustomer(true); }}>
+										<Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:text-white" onClick={(e) => { e.stopPropagation(); setEditingCustomer(cust); setShowAddCustomer(true); }}>
 											<Edit2 size={16} />
 										</Button>
-										<Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-white" onClick={(e) => toggleFavorite(e, cust.id)}>
+										<Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:text-white" onClick={(e) => toggleFavorite(e, cust.id)}>
 											<Heart size={16} className={cust.isFavorite ? "fill-rose-500 text-rose-500" : ""} />
 										</Button>
 									</div>
@@ -438,11 +434,11 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 				{activeInternalTab === 'calendar' && (
 					<div className="flex flex-col items-center justify-center py-20 animate-in fade-in">
-						<div className="h-24 w-24 rounded-full bg-slate-900/50 flex items-center justify-center mb-6 border border-white/5">
+						<div className="h-24 w-24 rounded-full bg-white/50 dark:bg-slate-900/50 flex items-center justify-center mb-6 border border-slate-200 dark:border-white/5">
 							<CalendarDays size={48} className="text-slate-600" />
 						</div>
-						<h3 className="text-xl font-bold text-white mb-2">Calendar</h3>
-						<p className="text-slate-500">Upcoming appointments feature coming soon.</p>
+						<h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Calendar</h3>
+						<p className="text-slate-500 dark:text-slate-500">Upcoming appointments feature coming soon.</p>
 					</div>
 				)}
 
@@ -482,12 +478,12 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 						</div>
 
 						<div className="glass-panel p-6 rounded-2xl">
-							<div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
-								<h3 className="text-lg font-bold text-white flex items-center gap-2">
+							<div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200 dark:border-white/5">
+								<h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
 									{campaignMode === 'retention' ? <Zap className="text-emerald-400" /> : <Target className="text-indigo-400" />}
 									{campaignMode === 'retention' ? 'Direct Blast' : 'Targeted Signal'}
 								</h3>
-								<span className="text-xs font-bold text-slate-500 uppercase">{campaignMode === 'retention' ? 'L1 Only' : 'L2/L3 Reach'}</span>
+								<span className="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase">{campaignMode === 'retention' ? 'L1 Only' : 'L2/L3 Reach'}</span>
 							</div>
 
 							{campaignMode === 'retention' ? (
@@ -501,7 +497,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 							) : (
 								<div className="space-y-6 mb-6">
 									<div>
-										<label className="text-xs font-bold text-slate-400 uppercase mb-3 block">Target Circles</label>
+										<label className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-3 block">Target Circles</label>
 										<div className="grid gap-3 max-h-60 overflow-y-auto pr-2">
 											{circles.map(c => {
 												const isSelected = selectedMarketingCircles.includes(c.id);
@@ -511,7 +507,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 														onClick={() => toggleMarketingCircle(c.id)}
 														className={`
 														p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-all
-														${isSelected ? `bg-${c.color}-900/30 border-${c.color}-500/50` : 'bg-white/5 border-white/5 hover:bg-white/10'}
+														${isSelected ? `bg-${c.color}-900/30 border-${c.color}-500/50` : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:bg-slate-100 dark:bg-white/10'}
 													`}
 													>
 														<div className="flex items-center gap-3">
@@ -519,8 +515,8 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 																{c.type === 'system' ? <Layers size={18} /> : <Circle size={18} />}
 															</div>
 															<div>
-																<div className="text-sm font-bold text-white">{c.name}</div>
-																<div className="text-xs text-slate-500">{c.count.toLocaleString()} Nodes</div>
+																<div className="text-sm font-bold text-slate-900 dark:text-white">{c.name}</div>
+																<div className="text-xs text-slate-500 dark:text-slate-500">{c.count.toLocaleString()} Nodes</div>
 															</div>
 														</div>
 														{isSelected && <CheckCircle2 size={18} className={`text-${c.color}-400`} />}
@@ -532,25 +528,25 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								</div>
 							)}
 
-							<div className="space-y-3 pt-6 border-t border-white/5">
-								<label className="text-xs font-bold text-slate-400 uppercase">Message Payload</label>
+							<div className="space-y-3 pt-6 border-t border-slate-200 dark:border-white/5">
+								<label className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase">Message Payload</label>
 								<textarea
-									className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white placeholder:text-slate-600 text-sm focus:outline-none focus:border-indigo-500 transition-colors resize-none h-32"
+									className="w-full bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-xl p-4 text-slate-900 dark:text-white placeholder:text-slate-600 text-sm focus:outline-none focus:border-indigo-500 transition-colors resize-none h-32"
 									placeholder={campaignMode === 'retention' ? "Write your update here..." : "Describe your offer..."}
 									value={messagePayload}
 									onChange={(e) => setMessagePayload(e.target.value)}
 								/>
 							</div>
 
-							<div className="mt-6 flex items-center justify-between bg-black/40 rounded-xl p-4 border border-white/10">
+							<div className="mt-6 flex items-center justify-between bg-slate-100 dark:bg-black/40 rounded-xl p-4 border border-slate-200 dark:border-white/10">
 								<div>
-									<div className="text-[10px] font-bold text-slate-500 uppercase">Est. Reach</div>
-									<div className="text-xl font-mono font-bold text-white flex items-center gap-2">
+									<div className="text-[10px] font-bold text-slate-500 dark:text-slate-500 uppercase">Est. Reach</div>
+									<div className="text-xl font-mono font-bold text-slate-900 dark:text-white flex items-center gap-2">
 										{getTotalReach()} <Users size={16} className="text-slate-600" />
 									</div>
 								</div>
 								<div className="text-right">
-									<div className="text-[10px] font-bold text-slate-500 uppercase">Total Cost</div>
+									<div className="text-[10px] font-bold text-slate-500 dark:text-slate-500 uppercase">Total Cost</div>
 									<div className={`text-2xl font-mono font-bold ${campaignMode === 'retention' ? 'text-emerald-400' : 'text-indigo-400'}`}>
 										{getTotalPrice()}
 									</div>

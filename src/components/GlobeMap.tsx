@@ -189,11 +189,11 @@ const INITIAL_INTENTS: Intent[] = [
 
 const Badge = ({ children, color }: { children: React.ReactNode, color: string }) => {
   const colors: Record<string, string> = {
-    blue: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-    green: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
-    amber: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
-    rose: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
-    gray: 'bg-white/5 text-slate-400 border-white/10',
+    blue: 'bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-300 border-blue-200 dark:border-blue-500/20',
+    green: 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/20',
+    amber: 'bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300 border-amber-200 dark:border-amber-500/20',
+    rose: 'bg-rose-100 dark:bg-rose-500/10 text-rose-600 dark:text-rose-300 border-rose-200 dark:border-rose-500/20',
+    gray: 'bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/10',
   };
   return (
     <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${colors[color] || colors.gray} backdrop-blur-sm`}>
@@ -226,14 +226,14 @@ const IntentCard = ({ intent, onSelect }: { intent: Intent; onSelect: (intent: I
             {isIncomingL1 && profileImage ? (
               <img src={profileImage} alt={intent.avatar} className="w-10 h-10 rounded-xl object-cover ring-1 ring-white/10" />
             ) : (
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-inner ${isL1 ? 'bg-gradient-to-br from-indigo-500 to-purple-600' : 'bg-slate-800 text-slate-400'}`}>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-inner ${isL1 ? 'bg-gradient-to-br from-indigo-500 to-purple-600' : 'bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                 {displayAvatar}
               </div>
             )}
 
             <div>
               <div className="flex items-center gap-2">
-                <h3 className={`font-semibold text-sm ${!isL1 ? 'text-slate-400 font-mono' : 'text-slate-100'}`}>
+                <h3 className={`font-semibold text-sm ${!isL1 ? 'text-slate-500 dark:text-slate-400 font-mono' : 'text-slate-900 dark:text-slate-100'}`}>
                   {displayName}
                 </h3>
                 {intent.level === 'L1' && <Badge color="green">L1</Badge>}
@@ -242,29 +242,29 @@ const IntentCard = ({ intent, onSelect }: { intent: Intent; onSelect: (intent: I
               </div>
 
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
+                <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-500 flex items-center gap-1">
                   <TypeIcon size={10} /> {intent.type}
                 </span>
                 {!isL1 && (
-                  <span className="text-[10px] text-slate-600 flex items-center">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-600 flex items-center">
                     <Lock size={10} className="mr-0.5" /> Hidden
                   </span>
                 )}
               </div>
             </div>
           </div>
-          <span className="text-xs text-slate-500 font-medium">{intent.timestamp}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-500 font-medium">{intent.timestamp}</span>
         </div>
 
         <div className="flex flex-wrap gap-1.5 mb-3">
           {intent.tags.map((tag, i) => (
-            <span key={i} className="text-[10px] font-medium text-cyan-300/80 bg-cyan-900/10 px-2 py-0.5 rounded border border-cyan-500/10">
+            <span key={i} className="text-[10px] font-medium text-cyan-600 dark:text-cyan-300/80 bg-cyan-100 dark:bg-cyan-900/10 px-2 py-0.5 rounded border border-cyan-200 dark:border-cyan-500/10">
               {tag}
             </span>
           ))}
         </div>
 
-        <div className="text-slate-300 text-sm leading-relaxed line-clamp-2">
+        <div className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed line-clamp-2">
           {intent.context}
         </div>
       </div>
@@ -280,9 +280,9 @@ const GlassModal = ({ isOpen, onClose, title, children }: { isOpen: boolean, onC
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
       <div className="glass-panel w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl relative animate-in zoom-in-95 duration-200">
-        <div className="p-5 border-b border-white/5 flex justify-between items-center sticky top-0 bg-slate-900/50 backdrop-blur-xl z-10">
-          <h2 className="text-lg font-bold text-white tracking-tight">{title}</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors p-1 hover:bg-white/5 rounded-lg">
+        <div className="p-5 border-b border-slate-200 dark:border-white/5 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900/50 backdrop-blur-xl z-10">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">{title}</h2>
+          <button onClick={onClose} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -309,7 +309,7 @@ const ShareIntentModal = ({ isOpen, onClose, intent }: { isOpen: boolean; onClos
       <div className="mb-6">
         <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Direct Link</label>
         <div className="flex gap-2">
-          <input readOnly value={shareLink} className="flex-1 bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm text-slate-400 focus:outline-none" />
+          <input readOnly value={shareLink} className="flex-1 bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-slate-500 dark:text-slate-400 focus:outline-none" />
           <Button size="icon" variant="secondary" onClick={handleCopy}><Copy size={16} /></Button>
         </div>
       </div>
@@ -340,8 +340,8 @@ const CompletionModal = ({ isOpen, onClose, intentId, onCompleteAction }: { isOp
         <div>
           <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Outcome</label>
           <div className="flex gap-3">
-            <button type="button" onClick={() => setStatus('complete')} className={`flex-1 py-3 rounded-xl border font-bold text-sm transition-all ${status === 'complete' ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300' : 'border-white/10 text-slate-400 hover:border-white/20'}`}>Success</button>
-            <button type="button" onClick={() => setStatus('incomplete')} className={`flex-1 py-3 rounded-xl border font-bold text-sm transition-all ${status === 'incomplete' ? 'bg-rose-500/20 border-rose-500 text-rose-300' : 'border-white/10 text-slate-400 hover:border-white/20'}`}>Incomplete</button>
+            <button type="button" onClick={() => setStatus('complete')} className={`flex-1 py-3 rounded-xl border font-bold text-sm transition-all ${status === 'complete' ? 'bg-emerald-100 dark:bg-emerald-500/20 border-emerald-500 text-emerald-600 dark:text-emerald-300' : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-white/20'}`}>Success</button>
+            <button type="button" onClick={() => setStatus('incomplete')} className={`flex-1 py-3 rounded-xl border font-bold text-sm transition-all ${status === 'incomplete' ? 'bg-rose-100 dark:bg-rose-500/20 border-rose-500 text-rose-600 dark:text-rose-300' : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-white/20'}`}>Incomplete</button>
           </div>
         </div>
 
@@ -357,7 +357,7 @@ const CompletionModal = ({ isOpen, onClose, intentId, onCompleteAction }: { isOp
         {status === 'incomplete' && (
           <div>
             <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Reason</label>
-            <select value={reason} onChange={e => setReason(e.target.value)} className="w-full bg-black/30 border border-white/10 rounded-lg p-2 text-slate-300 text-sm outline-none">
+            <select value={reason} onChange={e => setReason(e.target.value)} className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-slate-700 dark:text-slate-300 text-sm outline-none">
               <option value="">Select Reason...</option>
               <option value="ghosted">No Show / Ghosted</option>
               <option value="cancelled">Cancelled</option>
@@ -367,7 +367,7 @@ const CompletionModal = ({ isOpen, onClose, intentId, onCompleteAction }: { isOp
 
         <div>
           <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Comments</label>
-          <textarea value={comment} onChange={e => setComment(e.target.value)} rows={3} className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-slate-300 text-sm outline-none resize-none" placeholder="Optional feedback..." />
+          <textarea value={comment} onChange={e => setComment(e.target.value)} rows={3} className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-slate-700 dark:text-slate-300 text-sm outline-none resize-none" placeholder="Optional feedback..." />
         </div>
 
         <Button type="submit" className="w-full" variant={status === 'complete' ? 'default' : 'destructive'}>Confirm Status</Button>
@@ -398,12 +398,12 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
   });
 
   return (
-    <div className="h-full flex flex-col font-sans text-slate-200">
+    <div className="h-full flex flex-col font-sans text-slate-700 dark:text-slate-200">
 
       {/* Header if needed (usually handled by App layout) */}
       {showHeader && (
-        <div className="h-16 border-b border-white/5 flex items-center px-6 bg-slate-900/50 backdrop-blur-xl shrink-0">
-          <span className="font-bold text-lg text-white tracking-tight">GIGMIND • INTENTS</span>
+        <div className="h-16 border-b border-slate-200 dark:border-white/5 flex items-center px-6 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl shrink-0">
+          <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight">GIGMIND • INTENTS</span>
         </div>
       )}
 
@@ -412,7 +412,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
         <div className="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-6 pb-24 md:pb-6">
 
           {/* Control Bar */}
-          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 pb-2 pt-0 md:pt-0 bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
+          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 pb-2 pt-0 md:pt-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
             <div className="glass-panel p-1 rounded-xl flex shrink-0">
               <button onClick={() => setActiveTab('incoming')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'incoming' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>Feed</button>
               <button onClick={() => setActiveTab('mine')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'mine' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>My Signals</button>
@@ -425,7 +425,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
                 placeholder="Search intents..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none text-sm text-white w-full placeholder:text-slate-600"
+                className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full placeholder:text-slate-500 dark:placeholder:text-slate-600"
               />
             </div>
           </div>
@@ -442,7 +442,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
                 key={f.id}
                 onClick={() => setFilterType(f.id)}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider transition-all
-                            ${filterType === f.id ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-white/5 border-white/10 text-slate-500 hover:border-white/20'}
+                            ${filterType === f.id ? 'bg-indigo-100 dark:bg-indigo-500/20 border-indigo-500 text-indigo-600 dark:text-indigo-300' : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-500 hover:border-slate-300 dark:hover:border-white/20'}
                         `}
               >
                 <f.icon size={12} /> {f.label}
@@ -459,7 +459,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
 
           {filteredIntents.length === 0 && (
             <div className="text-center py-20 opacity-50">
-              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
+              <div className="w-16 h-16 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 dark:border-white/10">
                 <Search size={32} className="text-slate-600" />
               </div>
               <p>No signals found matching your criteria.</p>
@@ -471,7 +471,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
       {/* Details View */}
       {view === 'details' && selectedIntent && (
         <div className="h-full flex flex-col animate-in slide-in-from-right duration-300">
-          <div className="p-4 border-b border-white/5 flex items-center gap-4 bg-slate-900/50 backdrop-blur-xl sticky top-0 z-10">
+          <div className="p-4 border-b border-slate-200 dark:border-white/5 flex items-center gap-4 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl sticky top-0 z-10">
             <Button variant="ghost" size="icon" onClick={() => setView('dashboard')} className="rounded-full h-10 w-10"><ArrowLeft /></Button>
           </div>
           <div className="flex-1 overflow-y-auto p-4 md:p-6 max-w-3xl mx-auto w-full">
@@ -481,7 +481,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
                 {selectedIntent.user === 'You' ? 'ME' : (selectedIntent.level === 'L1' ? selectedIntent.avatar : <Lock />)}
               </div>
               <div className="flex-1 min-w-0">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 break-words">{selectedIntent.level === 'L1' || selectedIntent.user === 'You' ? selectedIntent.user : 'Anonymous Node'}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 break-words">{selectedIntent.level === 'L1' || selectedIntent.user === 'You' ? selectedIntent.user : 'Anonymous Node'}</h1>
                 <div className="flex flex-wrap gap-2">
                   <Badge color="blue">{selectedIntent.type}</Badge>
                   <Badge color={selectedIntent.level === 'L1' ? 'green' : selectedIntent.level === 'L2' ? 'amber' : 'rose'}>{selectedIntent.level}</Badge>
@@ -493,9 +493,9 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
             <div className="glass-panel p-6 rounded-2xl mb-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-5"><Signal size={120} /></div>
               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Signal Context</h3>
-              <p className="text-lg text-slate-200 leading-relaxed font-medium relative z-10">"{selectedIntent.context}"</p>
+              <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed font-medium relative z-10">"{selectedIntent.context}"</p>
               <div className="mt-6 flex flex-wrap gap-2 relative z-10">
-                {selectedIntent.tags.map(t => <span key={t} className="px-3 py-1 rounded-lg bg-black/30 border border-white/10 text-sm text-cyan-400 font-mono">{t}</span>)}
+                {selectedIntent.tags.map(t => <span key={t} className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 text-sm text-cyan-600 dark:text-cyan-400 font-mono">{t}</span>)}
               </div>
             </div>
 

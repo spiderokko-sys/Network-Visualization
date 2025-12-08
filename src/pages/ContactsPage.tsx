@@ -106,7 +106,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
     const ContactCard = ({ contact }: { contact: Contact }) => (
         <div
             onClick={() => { setSelectedContact(contact); setIsEditing(false); }}
-            className="group relative flex flex-col p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-indigo-500/30 hover:bg-white/10 transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-sm"
+            className="group relative flex flex-col p-5 rounded-2xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-sm"
         >
             {/* Hover Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-indigo-500/0 to-indigo-500/5 group-hover:via-indigo-500/5 group-hover:to-indigo-500/10 transition-all duration-500" />
@@ -114,12 +114,12 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
             <div className="flex items-start justify-between relative z-10 mb-4">
                 <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-400 to-cyan-400 p-[2px]">
-                        <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center text-lg font-bold text-white">
+                        <div className="h-full w-full rounded-full bg-slate-800 dark:bg-slate-900 flex items-center justify-center text-lg font-bold text-white">
                             {contact.name.charAt(0)}
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-base font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors">{contact.name}</h3>
+                        <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">{contact.name}</h3>
                         <p className="text-xs text-slate-400 flex items-center gap-1">
                             {contact.status === 'L1' ? <Star size={10} className="text-amber-400 fill-amber-400" /> : null}
                             {contact.status} Member
@@ -144,12 +144,12 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
 
             <div className="flex items-center gap-2 relative z-10 mt-auto">
                 {contact.tags.slice(0, 2).map(tag => (
-                    <span key={tag} className="px-2 py-1 rounded-md bg-white/5 text-[10px] uppercase font-medium tracking-wider text-slate-400 border border-white/5">
+                    <span key={tag} className="px-2 py-1 rounded-md bg-slate-200 dark:bg-white/5 text-[10px] uppercase font-medium tracking-wider text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-white/5">
                         {tag}
                     </span>
                 ))}
                 {contact.tags.length > 2 && (
-                    <span className="px-2 py-1 rounded-md bg-white/5 text-[10px] text-slate-400 border border-white/5">
+                    <span className="px-2 py-1 rounded-md bg-slate-200 dark:bg-white/5 text-[10px] text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-white/5">
                         +{contact.tags.length - 2}
                     </span>
                 )}
@@ -164,22 +164,22 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
     );
 
     return (
-        <div className="h-full w-full flex flex-col bg-slate-950 relative overflow-hidden">
+        <div className="h-full w-full flex flex-col bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
 
             {/* Top Bar */}
-            <div className="h-20 px-6 border-b border-white/5 flex items-center justify-between shrink-0 bg-slate-950/50 backdrop-blur-xl z-20">
+            <div className="h-20 px-6 border-b border-slate-200 dark:border-white/5 flex items-center justify-between shrink-0 bg-white/80 dark:bg-slate-950/50 backdrop-blur-xl z-20">
                 <div className="flex items-center gap-4">
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">Contacts</h2>
-                    <div className="hidden sm:flex items-center gap-1 p-1 rounded-lg bg-white/5 border border-white/5">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">Contacts</h2>
+                    <div className="hidden sm:flex items-center gap-1 p-1 rounded-lg bg-slate-200 dark:bg-white/5 border border-slate-200 dark:border-white/5">
                         <button
                             onClick={() => setFilterType('all')}
-                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'all' ? 'bg-indigo-500/20 text-indigo-300 shadow-sm' : 'text-slate-400 hover:text-white'}`}
+                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'all' ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                         >
                             All
                         </button>
                         <button
                             onClick={() => setFilterType('favorites')}
-                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'favorites' ? 'bg-amber-500/20 text-amber-300 shadow-sm' : 'text-slate-400 hover:text-white'}`}
+                            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filterType === 'favorites' ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                         >
                             Favorites
                         </button>
@@ -194,7 +194,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                             placeholder="Search contacts..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-64 bg-slate-900 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all placeholder:text-slate-600"
+                            className="w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600"
                         />
                     </div>
                     <button
@@ -227,7 +227,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
 
                 {/* Detail/Edit Slide-over */}
                 <div className={`
-            fixed inset-y-0 right-0 w-full md:w-[450px] bg-slate-900/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-30
+            fixed inset-y-0 right-0 w-full md:w-[450px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border-l border-slate-200 dark:border-white/10 shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-30
             ${(selectedContact || isEditing) ? 'translate-x-0' : 'translate-x-full'}
          `}>
                     {isEditing ? (
@@ -250,7 +250,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
 
                             {/* Profile Info */}
                             <div className="px-8 -mt-12 mb-6">
-                                <div className="h-24 w-24 rounded-2xl bg-slate-900 p-1 shadow-xl ring-1 ring-white/10">
+                                <div className="h-24 w-24 rounded-2xl bg-white dark:bg-slate-900 p-1 shadow-xl ring-1 ring-slate-200 dark:ring-white/10">
                                     <div className="h-full w-full rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-3xl font-bold text-white shadow-inner">
                                         {selectedContact.name.charAt(0)}
                                     </div>
@@ -258,12 +258,12 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
 
                                 <div className="mt-4 flex justify-between items-start">
                                     <div>
-                                        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                             {selectedContact.name}
                                             {selectedContact.isFavorite && <Star size={20} className="text-amber-400 fill-amber-400" />}
                                         </h2>
                                         <div className="flex items-center gap-2 mt-1 text-slate-400">
-                                            <span className="px-2 py-0.5 rounded text-xs bg-white/5 border border-white/5 text-slate-300">
+                                            <span className="px-2 py-0.5 rounded text-xs bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/5 text-slate-600 dark:text-slate-300">
                                                 {selectedContact.status}
                                             </span>
                                             <span className="text-sm">Member since {selectedContact.memberSince}</span>
@@ -314,14 +314,14 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                                 <Section title="Tags">
                                     <div className="flex flex-wrap gap-2">
                                         {selectedContact.tags.map(tag => (
-                                            <span key={tag} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 text-sm text-slate-300 border border-white/5">
+                                            <span key={tag} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/5">
                                                 <Hash size={12} className="text-slate-500" />
                                                 {tag}
                                             </span>
                                         ))}
                                         <button
                                             onClick={() => setIsEditing(true)}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/50 hover:bg-slate-800 text-sm text-slate-400 border border-white/5 border-dashed transition-colors"
+                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 text-sm text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/5 border-dashed transition-colors"
                                         >
                                             <Plus size={14} /> Add
                                         </button>
@@ -362,10 +362,10 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
 // Sub-components
 const ActionButton = ({ icon: Icon, label, color }: any) => {
     const colorStyles: any = {
-        emerald: "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20",
-        indigo: "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20",
-        blue: "bg-blue-500/10 text-blue-400 hover:bg-blue-500/20",
-        pink: "bg-pink-500/10 text-pink-400 hover:bg-pink-500/20",
+        emerald: "bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-500/20",
+        indigo: "bg-indigo-100 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-500/20",
+        blue: "bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-500/20",
+        pink: "bg-pink-100 dark:bg-pink-500/10 text-pink-700 dark:text-pink-400 hover:bg-pink-200 dark:hover:bg-pink-500/20",
     };
 
     return (
@@ -390,12 +390,12 @@ const Section = ({ title, children }: any) => (
 );
 
 const InfoRow = ({ icon: Icon, label, value, sub }: any) => (
-    <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors group">
-        <div className="h-10 w-10 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-slate-200 transition-colors">
+    <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors group">
+        <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
             <Icon size={20} />
         </div>
         <div>
-            <div className="text-sm text-slate-200 font-medium">{value}</div>
+            <div className="text-sm text-slate-800 dark:text-slate-200 font-medium">{value}</div>
             <div className="text-xs text-slate-500 flex items-center gap-1">{label} • {sub}</div>
         </div>
         <button className="ml-auto opacity-0 group-hover:opacity-100 p-2 text-slate-400 hover:text-white transition-all">

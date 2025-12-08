@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     User,
@@ -11,9 +11,12 @@ import {
     ChevronLeft,
     Radar,
     LayoutDashboard,
-    Layers
+    Layers,
+    Sun,
+    Moon
 } from 'lucide-react';
 import { ExploreMenu } from '../components/ExploreMenu';
+import { useTheme } from '../components/ThemeProvider';
 
 const SidebarItem = ({ icon: Icon, label, isActive, onClick, collapsed }: any) => (
     <button
@@ -38,6 +41,7 @@ export default function MainLayout() {
     const [showExploreMenu, setShowExploreMenu] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    const { theme, toggleTheme } = useTheme();
 
     const isActive = (path: string) => {
         if (path === '/' && location.pathname === '/') return true;
@@ -51,10 +55,8 @@ export default function MainLayout() {
         return path.charAt(0).toUpperCase() + path.slice(1).replace('_', ' ');
     };
 
-    const isChatOpen = location.pathname.includes('/chats') && location.search.includes('id'); // Simplified check
-
     return (
-        <div className="bg-slate-950 h-screen text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden flex relative">
+        <div className="bg-slate-50 dark:bg-slate-950 h-screen text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden flex relative transition-colors duration-300">
 
             {/* Persistent Ambient Background */}
             <div className="fixed inset-0 z-0 pointer-events-none">
@@ -65,7 +67,7 @@ export default function MainLayout() {
             {/* Sidebar - Desktop */}
             <aside
                 className={`
-                    hidden md:flex flex-col z-20 border-r border-white/5 bg-slate-950/30 backdrop-blur-md transition-all duration-300
+                    hidden md:flex flex-col z-20 border-r border-slate-200 dark:border-white/5 bg-white/50 dark:bg-slate-950/30 backdrop-blur-md transition-all duration-300
                     ${sidebarCollapsed ? 'w-20' : 'w-64'}
                 `}
             >
@@ -95,8 +97,8 @@ export default function MainLayout() {
                     <SidebarItem
                         icon={LayoutDashboard}
                         label="Dashboard"
-                        isActive={isActive('/')}
-                        onClick={() => navigate('/')}
+                        isActive={isActive('/profile')}
+                        onClick={() => navigate('/profile')}
                         collapsed={sidebarCollapsed}
                     />
                     <SidebarItem
@@ -165,7 +167,7 @@ export default function MainLayout() {
             <main className="flex-1 relative z-10 flex flex-col h-full overflow-hidden">
 
                 {/* Top Bar (Mobile + Desktop Context) */}
-                <header className="h-16 md:h-20 px-4 md:px-6 flex items-center justify-between border-b border-white/5 bg-slate-950/20 backdrop-blur-sm shrink-0">
+                <header className="h-16 md:h-20 px-4 md:px-6 flex items-center justify-between border-b border-slate-200 dark:border-white/5 bg-white/50 dark:bg-slate-950/20 backdrop-blur-sm shrink-0 transition-colors duration-300">
 
                     {/* Mobile Menu Toggle (Visible only on mobile) */}
                     <div
@@ -180,7 +182,7 @@ export default function MainLayout() {
 
                     {/* Context Title / Breadcrumbs */}
                     <div className="hidden md:block">
-                        <h1 className="text-xl font-semibold text-white capitalize">{getTitle()}</h1>
+                        <h1 className="text-xl font-semibold text-slate-800 dark:text-white capitalize transition-colors duration-300">{getTitle()}</h1>
                     </div>
 
                     {/* Right Actions */}
@@ -194,9 +196,16 @@ export default function MainLayout() {
                             <span className="ml-2 text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-slate-400">⌘K</span>
                         </button>
 
-                        <button className="relative p-2 text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5 active:scale-95">
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-full hover:bg-slate-200/50 dark:hover:bg-white/5 active:scale-95"
+                        >
+                            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                        </button>
+
+                        <button className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-full hover:bg-slate-200/50 dark:hover:bg-white/5 active:scale-95">
                             <Bell size={20} />
-                            <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-slate-950 shadow-[0_0_8px_#f43f5e]"></span>
+                            <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-slate-50 dark:border-slate-950 shadow-[0_0_8px_#f43f5e]"></span>
                         </button>
 
                         <div
@@ -217,39 +226,39 @@ export default function MainLayout() {
                 </div>
 
                 {/* Mobile Navigation Bar */}
-                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-xl border-t border-white/10 z-50 flex items-center justify-around pb-safe pt-2">
+                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-200 dark:border-white/10 z-50 flex items-center justify-around pb-safe pt-2 transition-colors duration-300">
 
                     <button
                         onClick={() => navigate('/chats')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/chats') ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/chats') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
                     >
                         <MessageSquare size={20} />
                         <span className="text-[10px] font-medium mt-1">Chats</span>
                     </button>
                     <button
                         onClick={() => navigate('/channels')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/channels') ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/channels') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
                     >
                         <List size={20} />
                         <span className="text-[10px] font-medium mt-1">Channels</span>
                     </button>
                     <button
                         onClick={() => navigate('/circles')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/circles') ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/circles') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
                     >
                         <Layers size={20} />
                         <span className="text-[10px] font-medium mt-1">Circles</span>
                     </button>
                     <button
                         onClick={() => navigate('/calls')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/calls') ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/calls') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
                     >
                         <Phone size={20} />
                         <span className="text-[10px] font-medium mt-1">Calls</span>
                     </button>
                     <button
                         onClick={() => setShowExploreMenu(true)}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${showExploreMenu ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${showExploreMenu ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
                     >
                         <Search size={20} />
                         <span className="text-[10px] font-medium mt-1">Explore</span>

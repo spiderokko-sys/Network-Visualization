@@ -297,7 +297,7 @@ export const EventsScreen = () => {
     });
 
     return (
-        <div className="h-full overflow-y-auto no-scrollbar">
+        <div className="h-full overflow-y-auto no-scrollbar bg-slate-50 dark:bg-slate-950">
             <div className="p-4 md:p-6 space-y-6 pb-28 max-w-7xl mx-auto animate-in fade-in duration-500">
 
                 {/* Header / Nav */}
@@ -305,8 +305,8 @@ export const EventsScreen = () => {
                     <div className="space-y-6">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4">
                             <div>
-                                <h3 className="text-3xl font-bold text-white tracking-tight">Events & Gatherings</h3>
-                                <p className="text-slate-400 mt-1">Manage upcoming events and target specific network segments.</p>
+                                <h3 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Events & Gatherings</h3>
+                                <p className="text-slate-500 dark:text-slate-400 mt-1">Manage upcoming events and target specific network segments.</p>
                             </div>
                             <Button onClick={handleOpenCreateEvent} className="glass-button-primary bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20">
                                 <PlusCircle size={18} className="mr-2" /> Create Event
@@ -314,7 +314,7 @@ export const EventsScreen = () => {
                         </div>
 
                         {/* Filter Bar */}
-                        <div className="glass-panel p-3 rounded-2xl flex flex-col lg:flex-row gap-3 border border-white/5 bg-white/[0.02]">
+                        <div className="glass-panel p-3 rounded-2xl flex flex-col lg:flex-row gap-3 border border-slate-200 dark:border-white/5 bg-white dark:bg-white/[0.02]">
                             <div className="flex-1 relative group">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={18} />
                                 <input
@@ -322,14 +322,14 @@ export const EventsScreen = () => {
                                     placeholder="Search events..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-slate-500"
+                                    className="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl py-2.5 pl-10 pr-4 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-slate-500"
                                 />
                             </div>
 
                             <div className="flex gap-2 overflow-x-auto no-scrollbar">
                                 <div className="relative min-w-[140px]">
                                     <select
-                                        className="w-full appearance-none bg-white/5 border border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-white/10"
+                                        className="w-full appearance-none bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-slate-200 dark:hover:bg-white/10"
                                         value={filterType}
                                         onChange={(e) => setFilterType(e.target.value)}
                                     >
@@ -341,7 +341,7 @@ export const EventsScreen = () => {
 
                                 <div className="relative min-w-[140px]">
                                     <select
-                                        className="w-full appearance-none bg-white/5 border border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-white/10"
+                                        className="w-full appearance-none bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-slate-200 dark:hover:bg-white/10"
                                         value={filterRadius}
                                         onChange={(e) => setFilterRadius(e.target.value)}
                                     >
@@ -354,7 +354,7 @@ export const EventsScreen = () => {
 
                                 <div className="relative min-w-[140px]">
                                     <select
-                                        className="w-full appearance-none bg-white/5 border border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-white/10"
+                                        className="w-full appearance-none bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-slate-200 dark:hover:bg-white/10"
                                         value={filterCircle}
                                         onChange={(e) => setFilterCircle(e.target.value)}
                                     >
@@ -369,7 +369,7 @@ export const EventsScreen = () => {
                                         type="date"
                                         value={filterDate}
                                         onChange={(e) => setFilterDate(e.target.value)}
-                                        className="w-full appearance-none bg-white/5 border border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-white/10 min-h-[42px]"
+                                        className="w-full appearance-none bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-slate-200 dark:hover:bg-white/10 min-h-[42px]"
                                     />
                                     <CalendarDays size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                                 </div>
@@ -387,7 +387,7 @@ export const EventsScreen = () => {
                             <ChevronLeft size={20} /> Back to Events
                         </button>
 
-                        <div className="glass-panel overflow-hidden rounded-3xl border border-white/5">
+                        <div className="glass-panel overflow-hidden rounded-3xl border border-slate-200 dark:border-white/5">
                             {/* Hero Image */}
                             <div className="h-64 md:h-80 w-full relative">
                                 <img
@@ -420,7 +420,7 @@ export const EventsScreen = () => {
                             </div>
 
                             {/* Action Bar */}
-                            <div className="flex items-center justify-between p-4 px-6 border-b border-white/5 bg-white/5 backdrop-blur-md">
+                            <div className="flex items-center justify-between p-4 px-6 border-b border-slate-200 dark:border-white/5 bg-white/50 dark:bg-white/5 backdrop-blur-md">
                                 <div className="flex items-center gap-2">
                                     <Button
                                         onClick={(e) => toggleInterest(e, selectedEvent.id)}
@@ -438,10 +438,10 @@ export const EventsScreen = () => {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    <Button className="glass-button hover:bg-white/10 text-slate-300">
+                                    <Button className="glass-button hover:bg-slate-100 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                                         <Share2 size={18} className="mr-2" /> Invite / Promote
                                     </Button>
-                                    <Button onClick={() => handleOpenEditEvent(selectedEvent)} className="glass-button hover:bg-white/10 text-slate-300">
+                                    <Button onClick={() => handleOpenEditEvent(selectedEvent)} className="glass-button hover:bg-slate-100 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                                         <Edit2 size={18} className="mr-2" /> Edit
                                     </Button>
                                 </div>
@@ -452,30 +452,30 @@ export const EventsScreen = () => {
                                 {/* Left: Content & Updates */}
                                 <div className="lg:col-span-2 p-6 md:p-8 space-y-8">
                                     <div className="space-y-4">
-                                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                             About Event
                                         </h3>
-                                        <p className="text-slate-300 leading-relaxed text-lg">
+                                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
                                             {selectedEvent.description}
                                         </p>
                                     </div>
 
                                     {/* Updates Section */}
-                                    <div className="space-y-6 pt-6 border-t border-white/5">
-                                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                    <div className="space-y-6 pt-6 border-t border-slate-200 dark:border-white/5">
+                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                             <MessageSquare size={20} className="text-emerald-400" />
                                             Updates & Announcements
                                         </h3>
 
                                         {/* Post Update Input */}
-                                        <div className="bg-white/5 rounded-xl p-4 border border-white/5 flex gap-3 focus-within:ring-1 focus-within:ring-indigo-500/50 transition-all">
+                                        <div className="bg-slate-100 dark:bg-white/5 rounded-xl p-4 border border-slate-200 dark:border-white/5 flex gap-3 focus-within:ring-1 focus-within:ring-indigo-500/50 transition-all">
                                             <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 font-bold text-white">Yo</div>
                                             <div className="flex-1 space-y-3">
                                                 <textarea
                                                     value={newUpdateText}
                                                     onChange={(e) => setNewUpdateText(e.target.value)}
                                                     placeholder="Post an update for attendees..."
-                                                    className="w-full bg-transparent border-none text-white placeholder:text-slate-500 focus:outline-none resize-none min-h-[60px]"
+                                                    className="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-500 focus:outline-none resize-none min-h-[60px]"
                                                 />
                                                 <div className="flex justify-end">
                                                     <button
@@ -495,16 +495,16 @@ export const EventsScreen = () => {
                                                 <div className="text-center py-6 text-slate-500 text-sm">No updates posted yet.</div>
                                             ) : (
                                                 selectedEvent.updates.map((update: any) => (
-                                                    <div key={update.id} className="flex gap-4 p-4 rounded-xl bg-white/5 border border-white/5 animate-in fade-in slide-in-from-bottom-2">
+                                                    <div key={update.id} className="flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 animate-in fade-in slide-in-from-bottom-2">
                                                         <div className="w-10 h-10 rounded-full bg-indigo-900/50 border border-indigo-500/30 flex items-center justify-center shrink-0 text-indigo-300">
                                                             <CheckCircle2 size={18} />
                                                         </div>
                                                         <div>
                                                             <div className="flex items-center gap-2 mb-1">
-                                                                <span className="font-bold text-white text-sm">{update.author}</span>
+                                                                <span className="font-bold text-slate-900 dark:text-white text-sm">{update.author}</span>
                                                                 <span className="text-slate-500 text-xs">• {update.date}</span>
                                                             </div>
-                                                            <p className="text-slate-300 text-sm leading-relaxed">{update.text}</p>
+                                                            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{update.text}</p>
                                                         </div>
                                                     </div>
                                                 ))
@@ -514,7 +514,7 @@ export const EventsScreen = () => {
                                 </div>
 
                                 {/* Right: Targeting Info */}
-                                <div className="p-6 md:p-8 bg-white/[0.02]">
+                                <div className="p-6 md:p-8 bg-slate-50/50 dark:bg-white/[0.02]">
                                     <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">audience targeting</h3>
                                     <div className="space-y-3">
                                         <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center gap-4 mb-6">
@@ -532,7 +532,7 @@ export const EventsScreen = () => {
                                                 const circle = circles.find((c: any) => c.id === cid);
                                                 if (!circle) return null;
                                                 return (
-                                                    <div key={cid} className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5">
+                                                    <div key={cid} className="flex items-center gap-3 p-3 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5">
                                                         <div className={`w-2 h-2 rounded-full bg-${circle.color}-500`} />
                                                         <div className="flex-1">
                                                             <div className="text-sm font-bold text-slate-200">{circle.name}</div>
@@ -551,7 +551,7 @@ export const EventsScreen = () => {
                     // List View
                     <div className="grid gap-4 mt-6">
                         {filteredEvents.length === 0 ? (
-                            <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 flex flex-col items-center">
+                            <div className="text-center py-20 bg-slate-100 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/5 flex flex-col items-center">
                                 <div className="h-20 w-20 bg-slate-800/50 rounded-full flex items-center justify-center mb-6">
                                     <Search className="text-slate-500" size={40} />
                                 </div>
@@ -566,7 +566,7 @@ export const EventsScreen = () => {
                                 <div
                                     key={evt.id}
                                     onClick={() => setSelectedEventId(evt.id)}
-                                    className="glass-panel cursor-pointer rounded-2xl flex flex-col md:flex-row group relative overflow-hidden border border-white/5 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.1)] active:scale-[0.99]"
+                                    className="glass-panel cursor-pointer rounded-2xl flex flex-col md:flex-row group relative overflow-hidden border border-slate-200 dark:border-white/5 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.1)] active:scale-[0.99]"
                                 >
                                     {/* Cover Image & Date Badge */}
                                     <div className="md:w-64 h-48 md:h-auto relative shrink-0">
@@ -580,7 +580,7 @@ export const EventsScreen = () => {
                                         {/* Date Badge Overlay */}
                                         <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl p-3 text-center min-w-[70px] group-hover:bg-indigo-900/80 group-hover:border-indigo-500/30 transition-colors">
                                             <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">{new Date(evt.date).toLocaleString('default', { month: 'short' })}</div>
-                                            <div className="text-xl font-bold text-white leading-none my-0.5">{new Date(evt.date).getDate()}</div>
+                                            <div className="text-xl font-bold text-slate-900 dark:text-white leading-none my-0.5">{new Date(evt.date).getDate()}</div>
                                             <div className="text-[10px] text-slate-400">{evt.time}</div>
                                         </div>
                                     </div>
@@ -588,19 +588,19 @@ export const EventsScreen = () => {
                                     <div className="flex-1 min-w-0 p-6 flex flex-col justify-center">
                                         <div className="flex items-start justify-between">
                                             <div>
-                                                <h4 className="text-2xl font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">{evt.title}</h4>
+                                                <h4 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">{evt.title}</h4>
                                                 <div className="flex flex-wrap gap-5 text-sm text-slate-400 mb-4">
                                                     <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
                                                         <MapPin size={14} className="text-slate-300" /> {evt.location}
                                                     </div>
-                                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5 text-slate-300">
+                                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-300">
                                                         <Target size={14} /> {evt.type}
                                                     </div>
                                                     <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
                                                         <Users size={14} /> Targeting: {getEventReach(evt.targetCircles)} Nodes
                                                     </div>
                                                 </div>
-                                                <p className="text-slate-300 text-base leading-relaxed max-w-3xl line-clamp-2 group-hover:text-slate-200 transition-colors">{evt.description}</p>
+                                                <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-3xl line-clamp-2 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors">{evt.description}</p>
                                             </div>
                                         </div>
 
@@ -647,16 +647,16 @@ export const EventsScreen = () => {
                 {
                     showEventModal && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-                            <div className="bg-[#0f1115] border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl ring-1 ring-white/10 animate-in zoom-in-95 duration-300">
-                                <div className="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-[#0f1115] z-10 glass-panel border-0 border-b">
-                                    <h3 className="text-xl font-bold text-white">{editingEventId ? 'Edit Event' : 'Create New Event'}</h3>
+                            <div className="bg-white dark:bg-[#0f1115] border border-slate-200 dark:border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl ring-1 ring-white/10 animate-in zoom-in-95 duration-300">
+                                <div className="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-white dark:bg-[#0f1115] z-10 glass-panel border-0 border-b">
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{editingEventId ? 'Edit Event' : 'Create New Event'}</h3>
                                     <button onClick={() => setShowEventModal(false)} className="text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"><X size={20} /></button>
                                 </div>
 
                                 <div className="p-8 space-y-6">
 
                                     {/* Image Upload */}
-                                    <div className="relative group cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed border-white/20 hover:border-indigo-500/50 transition-colors bg-white/5 h-48 flex items-center justify-center">
+                                    <div className="relative group cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/20 hover:border-indigo-500/50 transition-colors bg-slate-50 dark:bg-white/5 h-48 flex items-center justify-center">
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -689,7 +689,7 @@ export const EventsScreen = () => {
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Event Title</label>
                                             <input
                                                 type="text"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-lg"
+                                                className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-lg"
                                                 placeholder="e.g. Summer Launch Party"
                                                 value={eventForm.title}
                                                 onChange={e => setEventForm({ ...eventForm, title: e.target.value })}
@@ -698,12 +698,12 @@ export const EventsScreen = () => {
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Event Type</label>
                                             <select
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none"
+                                                className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none"
                                                 value={eventForm.type}
                                                 onChange={e => setEventForm({ ...eventForm, type: e.target.value })}
                                             >
                                                 {EVENT_TYPES.map(type => (
-                                                    <option key={type} value={type} className="bg-slate-900 text-white">{type}</option>
+                                                    <option key={type} value={type} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">{type}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -712,7 +712,7 @@ export const EventsScreen = () => {
                                             <div className="relative">
                                                 <input
                                                     type="date"
-                                                    className="w-full appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors min-h-[50px]"
+                                                    className="w-full appearance-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors min-h-[50px]"
                                                     value={eventForm.date}
                                                     onChange={e => setEventForm({ ...eventForm, date: e.target.value })}
                                                 />
@@ -724,7 +724,7 @@ export const EventsScreen = () => {
                                             <div className="relative">
                                                 <input
                                                     type="time"
-                                                    className="w-full appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors min-h-[50px]"
+                                                    className="w-full appearance-none bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors min-h-[50px]"
                                                     value={eventForm.time}
                                                     onChange={e => setEventForm({ ...eventForm, time: e.target.value })}
                                                 />
@@ -746,7 +746,7 @@ export const EventsScreen = () => {
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Description</label>
                                         <textarea
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors h-24 resize-none"
+                                            className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors h-24 resize-none"
                                             placeholder="Describe your event..."
                                             value={eventForm.description}
                                             onChange={e => setEventForm({ ...eventForm, description: e.target.value })}
@@ -771,7 +771,7 @@ export const EventsScreen = () => {
                                                         onClick={() => toggleEventTargetCircle(c.id)}
                                                         className={`
                                                     p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-all duration-200 group
-                                                    ${isSelected ? `bg-${c.color}-900/30 border-${c.color}-500/50 shadow-[0_0_10px_rgba(0,0,0,0.2)]` : 'bg-white/5 border-white/5 hover:bg-white/10'}
+                                                    ${isSelected ? `bg-${c.color}-900/30 border-${c.color}-500/50 shadow-[0_0_10px_rgba(0,0,0,0.2)]` : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/5 hover:bg-slate-200 dark:hover:bg-white/10'}
                                                 `}
                                                     >
                                                         <div className="flex items-center gap-3">
@@ -791,7 +791,7 @@ export const EventsScreen = () => {
                                     </div>
                                 </div>
 
-                                <div className="p-6 border-t border-white/10 flex items-center justify-between bg-[#0f1115] sticky bottom-0 z-10">
+                                <div className="p-6 border-t border-slate-200 dark:border-white/10 flex items-center justify-between bg-white dark:bg-[#0f1115] sticky bottom-0 z-10">
                                     <div className="flex gap-2">
                                         {editingEventId && (
                                             <>
@@ -836,7 +836,7 @@ export const EventsScreen = () => {
                                         {confirmState.action === 'delete' ? <Trash2 size={24} /> : <AlertTriangle size={24} />}
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-bold text-white mb-2">{confirmState.title}</h3>
+                                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{confirmState.title}</h3>
                                         <p className="text-slate-400 leading-relaxed text-sm">{confirmState.description}</p>
                                     </div>
                                 </div>

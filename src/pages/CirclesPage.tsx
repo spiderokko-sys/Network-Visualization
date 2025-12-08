@@ -106,12 +106,12 @@ const Avatar = ({ member, size = 'md' }: { member: Member, size?: 'sm' | 'md' | 
     };
 
     return (
-        <div className={`${sizeClasses[size]} rounded-full bg-slate-800 border border-white/10 flex items-center justify-center text-white font-bold relative group cursor-pointer hover:scale-110 transition-transform shadow-lg`}>
+        <div className={`${sizeClasses[size]} rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-900 dark:text-white font-bold relative group cursor-pointer hover:scale-110 transition-transform shadow-lg`}>
             {member.avatar}
-            <span className={`absolute bottom-0 right-0 rounded-full border border-slate-900 ${member.status === 'online' ? 'bg-emerald-500' : member.status === 'busy' ? 'bg-rose-500' : 'bg-slate-500'} ${size === 'sm' ? 'w-1.5 h-1.5' : 'w-2.5 h-2.5'}`}></span>
+            <span className={`absolute bottom-0 right-0 rounded-full border border-white dark:border-slate-900 ${member.status === 'online' ? 'bg-emerald-500' : member.status === 'busy' ? 'bg-rose-500' : 'bg-slate-500'} ${size === 'sm' ? 'w-1.5 h-1.5' : 'w-2.5 h-2.5'}`}></span>
 
             {/* Tooltip */}
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-white/10 z-20">
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 dark:bg-slate-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-white/10 z-20">
                 {member.name}
             </div>
         </div>
@@ -198,10 +198,10 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
                         'from-indigo-900 to-slate-900'
                 }`}>
                 <div className="absolute top-4 right-4">
-                    <button onClick={onClose} className="p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors"><X size={18} /></button>
+                    <button onClick={onClose} className="p-2 bg-slate-50/20 dark:bg-black/20 hover:bg-slate-100/40 dark:hover:bg-black/40 text-slate-900 dark:text-white rounded-full transition-colors"><X size={18} /></button>
                 </div>
                 <div className="absolute bottom-4 left-6">
-                    <div className="text-xs font-bold text-white/60 mb-1 flex items-center gap-1">
+                    <div className="text-xs font-bold text-white/80 dark:text-white/60 mb-1 flex items-center gap-1">
                         {circle.category === 'Location' ? <MapPin size={12} /> :
                             circle.category === 'Occupation' ? <Briefcase size={12} /> :
                                 circle.category === 'Interests' ? <Heart size={12} /> : <Star size={12} />}
@@ -214,8 +214,8 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
             {/* Content */}
             <div className="p-6 flex-1 overflow-y-auto no-scrollbar space-y-6 min-h-0">
                 <div>
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Description</h3>
-                    <p className="text-sm text-slate-300 leading-relaxed">{circle.description}</p>
+                    <h3 className="text-xs font-bold text-slate-900 dark:text-slate-500 uppercase tracking-wider mb-2">Description</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{circle.description}</p>
                 </div>
 
                 {/* Actions */}
@@ -236,23 +236,23 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
 
                 <div>
                     <div className="flex justify-between items-center mb-3">
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Members ({circle.members.length})</h3>
+                        <h3 className="text-xs font-bold text-slate-900 dark:text-slate-500 uppercase tracking-wider">Members ({circle.members.length})</h3>
                         <Button size="icon" variant="ghost" className="h-6 w-6 rounded-full hover:bg-white/10"><MoreVertical size={14} /></Button>
                     </div>
 
                     <div className="space-y-2">
                         {circle.members.map(m => (
-                            <div key={m.id} className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer">
+                            <div key={m.id} className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
                                 <Avatar member={m} size="sm" />
-                                <span className="text-sm font-medium text-slate-200 flex-1">{m.name}</span>
-                                <button className="text-slate-500 hover:text-white transition-colors"><MessageSquare size={14} /></button>
+                                <span className="text-sm font-medium text-slate-700 dark:text-slate-200 flex-1">{m.name}</span>
+                                <button className="text-slate-900 dark:text-slate-500 hover:text-white transition-colors"><MessageSquare size={14} /></button>
                             </div>
                         ))}
-                        <button className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-colors w-full group border border-dashed border-white/5 hover:border-indigo-500/30">
-                            <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-indigo-400">
+                        <button className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors w-full group border border-dashed border-slate-300 dark:border-white/5 hover:border-indigo-500/30">
+                            <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-slate-600 dark:text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400">
                                 <Plus size={14} />
                             </div>
-                            <span className="text-sm font-medium text-slate-400 group-hover:text-indigo-300 text-left">Add Member</span>
+                            <span className="text-sm font-medium text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 text-left">Add Member</span>
                         </button>
                     </div>
                 </div>
@@ -308,7 +308,7 @@ export const NetworkCircles = () => {
     };
 
     return (
-        <div className="h-full w-full relative bg-slate-950 overflow-hidden animate-in fade-in duration-700">
+        <div className="h-full w-full relative bg-slate-50 dark:bg-slate-950 overflow-hidden animate-in fade-in duration-700">
             {/* Background Effects (Fixed) */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[150px]" />
@@ -356,13 +356,13 @@ export const NetworkCircles = () => {
                     {/* Nodes Layer */}
                     {/* You Node */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-default">
-                        <div className="w-32 h-32 rounded-full border-4 border-slate-900 bg-slate-800 flex items-center justify-center shadow-[0_0_50px_rgba(99,102,241,0.5)] relative z-20 overflow-hidden">
+                        <div className="w-32 h-32 rounded-full border-4 border-slate-200 dark:border-slate-900 bg-slate-100 dark:bg-slate-800 flex items-center justify-center shadow-[0_0_50px_rgba(99,102,241,0.5)] relative z-20 overflow-hidden">
                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=MyUser" alt="You" className="w-full h-full object-cover" />
                         </div>
                         {/* Ripple Effect */}
                         <div className="absolute inset-0 -m-8 rounded-full border border-indigo-500/20 animate-ping opacity-20" />
                         <div className="absolute inset-0 -m-16 rounded-full border border-indigo-500/10 animate-ping opacity-10 animation-delay-500" />
-                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white font-bold text-lg bg-black/40 px-3 py-1 rounded-full backdrop-blur">You</div>
+                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-slate-900 dark:text-white font-bold text-lg bg-white/80 dark:bg-black/40 px-3 py-1 rounded-full backdrop-blur">You</div>
                     </div>
 
                     {/* Circles */}
