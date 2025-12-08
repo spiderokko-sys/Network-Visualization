@@ -204,7 +204,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 			</div>
 
 			{/* Messages */}
-			<div className={`flex-1 p-6 overflow-y-auto no-scrollbar flex flex-col min-h-0 ${chat.background || 'bg-black/20'} transition-colors duration-500`}>
+			<div className={`flex-1 p-4 md:p-6 overflow-y-auto no-scrollbar flex flex-col min-h-0 ${chat.background || 'bg-black/20'} transition-colors duration-500`}>
 				{messages.map((msg: any) => <MessageBubble key={msg.id} message={msg} />)}
 				<div ref={messagesEndRef} />
 			</div>
@@ -251,7 +251,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 					</div>
 				)}
 
-				<div className="flex gap-3 items-end max-w-4xl mx-auto">
+				<div className="flex gap-3 items-end w-full">
 					<Button
 						size="icon"
 						variant="ghost"
@@ -282,7 +282,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 									handleSend();
 								}
 							}}
-							className="flex-1 bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm min-h-[56px] max-h-32 resize-none leading-relaxed transition-colors shadow-inner"
+							className="flex-1 bg-black/40 border border-white/10 rounded-3xl px-5 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-sm min-h-[56px] max-h-32 resize-none leading-relaxed transition-colors shadow-inner no-scrollbar"
 							placeholder="Broadcast secure message..."
 							rows={1}
 						/>
