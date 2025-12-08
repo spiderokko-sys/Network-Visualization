@@ -50,6 +50,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 	const [messagePayload, setMessagePayload] = useState('');
 	const [customers, setCustomers] = useState(initialCustomers);
 	const [showAddCustomer, setShowAddCustomer] = useState(false);
+	const [editingCustomer, setEditingCustomer] = useState(null);
 	const [showFinancialModal, setShowFinancialModal] = useState(false);
 	const [financialType, setFinancialType] = useState('payment');
 
@@ -84,20 +85,33 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 	// Handlers
 	const handleAddCustomer = (data: any) => {
-		const newCust = {
-			id: Date.now(),
-			name: data.name,
-			status: 'L1',
-			tags: data.tags.split(',').map((t: string) => t.trim()).filter((t: string) => t),
-			visits: 0,
-			last_seen: 'Just added',
-			emails: data.email ? [{ id: Date.now() + 'e', value: data.email, isPrimary: true }] : [],
-			phones: data.phone ? [{ id: Date.now() + 'p', value: data.phone, isPrimary: true }] : [],
-			memberSince: new Date().toLocaleString('default', { month: 'short', year: 'numeric' }),
-			isFavorite: false
-		};
-		setCustomers([newCust, ...customers]);
+		if (data.id) {
+			// Edit existing
+			setCustomers(customers.map((c: any) => c.id === data.id ? {
+				...c,
+				name: data.name,
+				tags: data.tags.split(',').map((t: string) => t.trim()).filter((t: string) => t),
+				emails: data.email ? [{ ...c.emails[0], value: data.email }] : c.emails,
+				phones: data.phone ? [{ ...c.phones[0], value: data.phone }] : c.phones,
+			} : c));
+		} else {
+			// Add new
+			const newCust = {
+				id: Date.now(),
+				name: data.name,
+				status: 'L1',
+				tags: data.tags.split(',').map((t: string) => t.trim()).filter((t: string) => t),
+				visits: 0,
+				last_seen: 'Just added',
+				emails: data.email ? [{ id: Date.now() + 'e', value: data.email, isPrimary: true }] : [],
+				phones: data.phone ? [{ id: Date.now() + 'p', value: data.phone, isPrimary: true }] : [],
+				memberSince: new Date().toLocaleString('default', { month: 'short', year: 'numeric' }),
+				isFavorite: false
+			};
+			setCustomers([newCust, ...customers]);
+		}
 		setShowAddCustomer(false);
+		setEditingCustomer(null);
 	};
 
 	const handleDeleteCircle = (id: string) => { setCircles(circles.filter(c => c.id !== id)); };
@@ -148,42 +162,54 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 				{activeInternalTab === 'overview' && (
 					<div className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 						{/* Hero Card */}
-						<div className="glass-panel rounded-3xl p-4 md:p-6 relative overflow-hidden group">
-							<div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none">
-								<QrCode size={200} className="text-white rotate-12" />
+						<div className="glass-panel rounded-2xl p-4 relative overflow-hidden group">
+							{/* Decorative BG */}
+							<div className="absolute -top-10 -right-10 p-6 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+								<QrCode size={180} className="text-white rotate-12" />
 							</div>
 
-							<div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-4 md:mb-8 relative z-10">
-								<div className="h-24 w-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-[0_0_30px_rgba(79,70,229,0.3)] ring-1 ring-white/20">
-									<span className="text-4xl font-bold">J</span>
-								</div>
-								<div>
-									<h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Joe's Coffee</h2>
-									<div className="flex items-center gap-2">
-										<span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-xs font-mono font-semibold border border-emerald-500/30 flex items-center gap-1">
-											<CheckCircle2 size={12} /> VERIFIED NODE
-										</span>
+							<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+								{/* Left: Identity */}
+								<div className="flex items-center gap-4">
+									<div className="h-14 w-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg ring-1 ring-white/20 shrink-0">
+										<span className="text-xl font-bold">J</span>
+									</div>
+									<div>
+										<h2 className="text-xl font-bold text-white leading-tight">Joe's Coffee</h2>
+										<div className="flex items-center gap-2 mt-1">
+											<span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide flex items-center gap-1">
+												<CheckCircle2 size={10} /> Verified
+											</span>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div className="grid grid-cols-2 gap-3 sm:gap-4 border-t border-white/5 pt-4 md:pt-6 mb-4 md:mb-6">
-								<div className="text-center p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
-									<div className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold tracking-wider mb-1 sm:mb-2">L1 Direct</div>
-									<div className="text-2xl sm:text-4xl font-bold text-white text-glow">{BUSINESS_STATS.l1_count}</div>
-								</div>
-								<div className="text-center p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5">
-									<div className="text-[10px] sm:text-xs text-slate-400 uppercase font-bold tracking-wider mb-1 sm:mb-2">L2+ Network</div>
-									<div className="text-2xl sm:text-4xl font-bold text-white text-glow">25.4k</div>
+								{/* Right: Stats & Action */}
+								<div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-white/5">
+									{/* Compact Stats */}
+									<div className="flex items-center gap-4">
+										<div>
+											<div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">L1 Direct</div>
+											<div className="text-lg font-bold text-white leading-none">{BUSINESS_STATS.l1_count}</div>
+										</div>
+										<div className="w-px h-6 bg-white/10"></div>
+										<div>
+											<div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Network</div>
+											<div className="text-lg font-bold text-white leading-none">25.4k</div>
+										</div>
+									</div>
+
+									{/* QR Button */}
+									<Button
+										size="sm"
+										className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
+										onClick={() => setShowLargeQR(true)}
+									>
+										<QrCode size={16} className="mr-2" />
+										<span className="hidden sm:inline">Show </span>QR
+									</Button>
 								</div>
 							</div>
-
-							<Button
-								className="w-full h-14 text-base font-bold glass-button-primary bg-indigo-600 hover:bg-indigo-500"
-								onClick={() => setShowLargeQR(true)}
-							>
-								<QrCode size={20} className="mr-2" /> Display Tether QR for Customer
-							</Button>
 						</div>
 
 						{/* Feed */}
@@ -360,8 +386,8 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 
 						<div className="flex justify-between items-center mt-8">
 							<h3 className="text-xl font-bold text-white">L1 Direct Nodes</h3>
-							<Button size="sm" variant="ghost" className="text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20" onClick={() => setShowAddCustomer(true)}>
-								<PlusCircle size={16} className="mr-2" /> Add Node
+							<Button size="sm" variant="ghost" className="text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20" onClick={() => { setEditingCustomer(null); setShowAddCustomer(true); }}>
+								<PlusCircle size={16} className="mr-2" /> Add Contact
 							</Button>
 						</div>
 
@@ -397,6 +423,9 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 												{tag}
 											</span>
 										))}
+										<Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-white" onClick={(e) => { e.stopPropagation(); setEditingCustomer(cust); setShowAddCustomer(true); }}>
+											<Edit2 size={16} />
+										</Button>
 										<Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-white" onClick={(e) => toggleFavorite(e, cust.id)}>
 											<Heart size={16} className={cust.isFavorite ? "fill-rose-500 text-rose-500" : ""} />
 										</Button>
@@ -537,7 +566,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 					</div>
 				)}
 
-				{showAddCustomer && <AddCustomerModal onClose={() => setShowAddCustomer(false)} onSave={handleAddCustomer} />}
+				{showAddCustomer && <AddCustomerModal onClose={() => { setShowAddCustomer(false); setEditingCustomer(null); }} onSave={handleAddCustomer} initialData={editingCustomer} />}
 				{showLargeQR && <QRModal onClose={() => setShowLargeQR(false)} />}
 				{showEditCircleModal && editingCircle && <EditCircleModal circle={editingCircle} onClose={() => { setShowEditCircleModal(false); setEditingCircle(null); }} onSave={handleEditCircle} />}
 				{showFinancialModal && <FinancialModal type={financialType} initialCustomer={null} customers={customers} onClose={() => setShowFinancialModal(false)} onSave={handleSaveFinancial} />}
