@@ -196,7 +196,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 					<input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search channels..." className="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-600" />
 				</div>
 			</div>
-			<div className="flex-1 overflow-y-auto p-2 space-y-2 no-scrollbar">
+			<div className="flex-1 overflow-y-auto p-2 space-y-2 no-scrollbar pb-24 md:pb-2">
 				{filteredChannels.map(channel => (
 					<div key={channel.id} onClick={() => setSelectedChannel(channel)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors group">
 						<div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-lg border border-white/10 group-hover:scale-105 transition-transform">
@@ -251,7 +251,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 				</div>
 			</div>
 
-			<div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 no-scrollbar min-h-0 bg-black/20">
+			<div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 no-scrollbar min-h-0 bg-black/20 pb-24 md:pb-6">
 				{selectedChannel.posts.map((post: any) => (
 					<div key={post.id} className="glass-card p-5 max-w-2xl mx-auto shadow-lg border-white/5 animate-in fade-in slide-in-from-bottom-2 duration-500">
 						<p className="text-slate-100 text-sm leading-relaxed whitespace-pre-wrap font-medium">{post.text}</p>
@@ -275,7 +275,7 @@ export const ChannelsModule = ({ selectedChannel, setSelectedChannel }: any) => 
 			</div>
 
 			{selectedChannel.isOwner ? (
-				<div className="p-4 border-t border-white/5 bg-slate-900/90 backdrop-blur sticky bottom-0 z-20 flex-shrink-0">
+				<div className="p-4 border-t border-white/5 bg-slate-900/90 backdrop-blur sticky bottom-20 md:bottom-0 z-20 flex-shrink-0">
 					<div className="flex gap-3 items-end max-w-3xl mx-auto">
 						<textarea
 							value={broadcastText}

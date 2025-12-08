@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
-    Users, Calendar, MessageSquare, Plus, X, ChevronLeft,
-    Share2, MapPin, Briefcase, Zap, Heart, Star,
+    Calendar, MessageSquare, Plus, X,
+    MapPin, Briefcase, Zap, Heart, Star,
     MoreVertical, UserPlus, ZoomIn, ZoomOut, RotateCcw, Move
 } from 'lucide-react';
 import { Button } from './ui/button';
@@ -190,7 +190,7 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
     if (!circle) return null;
 
     return (
-        <div className="absolute top-4 right-4 bottom-4 w-96 glass-panel rounded-2xl shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col z-30 pointer-events-auto">
+        <div className="absolute top-4 right-4 bottom-24 md:bottom-4 w-96 glass-panel rounded-2xl shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col z-30 pointer-events-auto">
             {/* Header */}
             <div className={`h-32 bg-gradient-to-br relative shrink-0 overflow-hidden ${circle.color === 'emerald' ? 'from-emerald-900 to-slate-900' :
                 circle.color === 'orange' ? 'from-orange-900 to-slate-900' :
@@ -261,7 +261,7 @@ const DetailsPanel = ({ circle, onClose, onJoinChannel }: { circle: Circle, onCl
     );
 };
 
-export const NetworkCircles = ({ onBack, setActiveView, setSelectedChannel }: { onBack: () => void, setActiveView: (v: string) => void, setSelectedChannel: (c: any) => void }) => {
+export const NetworkCircles = ({ setActiveView, setSelectedChannel }: { setActiveView: (v: string) => void, setSelectedChannel: (c: any) => void }) => {
     const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
     const [transform, setTransform] = useState({ x: 0, y: 0, scale: 0.8 });
     const [isDragging, setIsDragging] = useState(false);
@@ -316,19 +316,6 @@ export const NetworkCircles = ({ onBack, setActiveView, setSelectedChannel }: { 
 
     return (
         <div className="h-full w-full relative bg-slate-950 overflow-hidden animate-in fade-in duration-700">
-            {/* Back Button */}
-            <div className="absolute top-6 left-6 z-20">
-                <button onClick={onBack} className="glass-button flex items-center gap-2">
-                    <ChevronLeft size={16} /> <span className="font-semibold">Back to Dashboard</span>
-                </button>
-            </div>
-
-            {/* Title */}
-            <div className="absolute top-6 left-0 right-0 text-center pointer-events-none z-10">
-                <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-lg">My Network</h1>
-                <p className="text-slate-400 text-sm">Dynamic & Custom Circles</p>
-            </div>
-
             {/* Background Effects (Fixed) */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[150px]" />
@@ -397,7 +384,7 @@ export const NetworkCircles = ({ onBack, setActiveView, setSelectedChannel }: { 
             </div>
 
             {/* Controls (Fixed UI) */}
-            <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-20">
+            <div className="absolute bottom-24 md:bottom-6 right-6 flex flex-col gap-2 z-20">
                 <Button size="icon" className="rounded-full h-10 w-10 glass-button" onClick={() => handleZoom(0.2)}><ZoomIn size={20} /></Button>
                 <Button size="icon" className="rounded-full h-10 w-10 glass-button" onClick={() => handleZoom(-0.2)}><ZoomOut size={20} /></Button>
                 <Button size="icon" className="rounded-full h-10 w-10 glass-button" onClick={() => setTransform({ x: 0, y: 0, scale: 0.8 })}><RotateCcw size={20} /></Button>

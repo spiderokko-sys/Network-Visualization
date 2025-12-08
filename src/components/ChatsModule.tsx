@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare, User, Users, Heart, ChevronLeft } from 'lucide-react';
+import { MessageSquare, User, Users, Heart } from 'lucide-react';
 import { ChatWindow } from './chat/ChatWindow';
 
 const MOCK_CHATS = [
@@ -140,7 +140,7 @@ export const ChatsModule = ({ selectedChatId, setSelectedChatId }: any) => {
 						))}
 					</div>
 				</div>
-				<div className="flex-1 overflow-y-auto p-3 space-y-3 no-scrollbar">
+				<div className="flex-1 overflow-y-auto p-3 space-y-3 no-scrollbar pb-24 md:pb-3">
 					{filteredChats.map(chat => (
 						<ChatListItem key={chat.id} chat={chat} isSelected={chat.id === selectedChatId} onClick={selectChat} />
 					))}

@@ -109,7 +109,7 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 			/>
 
 			{/* Center Panel */}
-			<div className="relative glass-panel w-full max-w-2xl rounded-3xl p-8 overflow-hidden animate-in zoom-in-95 duration-300">
+			<div className="relative glass-panel w-full max-w-2xl rounded-3xl p-6 md:p-8 pt-12 md:pt-12 overflow-y-auto max-h-[85vh] animate-in zoom-in-95 duration-300">
 
 				{/* Background Splashes */}
 				<div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none" />
@@ -172,14 +172,9 @@ const ExploreMenu = ({ onClose, setActiveView }: { onClose: () => void, setActiv
 
 
 
-const IntentsGlobeView = ({ onBack }: { onBack: () => void }) => {
+const IntentsGlobeView = () => {
 	return (
 		<div className="h-full w-full relative animate-in fade-in duration-700 bg-slate-950">
-			<div className="absolute top-6 left-6 z-20">
-				<button onClick={onBack} className="glass-button">
-					<ChevronLeft size={16} /> Back
-				</button>
-			</div>
 			<GlobeWithUI showHeader={false} />
 		</div>
 	);
@@ -209,7 +204,7 @@ const SidebarItem = ({ icon: Icon, label, isActive, onClick, collapsed }: any) =
 
 export default function App() {
 	const [showExploreMenu, setShowExploreMenu] = useState(false);
-	const [activeView, setActiveView] = useState('dashboard');
+	const [activeView, setActiveView] = useState('chats');
 	const [dashboardTab, setDashboardTab] = useState('overview');
 	const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
 	const [selectedChannel, setSelectedChannel] = useState<any>(null);
@@ -224,9 +219,9 @@ export default function App() {
 			case 'channels':
 				return <ChannelsModule selectedChannel={selectedChannel} setSelectedChannel={setSelectedChannel} />;
 			case 'network_circles':
-				return <NetworkCircles onBack={() => setActiveView('dashboard')} setActiveView={setActiveView} setSelectedChannel={setSelectedChannel} />;
+				return <NetworkCircles setActiveView={setActiveView} setSelectedChannel={setSelectedChannel} />;
 			case 'intents_globe':
-				return <IntentsGlobeView key="intents-globe-view" onBack={() => setActiveView('dashboard')} />;
+				return <IntentsGlobeView key="intents-globe-view" />;
 			case 'wallet':
 				return <WalletScreen />;
 			case 'events':
@@ -238,7 +233,7 @@ export default function App() {
 	};
 
 	// Determine if we should show the full sidebar or not
-	const isFullScreenView = activeView === 'network_circles' || activeView === 'intents_globe';
+	const isFullScreenView = false;
 
 	return (
 		<div className="bg-slate-950 h-screen text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden flex relative">
@@ -341,12 +336,12 @@ export default function App() {
 
 				{/* Top Bar (Mobile + Desktop Context) */}
 				{!isFullScreenView && (
-					<header className="h-20 px-6 flex items-center justify-between border-b border-white/5 bg-slate-950/20 backdrop-blur-sm shrink-0">
+					<header className="h-16 md:h-20 px-4 md:px-6 flex items-center justify-between border-b border-white/5 bg-slate-950/20 backdrop-blur-sm shrink-0">
 
 						{/* Mobile Menu Toggle (Visible only on mobile) */}
 						<div
 							className="md:hidden flex items-center gap-3 cursor-pointer"
-							onClick={() => setActiveView('dashboard')}
+							onClick={() => setActiveView('chats')}
 						>
 							<div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
 								<Radar className="text-white" size={16} />
@@ -396,13 +391,7 @@ export default function App() {
 				{/* Mobile Navigation Bar */}
 				{!isFullScreenView && !(activeView === 'chats' && selectedChatId) && (
 					<div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950/95 backdrop-blur-xl border-t border-white/10 z-50 flex items-center justify-around pb-safe pt-2">
-						<button
-							onClick={() => setActiveView('dashboard')}
-							className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${activeView === 'dashboard' ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
-						>
-							<LayoutDashboard size={20} />
-							<span className="text-[10px] font-medium mt-1">Home</span>
-						</button>
+
 						<button
 							onClick={() => setActiveView('chats')}
 							className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${activeView === 'chats' ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
@@ -416,6 +405,13 @@ export default function App() {
 						>
 							<List size={20} />
 							<span className="text-[10px] font-medium mt-1">Channels</span>
+						</button>
+						<button
+							onClick={() => setActiveView('network_circles')}
+							className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${activeView === 'network_circles' ? 'text-indigo-400' : 'text-slate-400 hover:text-slate-200'}`}
+						>
+							<Layers size={20} />
+							<span className="text-[10px] font-medium mt-1">Circles</span>
 						</button>
 						<button
 							onClick={() => setActiveView('calls')}

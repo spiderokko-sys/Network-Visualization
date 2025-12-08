@@ -11,12 +11,11 @@ import {
     DollarSign,
     MoreHorizontal
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { ScrollArea } from './ui/scroll-area';
 import { TransactionDetails } from './TransactionDetails';
 import { TransactionHistory } from './TransactionHistory';
 
@@ -151,114 +150,116 @@ export const WalletScreen = () => {
                                 </TabsList>
 
                                 <ScrollArea className="flex-1 pr-4 -mr-4">
-                                    {/* Send Tab */}
-                                    <TabsContent value="send" className="mt-0 space-y-4 animate-in fade-in duration-300">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-slate-400">Recipient</label>
-                                            <div className="relative">
-                                                <Input placeholder="Email, username, or address" className="bg-slate-950/50 border-white/10 focus:border-indigo-500/50 h-12 pl-10" />
-                                                <Send className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                    <div className="pb-24 md:pb-0">
+                                        {/* Send Tab */}
+                                        <TabsContent value="send" className="mt-0 space-y-4 animate-in fade-in duration-300">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium text-slate-400">Recipient</label>
+                                                <div className="relative">
+                                                    <Input placeholder="Email, username, or address" className="bg-slate-950/50 border-white/10 focus:border-indigo-500/50 h-12 pl-10" />
+                                                    <Send className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-slate-400">Amount</label>
-                                            <div className="relative">
-                                                <Input
-                                                    type="number"
-                                                    placeholder="0.00"
-                                                    className="bg-slate-950/50 border-white/10 focus:border-indigo-500/50 h-12 pl-10 text-lg font-mono"
-                                                    value={amount}
-                                                    onChange={(e) => setAmount(e.target.value)}
-                                                />
-                                                <DollarSign className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium text-slate-400">Amount</label>
+                                                <div className="relative">
+                                                    <Input
+                                                        type="number"
+                                                        placeholder="0.00"
+                                                        className="bg-slate-950/50 border-white/10 focus:border-indigo-500/50 h-12 pl-10 text-lg font-mono"
+                                                        value={amount}
+                                                        onChange={(e) => setAmount(e.target.value)}
+                                                    />
+                                                    <DollarSign className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-slate-400">Note (Optional)</label>
-                                            <Input placeholder="What is this for?" className="bg-slate-950/50 border-white/10 focus:border-indigo-500/50 h-12" />
-                                        </div>
-                                        <div className="pt-4">
-                                            <Button className="w-full h-12 text-lg bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20 shadow-lg" disabled={!amount}>
-                                                Send Funds
-                                            </Button>
-                                        </div>
-                                    </TabsContent>
-
-                                    {/* Deposit Tab */}
-                                    <TabsContent value="deposit" className="mt-0 space-y-4 animate-in fade-in duration-300">
-                                        <div className="p-4 border border-emerald-500/20 bg-emerald-500/5 rounded-xl mb-4">
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <CreditCard className="text-emerald-400" />
-                                                <h4 className="font-semibold text-emerald-100">Linked Card</h4>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium text-slate-400">Note (Optional)</label>
+                                                <Input placeholder="What is this for?" className="bg-slate-950/50 border-white/10 focus:border-indigo-500/50 h-12" />
                                             </div>
-                                            <p className="text-sm text-slate-400">Visa ending in 4242</p>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-slate-400">Deposit Amount</label>
-                                            <div className="relative">
-                                                <Input
-                                                    type="number"
-                                                    placeholder="0.00"
-                                                    className="bg-slate-950/50 border-white/10 focus:border-emerald-500/50 h-12 pl-10 text-lg font-mono"
-                                                />
-                                                <DollarSign className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
-                                            </div>
-                                        </div>
-                                        <div className="pt-4">
-                                            <Button className="w-full h-12 text-lg bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20 shadow-lg">
-                                                Add Funds
-                                            </Button>
-                                        </div>
-                                    </TabsContent>
-
-                                    {/* Request Tab */}
-                                    <TabsContent value="request" className="mt-0 space-y-4 animate-in fade-in duration-300">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-slate-400">Request from</label>
-                                            <div className="relative">
-                                                <Input placeholder="Email or username" className="bg-slate-950/50 border-white/10 focus:border-pink-500/50 h-12 pl-10" />
-                                                <ArrowDownLeft className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
-                                            </div>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium text-slate-400">Amount</label>
-                                            <div className="relative">
-                                                <Input
-                                                    type="number"
-                                                    placeholder="0.00"
-                                                    className="bg-slate-950/50 border-white/10 focus:border-pink-500/50 h-12 pl-10 text-lg font-mono"
-                                                />
-                                                <DollarSign className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
-                                            </div>
-                                        </div>
-                                        <div className="bg-pink-500/10 border border-pink-500/20 rounded-xl p-4 text-sm text-pink-200">
-                                            A request link will be generated and sent to this user next.
-                                        </div>
-                                        <div className="pt-4">
-                                            <Button className="w-full h-12 text-lg bg-pink-600 hover:bg-pink-700 shadow-pink-500/20 shadow-lg">
-                                                Send Request
-                                            </Button>
-                                        </div>
-                                    </TabsContent>
-
-                                    {/* Receive Tab */}
-                                    <TabsContent value="receive" className="mt-0 flex flex-col items-center justify-center space-y-6 animate-in fade-in duration-300 text-center py-4">
-                                        <div className="p-6 bg-white rounded-2xl shadow-xl">
-                                            <QrCode className="w-48 h-48 text-slate-900" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-slate-400 mb-2">Scan to pay</p>
-                                            <div className="flex items-center gap-2 p-3 bg-slate-950/50 rounded-xl border border-white/10">
-                                                <code className="text-slate-300 font-mono text-sm">0x71C...9A23</code>
-                                                <Button size="sm" variant="ghost" className="h-8 w-8 p-0 hover:bg-white/10">
-                                                    <span className="sr-only">Copy</span>
-                                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                                    </svg>
+                                            <div className="pt-4">
+                                                <Button className="w-full h-12 text-lg bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20 shadow-lg" disabled={!amount}>
+                                                    Send Funds
                                                 </Button>
                                             </div>
-                                        </div>
-                                    </TabsContent>
+                                        </TabsContent>
+
+                                        {/* Deposit Tab */}
+                                        <TabsContent value="deposit" className="mt-0 space-y-4 animate-in fade-in duration-300">
+                                            <div className="p-4 border border-emerald-500/20 bg-emerald-500/5 rounded-xl mb-4">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <CreditCard className="text-emerald-400" />
+                                                    <h4 className="font-semibold text-emerald-100">Linked Card</h4>
+                                                </div>
+                                                <p className="text-sm text-slate-400">Visa ending in 4242</p>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium text-slate-400">Deposit Amount</label>
+                                                <div className="relative">
+                                                    <Input
+                                                        type="number"
+                                                        placeholder="0.00"
+                                                        className="bg-slate-950/50 border-white/10 focus:border-emerald-500/50 h-12 pl-10 text-lg font-mono"
+                                                    />
+                                                    <DollarSign className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                                </div>
+                                            </div>
+                                            <div className="pt-4">
+                                                <Button className="w-full h-12 text-lg bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/20 shadow-lg">
+                                                    Add Funds
+                                                </Button>
+                                            </div>
+                                        </TabsContent>
+
+                                        {/* Request Tab */}
+                                        <TabsContent value="request" className="mt-0 space-y-4 animate-in fade-in duration-300">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium text-slate-400">Request from</label>
+                                                <div className="relative">
+                                                    <Input placeholder="Email or username" className="bg-slate-950/50 border-white/10 focus:border-pink-500/50 h-12 pl-10" />
+                                                    <ArrowDownLeft className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-medium text-slate-400">Amount</label>
+                                                <div className="relative">
+                                                    <Input
+                                                        type="number"
+                                                        placeholder="0.00"
+                                                        className="bg-slate-950/50 border-white/10 focus:border-pink-500/50 h-12 pl-10 text-lg font-mono"
+                                                    />
+                                                    <DollarSign className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+                                                </div>
+                                            </div>
+                                            <div className="bg-pink-500/10 border border-pink-500/20 rounded-xl p-4 text-sm text-pink-200">
+                                                A request link will be generated and sent to this user next.
+                                            </div>
+                                            <div className="pt-4">
+                                                <Button className="w-full h-12 text-lg bg-pink-600 hover:bg-pink-700 shadow-pink-500/20 shadow-lg">
+                                                    Send Request
+                                                </Button>
+                                            </div>
+                                        </TabsContent>
+
+                                        {/* Receive Tab */}
+                                        <TabsContent value="receive" className="mt-0 flex flex-col items-center justify-center space-y-6 animate-in fade-in duration-300 text-center py-4">
+                                            <div className="p-6 bg-white rounded-2xl shadow-xl">
+                                                <QrCode className="w-48 h-48 text-slate-900" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-slate-400 mb-2">Scan to pay</p>
+                                                <div className="flex items-center gap-2 p-3 bg-slate-950/50 rounded-xl border border-white/10">
+                                                    <code className="text-slate-300 font-mono text-sm">0x71C...9A23</code>
+                                                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 hover:bg-white/10">
+                                                        <span className="sr-only">Copy</span>
+                                                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                                        </svg>
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </TabsContent>
+                                    </div>
                                 </ScrollArea>
                             </Tabs>
                         </CardContent>
@@ -272,7 +273,7 @@ export const WalletScreen = () => {
                         </CardHeader>
                         <CardContent className="flex-1 p-0 min-h-0">
                             <ScrollArea className="h-full px-6">
-                                <div className="space-y-4 pr-4 pb-4">
+                                <div className="space-y-4 pr-4 pb-24 md:pb-4">
                                     {MOCK_TRANSACTIONS.map((tx) => (
                                         <div
                                             key={tx.id}

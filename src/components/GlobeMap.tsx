@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Signal, Users, Plus, X, ChevronRight, ShieldAlert, Hand, Gift, Flag,
-  Lock, Menu, Search, Filter, ArrowLeft, CheckCircle, MessageSquare,
-  Sparkles, Loader2, Mail, UserPlus, Star, Pencil, Send, Hash,
-  MessageCircle, Settings, Share2, Copy, ExternalLink, DollarSign,
-  BriefcaseBusiness, Zap, Package, Gavel
+  Signal, Plus, X, Hand, Gift, Flag,
+  Lock, Search, ArrowLeft, Copy, ExternalLink,
+  Mail, Star, Share2
 } from 'lucide-react';
 import { Button } from './ui/button';
-import { Card, CardContent } from './ui/card';
 
 // --- Gemini API Configuration ---
 const apiKey = ""; // Set by runtime environment
@@ -17,6 +14,7 @@ interface Contribution {
   id?: number | string;
   type: string;
   value?: string;
+  pledge?: string;
   details?: string;
   returnExpectation?: string;
   returnDetails?: string;
@@ -34,16 +32,7 @@ interface Channel {
   lastMessage?: string;
 }
 
-interface WizardData {
-  type?: string;
-  context?: string;
-  tags?: string[];
-  tempTags?: {
-    skill?: string;
-    location?: string;
-    urgency?: string;
-  };
-}
+
 
 interface Intent {
   id: number | string;
@@ -194,22 +183,7 @@ const INITIAL_INTENTS: Intent[] = [
   }
 ];
 
-const MOCK_CONTACTS = [
-  { id: 101, name: 'Mike Ross', circle: 'L1', avatar: 'MR' },
-  { id: 102, name: 'Jessica Pearson', circle: 'L1', avatar: 'JP' },
-  { id: 103, name: 'Harvey Specter', circle: 'L2', avatar: 'HS' },
-  { id: 104, name: 'Donna Paulsen', circle: 'L2', avatar: 'DP' },
-  { id: 105, name: 'Louis Litt', circle: 'L3', avatar: 'LL' },
-  { id: 106, name: 'Rachel Zane', circle: 'L3', avatar: 'RZ' },
-];
 
-const MOCK_INTERESTED_USERS = [
-  { id: 201, name: 'Alice Smith', circle: 'L1', avatar: 'AS', isConnected: true, canMessage: true, intentId: 5, endorsedBy: '' },
-  { id: 202, name: 'Bob Johnson', circle: 'L2', avatar: 'BJ', isConnected: false, endorsedBy: 'Carol', intentId: 5 },
-  { id: 203, name: 'Charlie Brown', circle: 'L3', avatar: 'CB', isConnected: false, intentId: 5, endorsedBy: '' },
-  { id: 204, name: 'Dana Scully', circle: 'L1', avatar: 'DS', isConnected: true, canMessage: true, intentId: 6, endorsedBy: '' },
-  { id: 205, name: 'Fox Mulder', circle: 'L2', avatar: 'FM', isConnected: false, endorsedBy: 'Skinner', intentId: 6 },
-];
 
 // --- Helper Components ---
 
@@ -435,10 +409,10 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
 
       {/* Main View Area */}
       {view === 'dashboard' && (
-        <div className="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-6 pb-24 md:pb-6">
 
           {/* Control Bar */}
-          <div className="flex flex-col md:flex-row gap-4 sticky top-14 md:top-0 z-10 pb-2 pt-2 md:pt-0 bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
+          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 pb-2 pt-0 md:pt-0 bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
             <div className="glass-panel p-1 rounded-xl flex shrink-0">
               <button onClick={() => setActiveTab('incoming')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'incoming' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>Feed</button>
               <button onClick={() => setActiveTab('mine')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'mine' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>My Signals</button>
@@ -538,7 +512,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
 
       {/* Floating Action Button */}
       {view === 'dashboard' && (
-        <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10">
+        <div className="absolute bottom-24 right-6 md:bottom-10 md:right-10">
           <button
             onClick={() => {/* Open Wizard */ }}
             className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-[0_0_40px_rgba(99,102,241,0.5)] border border-white/20 transition-transform hover:scale-105 active:scale-95"

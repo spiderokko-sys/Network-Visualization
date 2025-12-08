@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     CalendarDays, MapPin, Users, Edit2, Trash2, X, Target, Layers, Circle, CheckCircle2, PlusCircle, Image as ImageIcon, Upload,
-    Bell, Share2, Heart, MessageSquare, Send, ChevronLeft, Clock, MoreHorizontal, Search, Filter, AlertTriangle
+    Bell, Share2, Heart, MessageSquare, Send, ChevronLeft, Clock, Search, Filter, AlertTriangle
 } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -369,8 +369,9 @@ export const EventsScreen = () => {
                                         type="date"
                                         value={filterDate}
                                         onChange={(e) => setFilterDate(e.target.value)}
-                                        className="w-full bg-white/5 border border-white/5 rounded-xl py-2.5 px-4 text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-white/10"
+                                        className="w-full appearance-none bg-white/5 border border-white/5 rounded-xl py-2.5 pl-4 pr-10 text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all cursor-pointer hover:bg-white/10 min-h-[42px]"
                                     />
+                                    <CalendarDays size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                                 </div>
                             </div>
                         </div>
@@ -708,21 +709,27 @@ export const EventsScreen = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Date</label>
-                                            <input
-                                                type="date"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                                                value={eventForm.date}
-                                                onChange={e => setEventForm({ ...eventForm, date: e.target.value })}
-                                            />
+                                            <div className="relative">
+                                                <input
+                                                    type="date"
+                                                    className="w-full appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors min-h-[50px]"
+                                                    value={eventForm.date}
+                                                    onChange={e => setEventForm({ ...eventForm, date: e.target.value })}
+                                                />
+                                                <CalendarDays size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                            </div>
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Time</label>
-                                            <input
-                                                type="time"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                                                value={eventForm.time}
-                                                onChange={e => setEventForm({ ...eventForm, time: e.target.value })}
-                                            />
+                                            <div className="relative">
+                                                <input
+                                                    type="time"
+                                                    className="w-full appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors min-h-[50px]"
+                                                    value={eventForm.time}
+                                                    onChange={e => setEventForm({ ...eventForm, time: e.target.value })}
+                                                />
+                                                <Clock size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                            </div>
                                         </div>
                                         <div className="space-y-2 col-span-2">
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Location</label>
