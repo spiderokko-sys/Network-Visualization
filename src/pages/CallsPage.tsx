@@ -20,7 +20,7 @@ const ContactListModal = ({ onClose, customers }: { onClose: () => void, custome
 	return (
 		<div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in">
 			<div className="glass-panel w-full max-w-md h-[80vh] sm:h-auto sm:max-h-[80vh] rounded-3xl sm:rounded-2xl shadow-2xl flex flex-col animate-in slide-in-from-bottom-10 duration-300">
-				<div className="p-4 border-b border-slate-200 dark:border-white/5 flex justify-between items-center bg-white dark:bg-slate-900/50 backdrop-blur-xl">
+				<div className="p-4 border-b border-slate-200 dark:border-white/5 flex justify-between items-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
 					<h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"><Users size={20} className="text-indigo-400" /> Contacts</h3>
 					<button onClick={onClose} className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors"><X size={18} /></button>
 				</div>
@@ -61,7 +61,7 @@ const ContactListModal = ({ onClose, customers }: { onClose: () => void, custome
 					)}
 				</div>
 
-				<div className="p-4 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/50">
+				<div className="p-4 border-t border-slate-200 dark:border-white/5 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
 					<Button className="w-full glass-button" onClick={() => { }}>
 						<UserPlus size={16} className="mr-2" /> Add New Contact
 					</Button>
@@ -153,7 +153,7 @@ export const CallsModule = ({ customers }: any) => {
 			{/* Ongoing Call Card */}
 			<div className="relative group cursor-pointer">
 				<div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-				<div className="glass-panel p-4 md:p-6 relative overflow-hidden bg-white/10 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
+				<div className="glass-panel p-4 md:p-6 relative overflow-hidden border border-slate-200 dark:border-white/5">
 					<div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><Clock size={100} /></div>
 					<div className="relative z-10">
 						<div className="flex justify-between items-center mb-3">
@@ -185,7 +185,7 @@ export const CallsModule = ({ customers }: any) => {
 			{/* History */}
 			<div>
 				<div className="flex justify-between items-center mb-3 px-1">
-					<div className="glass-panel p-1 rounded-lg flex shrink-0 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+					<div className="glass-panel p-1 rounded-lg flex shrink-0 border border-slate-200 dark:border-white/5">
 						<button
 							onClick={() => setHistoryFilter('all')}
 							className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all ${historyFilter === 'all' ? 'bg-white shadow-sm text-indigo-600 dark:bg-white/10 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}

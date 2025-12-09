@@ -49,7 +49,7 @@ const CreateChannelModal = ({ onClose, onSave }: any) => {
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
 			<div className="glass-panel w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto no-scrollbar">
-				<div className="flex justify-between items-center mb-6 sticky top-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl z-10 pb-4 border-b border-slate-200 dark:border-white/5">
+				<div className="flex justify-between items-center mb-6 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-10 pb-4 border-b border-slate-200 dark:border-white/5">
 					<h3 className="text-xl font-bold text-slate-900 dark:text-white">Create Channel</h3>
 					<button onClick={onClose} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><X /></button>
 				</div>
@@ -84,7 +84,7 @@ const CreateChannelModal = ({ onClose, onSave }: any) => {
 						</div>
 					</div>
 				</div>
-				<div className="sticky bottom-0 bg-transparent pt-6 mt-2 z-10">
+				<div className="sticky bottom-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl pt-6 mt-2 z-10 -mx-6 px-6 pb-2">
 					<Button onClick={() => onSave(form)} disabled={!form.name} className="w-full glass-button-primary bg-indigo-600 hover:bg-indigo-500 h-12 text-lg font-bold">Create Channel</Button>
 				</div>
 			</div>
@@ -95,7 +95,7 @@ const CreateChannelModal = ({ onClose, onSave }: any) => {
 const ChannelInfoModal = ({ channel, onClose }: any) => {
 	return (
 		<div className="fixed inset-0 z-50 flex justify-end backdrop-blur-md bg-black/50" onClick={onClose}>
-			<div className="w-full max-w-sm glass-panel h-full border-l border-slate-200 dark:border-white/10 shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-300 bg-white dark:bg-slate-900" onClick={e => e.stopPropagation()}>
+			<div className="w-full max-w-sm glass-panel h-full border-l border-slate-200 dark:border-white/10 shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-300" onClick={e => e.stopPropagation()}>
 				<div className="h-48 bg-gradient-to-br from-indigo-600 to-purple-800 relative">
 					<button onClick={onClose} className="absolute top-4 left-4 p-2 bg-slate-100 dark:bg-black/20 backdrop-blur-xl rounded-full text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-black/40 transition-colors border border-slate-200 dark:border-white/10"><X size={20} /></button>
 					<button className="absolute top-4 right-4 p-2 bg-slate-100 dark:bg-black/20 backdrop-blur-xl rounded-full text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-black/40 transition-colors border border-slate-200 dark:border-white/10"><Edit2 size={18} /></button>

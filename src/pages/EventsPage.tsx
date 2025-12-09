@@ -314,7 +314,7 @@ export const EventsScreen = () => {
                         </div>
 
                         {/* Filter Bar */}
-                        <div className="glass-panel p-3 rounded-2xl flex flex-col lg:flex-row gap-3 border border-slate-200 dark:border-white/5 bg-white dark:bg-white/[0.02]">
+                        <div className="glass-panel p-3 rounded-2xl flex flex-col lg:flex-row gap-3 border border-slate-200 dark:border-white/5">
                             <div className="flex-1 relative group">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={18} />
                                 <input
@@ -647,10 +647,10 @@ export const EventsScreen = () => {
                 {
                     showEventModal && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-                            <div className="bg-white dark:bg-[#0f1115] border border-slate-200 dark:border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl ring-1 ring-white/10 animate-in zoom-in-95 duration-300">
-                                <div className="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-white dark:bg-[#0f1115] z-10 glass-panel border-0 border-b">
+                            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl ring-1 ring-slate-200 dark:ring-white/10 animate-in zoom-in-95 duration-300">
+                                <div className="p-6 border-b border-slate-200 dark:border-white/10 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900 z-10 glass-panel border-0 border-b">
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">{editingEventId ? 'Edit Event' : 'Create New Event'}</h3>
-                                    <button onClick={() => setShowEventModal(false)} className="text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"><X size={20} /></button>
+                                    <button onClick={() => setShowEventModal(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"><X size={20} /></button>
                                 </div>
 
                                 <div className="p-8 space-y-6">
@@ -735,7 +735,7 @@ export const EventsScreen = () => {
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Location</label>
                                             <input
                                                 type="text"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                                                className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                                                 placeholder="e.g. Main Hall"
                                                 value={eventForm.location}
                                                 onChange={e => setEventForm({ ...eventForm, location: e.target.value })}
@@ -791,7 +791,7 @@ export const EventsScreen = () => {
                                     </div>
                                 </div>
 
-                                <div className="p-6 border-t border-slate-200 dark:border-white/10 flex items-center justify-between bg-white dark:bg-[#0f1115] sticky bottom-0 z-10">
+                                <div className="p-6 border-t border-slate-200 dark:border-white/10 flex items-center justify-between bg-white dark:bg-slate-900 sticky bottom-0 z-10">
                                     <div className="flex gap-2">
                                         {editingEventId && (
                                             <>
@@ -830,7 +830,7 @@ export const EventsScreen = () => {
                 {
                     confirmState.isOpen && (
                         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in duration-200">
-                            <div className="bg-[#0f1115] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl ring-1 ring-white/10 p-6 flex flex-col gap-4 animate-in zoom-in-95 duration-200">
+                            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl w-full max-w-md shadow-2xl ring-1 ring-slate-200 dark:ring-white/10 p-6 flex flex-col gap-4 animate-in zoom-in-95 duration-200">
                                 <div className="flex items-start gap-4">
                                     <div className={`p-3 rounded-full ${confirmState.action === 'delete' ? 'bg-red-500/20 text-red-500' : 'bg-indigo-500/20 text-indigo-400'}`}>
                                         {confirmState.action === 'delete' ? <Trash2 size={24} /> : <AlertTriangle size={24} />}
@@ -841,12 +841,12 @@ export const EventsScreen = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-2 p-4 bg-white/5 rounded-xl border border-white/5 flex items-start gap-3 cursor-pointer" onClick={() => setNotifyUsers(!notifyUsers)}>
-                                    <div className={`mt-0.5 w-5 h-5 rounded border flex items-center justify-center transition-colors ${notifyUsers ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-slate-500 text-transparent'}`}>
+                                <div className="mt-2 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5 flex items-start gap-3 cursor-pointer" onClick={() => setNotifyUsers(!notifyUsers)}>
+                                    <div className={`mt-0.5 w-5 h-5 rounded border flex items-center justify-center transition-colors ${notifyUsers ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-slate-300 dark:border-slate-500 text-transparent'}`}>
                                         <CheckCircle2 size={14} />
                                     </div>
                                     <div>
-                                        <span className="font-bold text-slate-200 text-sm block">Notify users about changes</span>
+                                        <span className="font-bold text-slate-700 dark:text-slate-200 text-sm block">Notify users about changes</span>
                                         <span className="text-xs text-slate-500">Send an update notification to all RSVPs and interested users.</span>
                                     </div>
                                 </div>
