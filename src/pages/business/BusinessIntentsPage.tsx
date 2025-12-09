@@ -154,8 +154,7 @@ export const BusinessIntentsPage = () => {
     const itemsPerPage = 5;
 
     const handleCreateIntent = () => {
-        // TODO: Implement create intent functionality
-        console.log('Create Intent clicked');
+        navigate('/business/intents/new');
     };
 
     // Filter intents based on status
@@ -205,7 +204,7 @@ export const BusinessIntentsPage = () => {
 
     return (
         <div className="h-full overflow-y-auto no-scrollbar min-h-0">
-            <div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
+            <div className="px-2 md:px-6 pt-0 space-y-2 md:space-y-6 pb-28 max-w-7xl mx-auto">
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-2">
@@ -230,7 +229,7 @@ export const BusinessIntentsPage = () => {
 
 
                     {/* Intents List */}
-                    <div className="glass-panel p-6 rounded-2xl">
+                    <div className="glass-panel p-3 md:p-6 rounded-2xl">
                         {/* Filter Tabs */}
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex gap-2">
@@ -273,7 +272,7 @@ export const BusinessIntentsPage = () => {
                                 <div
                                     key={intent.id}
                                     onClick={() => navigate(`/business/intents/${intent.id}`)}
-                                    className="p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-rose-300 dark:hover:border-rose-500/30 hover:shadow-md transition-all cursor-pointer group"
+                                    className="p-3 md:p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-rose-300 dark:hover:border-rose-500/30 hover:shadow-md transition-all cursor-pointer group"
                                 >
                                     <div className="flex items-start justify-between gap-4">
                                         <div className="flex-1 min-w-0">

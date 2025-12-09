@@ -28,7 +28,7 @@ export const CallsModule = ({ customers }: any) => {
 	const favorites = customers.filter((c: any) => c.isFavorite);
 
 	return (
-		<div className="h-full overflow-y-auto no-scrollbar pt-2 px-4 md:p-6 space-y-4 md:space-y-6 animate-in fade-in slide-in-from-right-4 pb-28 bg-slate-50 dark:bg-slate-950">
+		<div className="h-full overflow-y-auto no-scrollbar pt-1 px-2 md:p-6 space-y-2 md:space-y-6 animate-in fade-in slide-in-from-right-4 pb-28 bg-slate-50 dark:bg-slate-950">
 			{/* Header */}
 
 

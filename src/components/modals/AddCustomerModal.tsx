@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 export const AddCustomerModal = ({ onClose, onSave, initialData = null }: { onClose: () => void, onSave: (data: any) => void, initialData?: any }) => {
@@ -24,8 +24,8 @@ export const AddCustomerModal = ({ onClose, onSave, initialData = null }: { onCl
 	};
 
 	return (
-		<div className="fixed inset-0 bg-slate-900/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-			<div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+		<div className="fixed inset-0 bg-slate-950/50 dark:bg-slate-950/80 z-50 flex items-center justify-center p-4 backdrop-blur-md">
+			<div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl border border-slate-200 dark:border-white/10 shadow-2xl p-6 animate-in zoom-in-95 duration-200">
 				<div className="flex justify-between items-center mb-6">
 					<h3 className="text-xl font-bold text-slate-900 dark:text-white">{initialData ? 'Edit Contact' : 'Add Contact'}</h3>
 					<button onClick={onClose}><X className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" /></button>

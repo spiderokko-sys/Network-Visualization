@@ -290,7 +290,6 @@ const sampleIntents: Intent[] = [
 export const IntentDetailsPage = () => {
     const { intentId } = useParams<{ intentId: string }>();
     const navigate = useNavigate();
-    const [showModifyDialog, setShowModifyDialog] = useState(false);
     const [showAddParticipantModal, setShowAddParticipantModal] = useState(false);
 
     // Add Participant Form State
@@ -389,7 +388,7 @@ export const IntentDetailsPage = () => {
     };
 
     const handleModify = () => {
-        setShowModifyDialog(true);
+        navigate(`/business/intents/${intentId}/edit`);
     };
 
     const handleAddParticipant = () => {
@@ -444,7 +443,7 @@ export const IntentDetailsPage = () => {
 
     return (
         <div className="h-full overflow-y-auto no-scrollbar min-h-0">
-            <div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
+            <div className="px-2 md:px-6 pt-0 space-y-2 md:space-y-6 pb-28 max-w-7xl mx-auto">
                 <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {/* Compact Header */}
                     <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -703,34 +702,6 @@ export const IntentDetailsPage = () => {
                 </div>
             </div>
 
-            {/* Modify Dialog */}
-            {showModifyDialog && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModifyDialog(false)}>
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
-                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Modify Intent</h2>
-                        <p className="text-slate-600 dark:text-slate-400 mb-6">
-                            Intent modification functionality will be implemented here. This will allow you to update parties, obligations, and other details.
-                        </p>
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => setShowModifyDialog(false)}
-                                className="flex-1 px-4 py-2 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-900 dark:text-white font-medium rounded-xl transition-colors"
-                            >
-                                Close
-                            </button>
-                            <button
-                                onClick={() => {
-                                    alert('Modify functionality coming soon!');
-                                    setShowModifyDialog(false);
-                                }}
-                                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors"
-                            >
-                                Save Changes
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {/* Add Participant Modal */}
             {showAddParticipantModal && (
@@ -779,14 +750,14 @@ export const IntentDetailsPage = () => {
                                         <button
                                             onClick={() => setContributionType('services')}
                                             className={`p-4 rounded-xl border-2 transition-all ${contributionType === 'services'
-                                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10'
-                                                    : 'border-slate-200 dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-500/50'
+                                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10'
+                                                : 'border-slate-200 dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-500/50'
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center gap-2">
                                                 <div className={`p-3 rounded-lg ${contributionType === 'services'
-                                                        ? 'bg-blue-100 dark:bg-blue-500/20'
-                                                        : 'bg-slate-100 dark:bg-white/5'
+                                                    ? 'bg-blue-100 dark:bg-blue-500/20'
+                                                    : 'bg-slate-100 dark:bg-white/5'
                                                     }`}>
                                                     <Clock size={24} className={
                                                         contributionType === 'services'
@@ -796,8 +767,8 @@ export const IntentDetailsPage = () => {
                                                 </div>
                                                 <div className="text-center">
                                                     <p className={`font-bold text-sm ${contributionType === 'services'
-                                                            ? 'text-blue-900 dark:text-blue-300'
-                                                            : 'text-slate-900 dark:text-white'
+                                                        ? 'text-blue-900 dark:text-blue-300'
+                                                        : 'text-slate-900 dark:text-white'
                                                         }`}>
                                                         Services
                                                     </p>
@@ -811,14 +782,14 @@ export const IntentDetailsPage = () => {
                                         <button
                                             onClick={() => setContributionType('monetary')}
                                             className={`p-4 rounded-xl border-2 transition-all ${contributionType === 'monetary'
-                                                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10'
-                                                    : 'border-slate-200 dark:border-white/10 hover:border-emerald-300 dark:hover:border-emerald-500/50'
+                                                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10'
+                                                : 'border-slate-200 dark:border-white/10 hover:border-emerald-300 dark:hover:border-emerald-500/50'
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center gap-2">
                                                 <div className={`p-3 rounded-lg ${contributionType === 'monetary'
-                                                        ? 'bg-emerald-100 dark:bg-emerald-500/20'
-                                                        : 'bg-slate-100 dark:bg-white/5'
+                                                    ? 'bg-emerald-100 dark:bg-emerald-500/20'
+                                                    : 'bg-slate-100 dark:bg-white/5'
                                                     }`}>
                                                     <DollarSign size={24} className={
                                                         contributionType === 'monetary'
@@ -828,8 +799,8 @@ export const IntentDetailsPage = () => {
                                                 </div>
                                                 <div className="text-center">
                                                     <p className={`font-bold text-sm ${contributionType === 'monetary'
-                                                            ? 'text-emerald-900 dark:text-emerald-300'
-                                                            : 'text-slate-900 dark:text-white'
+                                                        ? 'text-emerald-900 dark:text-emerald-300'
+                                                        : 'text-slate-900 dark:text-white'
                                                         }`}>
                                                         Monetary Instruments
                                                     </p>
@@ -843,14 +814,14 @@ export const IntentDetailsPage = () => {
                                         <button
                                             onClick={() => setContributionType('goods')}
                                             className={`p-4 rounded-xl border-2 transition-all ${contributionType === 'goods'
-                                                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10'
-                                                    : 'border-slate-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50'
+                                                ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10'
+                                                : 'border-slate-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50'
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center gap-2">
                                                 <div className={`p-3 rounded-lg ${contributionType === 'goods'
-                                                        ? 'bg-purple-100 dark:bg-purple-500/20'
-                                                        : 'bg-slate-100 dark:bg-white/5'
+                                                    ? 'bg-purple-100 dark:bg-purple-500/20'
+                                                    : 'bg-slate-100 dark:bg-white/5'
                                                     }`}>
                                                     <Package size={24} className={
                                                         contributionType === 'goods'
@@ -860,8 +831,8 @@ export const IntentDetailsPage = () => {
                                                 </div>
                                                 <div className="text-center">
                                                     <p className={`font-bold text-sm ${contributionType === 'goods'
-                                                            ? 'text-purple-900 dark:text-purple-300'
-                                                            : 'text-slate-900 dark:text-white'
+                                                        ? 'text-purple-900 dark:text-purple-300'
+                                                        : 'text-slate-900 dark:text-white'
                                                         }`}>
                                                         Goods
                                                     </p>

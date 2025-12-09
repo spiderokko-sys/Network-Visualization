@@ -13,6 +13,7 @@ import { EventsScreen } from './pages/EventsPage';
 import { ContactsScreen } from './pages/ContactsPage';
 import { ProfileScreen } from './pages/ProfilePage';
 import { SettingsScreen } from './pages/SettingsPage';
+import { ViewAllIntentsPage } from './pages/ViewAllIntentsPage';
 
 // Calls Pages
 import { NewMeetingPage } from './pages/calls/NewMeetingPage';
@@ -23,6 +24,8 @@ import { ManageFavoritesPage } from './pages/calls/ManageFavoritesPage';
 import { BusinessOverviewPage } from './pages/business/BusinessOverviewPage';
 import { BusinessIntentsPage } from './pages/business/BusinessIntentsPage';
 import { IntentDetailsPage } from './pages/business/IntentDetailsPage';
+import { CreateIntentPage } from './pages/business/CreateIntentPage';
+import { ModifyIntentPage } from './pages/business/ModifyIntentPage';
 import { BusinessCalendarPage } from './pages/business/BusinessCalendarPage';
 import { EventDetailsPage } from './pages/business/EventDetailsPage';
 import { BusinessContactsPage } from './pages/business/BusinessContactsPage';
@@ -61,7 +64,9 @@ export default function App() {
 					<Route path="business" element={<BusinessLayout />}>
 						<Route index element={<BusinessOverviewPage />} />
 						<Route path="intents" element={<BusinessIntentsPage />} />
+						<Route path="intents/new" element={<CreateIntentPage />} />
 						<Route path="intents/:intentId" element={<IntentDetailsPage />} />
+						<Route path="intents/:intentId/edit" element={<ModifyIntentPage />} />
 						<Route path="calendar" element={<BusinessCalendarPage />} />
 						<Route path="calendar/:eventId" element={<EventDetailsPage />} />
 						<Route path="contacts" element={<BusinessContactsPage />} />
@@ -99,6 +104,7 @@ export default function App() {
 					<Route path="events" element={<EventsScreen />} />
 					<Route path="contacts" element={<ContactsScreen contacts={MOCK_CUSTOMERS} />} />
 					<Route path="profile" element={<ProfileScreen />} />
+					<Route path="profile/intents" element={<ViewAllIntentsPage />} />
 
 					<Route path="settings" element={<SettingsScreen />}>
 						<Route index element={<Navigate to="general" replace />} />

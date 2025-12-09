@@ -227,7 +227,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
 
                 {/* Detail/Edit Slide-over */}
                 <div className={`
-            fixed inset-y-0 right-0 w-full md:w-[450px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border-l border-slate-200 dark:border-white/10 shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-30
+            fixed inset-y-0 right-0 w-full md:w-[450px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border-l border-slate-200 dark:border-white/10 shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-50
             ${(selectedContact || isEditing) ? 'translate-x-0' : 'translate-x-full'}
          `}>
                     {isEditing ? (
@@ -249,7 +249,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                             </div>
 
                             {/* Profile Info */}
-                            <div className="px-8 -mt-12 mb-6">
+                            <div className="px-4 md:px-8 -mt-12 pt-10 mb-6">
                                 <div className="h-24 w-24 rounded-2xl bg-white dark:bg-slate-900 p-1 shadow-xl ring-1 ring-slate-200 dark:ring-white/10">
                                     <div className="h-full w-full rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-3xl font-bold text-white shadow-inner">
                                         {selectedContact.name.charAt(0)}
@@ -289,7 +289,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                             </div>
 
                             {/* Quick Actions */}
-                            <div className="px-8 grid grid-cols-4 gap-2 mb-8">
+                            <div className="px-4 md:px-8 grid grid-cols-4 gap-2 mb-8">
                                 <ActionButton icon={Phone} label="Call" color="emerald" />
                                 <ActionButton icon={MessageSquare} label="Message" color="indigo" />
                                 <ActionButton icon={Mail} label="Email" color="blue" />
@@ -297,7 +297,7 @@ export function ContactsScreen({ contacts: initialContacts = [] }: ContactsScree
                             </div>
 
                             {/* Details Sections */}
-                            <div className="px-8 space-y-6 pb-12">
+                            <div className="px-4 md:px-8 space-y-6 pb-12">
                                 {/* Contact Info */}
                                 <Section title="Contact Information">
                                     <div className="space-y-3">

@@ -8,6 +8,7 @@ import { QRModal } from '../components/modals/QRModal';
 import { FinancialModal } from '../components/modals/FinancialModal';
 import { AddCustomerModal } from '../components/modals/AddCustomerModal';
 import { EditCircleModal } from '../components/modals/EditCircleModal';
+import { CreateCircleModal, CircleData } from '../components/modals/CreateCircleModal';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 
@@ -50,6 +51,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 	const [editingCustomer, setEditingCustomer] = useState(null);
 	const [showFinancialModal, setShowFinancialModal] = useState(false);
 	const [financialType, setFinancialType] = useState('payment');
+	const [showCreateCircleModal, setShowCreateCircleModal] = useState(false);
 
 	// Helpers
 	const toggleMarketingCircle = (id: string) => setSelectedMarketingCircles(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -133,9 +135,23 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 		setShowFinancialModal(false);
 	};
 
+	const handleCreateCircle = (circleData: CircleData) => {
+		const newCircle = {
+			id: `c${Date.now()}`,
+			name: circleData.name,
+			type: 'custom' as const,
+			count: 0,
+			color: circleData.color,
+			desc: circleData.description
+		};
+		setCircles([...circles, newCircle]);
+		setShowCreateCircleModal(false);
+		console.log('Created circle:', circleData);
+	};
+
 	return (
 		<div className="h-full overflow-y-auto no-scrollbar min-h-0">
-			<div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
+			<div className="px-2 md:px-6 pt-0 space-y-2 md:space-y-6 pb-28 max-w-7xl mx-auto">
 
 				{/* Tabs */}
 				<div className="glass-panel p-1 rounded-xl flex overflow-x-auto no-scrollbar gap-1 mb-4 md:mb-6 sticky top-0 z-20 w-full sm:static">
@@ -311,7 +327,14 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 					<div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 						<div className="flex justify-between items-center gap-4">
 							<h3 className="text-2xl font-bold text-slate-900 dark:text-white">Network Circles</h3>
-							<Button size="sm" variant="outline" className="glass-button"><PlusCircle size={16} className="mr-2" /> New Circle</Button>
+							<Button
+								size="sm"
+								variant="outline"
+								className="glass-button"
+								onClick={() => setShowCreateCircleModal(true)}
+							>
+								<PlusCircle size={16} className="mr-2" /> New Circle
+							</Button>
 						</div>
 
 						<div className="grid gap-3 sm:gap-4">
@@ -566,6 +589,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 				{showLargeQR && <QRModal onClose={() => setShowLargeQR(false)} />}
 				{showEditCircleModal && editingCircle && <EditCircleModal circle={editingCircle} onClose={() => { setShowEditCircleModal(false); setEditingCircle(null); }} onSave={handleEditCircle} />}
 				{showFinancialModal && <FinancialModal type={financialType} initialCustomer={null} customers={customers} onClose={() => setShowFinancialModal(false)} onSave={handleSaveFinancial} />}
+				{showCreateCircleModal && <CreateCircleModal onClose={() => setShowCreateCircleModal(false)} onSave={handleCreateCircle} />}
 			</div>
 		</div>
 	);

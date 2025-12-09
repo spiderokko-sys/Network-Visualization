@@ -126,7 +126,7 @@ export const ChatsModule = () => {
 	};
 
 	return (
-		<div className="p-0 md:p-4 space-y-0 md:space-y-4 animate-in fade-in h-full flex gap-4 min-h-0">
+		<div className="p-0 md:p-4 space-y-0 md:space-y-4 animate-in fade-in h-full flex gap-2 md:gap-4 min-h-0">
 			{/* Chat List */}
 			<div className={`glass-panel h-full flex flex-col rounded-none md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 min-h-0 ${selectedChatId ? 'hidden md:flex md:w-80 lg:w-96' : 'w-full'}`}>
 				<div className="p-5 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-20 border-b border-slate-200 dark:border-white/5">

@@ -3,7 +3,6 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     User,
     MessageSquare,
-    Bell,
     Search,
     Target,
     List,
@@ -159,7 +158,7 @@ export default function MainLayout() {
             <main className="flex-1 relative z-10 flex flex-col h-full overflow-hidden">
 
                 {/* Top Bar (Mobile + Desktop Context) */}
-                <header className="h-16 md:h-20 px-4 md:px-6 flex items-center justify-between border-b border-slate-200 dark:border-white/5 bg-white/50 dark:bg-slate-950/20 backdrop-blur-sm shrink-0 transition-colors duration-300">
+                <header className="h-16 md:h-20 px-4 md:px-6 pl-safe-left pr-safe-right pt-safe flex items-center justify-between border-b border-slate-200 dark:border-white/5 bg-white/50 dark:bg-slate-950/20 backdrop-blur-sm shrink-0 transition-colors duration-300">
 
                     {/* Mobile Menu Toggle (Visible only on mobile) */}
                     <div
@@ -179,14 +178,7 @@ export default function MainLayout() {
 
                     {/* Right Actions */}
                     <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => setShowExploreMenu(true)}
-                            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-sm hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
-                        >
-                            <Search size={14} />
-                            <span className="text-xs font-medium">Search...</span>
-                            <span className="ml-2 text-[10px] bg-slate-200 dark:bg-white/10 px-1.5 py-0.5 rounded text-slate-500 dark:text-slate-400">⌘K</span>
-                        </button>
+
 
                         <button
                             onClick={toggleTheme}
@@ -195,10 +187,7 @@ export default function MainLayout() {
                             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                         </button>
 
-                        <button className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-full hover:bg-slate-200/50 dark:hover:bg-white/5 active:scale-95">
-                            <Bell size={20} />
-                            <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-slate-50 dark:border-slate-950 shadow-[0_0_8px_#f43f5e]"></span>
-                        </button>
+
 
                         <div
                             className="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[2px] ring-2 ring-transparent hover:ring-indigo-300 dark:hover:ring-white/20 transition-all cursor-pointer hover:scale-105 active:scale-95"
@@ -218,7 +207,7 @@ export default function MainLayout() {
                 </div>
 
                 {/* Mobile Navigation Bar */}
-                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-200 dark:border-white/10 z-50 flex items-center justify-around pb-safe pt-2 transition-colors duration-300">
+                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-200 dark:border-white/10 z-50 flex items-center justify-around pb-safe-bottom pl-safe-left pr-safe-right pt-2 transition-colors duration-300">
 
                     <button
                         onClick={() => navigate('/chats')}

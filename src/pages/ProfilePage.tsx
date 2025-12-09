@@ -16,10 +16,12 @@ import {
 } from 'lucide-react';
 
 import { useNavigate } from 'react-router-dom';
+import { ShareProfileModal } from '../components/modals/ShareProfileModal';
 
 export const ProfileScreen = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('overview');
+    const [showShareModal, setShowShareModal] = useState(false);
 
     const navigateToSettings = () => navigate('/settings');
 
@@ -49,13 +51,13 @@ export const ProfileScreen = () => {
             <div className="max-w-5xl mx-auto space-y-4">
 
                 {/* Profile Header Card */}
-                <div className="relative group rounded-2xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 overflow-hidden backdrop-blur-xl">
+                <div className="relative group rounded-2xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 overflow-hidden">
                     {/* Glass Effect Cover */}
-                    <div className="h-32 w-full bg-gradient-to-br from-slate-100/80 via-slate-50/60 to-white/40 dark:from-slate-800/80 dark:via-slate-900/60 dark:to-slate-950/40 relative backdrop-blur-md">
+                    <div className="h-32 w-full bg-gradient-to-br from-slate-100/80 via-slate-50/60 to-white/40 dark:from-slate-800/80 dark:via-slate-900/60 dark:to-slate-950/40 relative">
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10"></div>
                     </div>
 
-                    <div className="px-4 md:px-6 pb-4 pt-0 relative -mt-10">
+                    <div className="px-2 md:px-6 pb-4 pt-0 relative -mt-10">
                         {/* Compact Layout: Avatar + Info in one row */}
                         <div className="flex items-end gap-4">
                             {/* Smaller Avatar */}
@@ -97,7 +99,10 @@ export const ProfileScreen = () => {
                                             <Edit3 size={14} />
                                             Edit
                                         </button>
-                                        <button className="p-1.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-white/5 transition-colors">
+                                        <button
+                                            onClick={() => setShowShareModal(true)}
+                                            className="p-1.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-white/5 transition-colors"
+                                        >
                                             <Share2 size={16} />
                                         </button>
                                     </div>
@@ -180,7 +185,7 @@ export const ProfileScreen = () => {
                                     <h4 className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-3 uppercase tracking-wider">Expertise</h4>
                                     <div className="flex flex-wrap gap-2">
                                         {['Negotiation', 'Strategic Planning', 'Market Analysis', 'Leadership', 'Public Speaking'].map(tag => (
-                                            <span key={tag} className="px-3 py-1 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 rounded-full text-xs font-medium">
+                                            <span key={tag} className="px-3 py-1 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20 rounded-full text-xs font-medium">
                                                 {tag}
                                             </span>
                                         ))}
@@ -197,7 +202,7 @@ export const ProfileScreen = () => {
                                         <div key={item} className="flex gap-4 group">
                                             <div className="flex flex-col items-center">
                                                 <div className="w-2 h-2 rounded-full bg-slate-600 group-hover:bg-indigo-500 transition-colors"></div>
-                                                <div className="w-0.5 h-full bg-slate-800 my-1 group-last:hidden"></div>
+                                                <div className="w-0.5 h-full bg-slate-200 dark:bg-slate-800 my-1 group-last:hidden"></div>
                                             </div>
                                             <div>
                                                 <p className="text-slate-600 dark:text-slate-300 text-sm">
@@ -215,7 +220,12 @@ export const ProfileScreen = () => {
                             <div className="bg-white/50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 rounded-2xl p-4">
                                 <div className="flex items-center justify-between mb-4">
                                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Completed Intents</h3>
-                                    <button className="text-xs text-indigo-400 hover:text-indigo-300">View All</button>
+                                    <button
+                                        onClick={() => navigate('/profile/intents')}
+                                        className="text-xs text-indigo-400 hover:text-indigo-300 font-medium"
+                                    >
+                                        View All
+                                    </button>
                                 </div>
                                 <div className="space-y-3">
                                     {[
@@ -226,7 +236,7 @@ export const ProfileScreen = () => {
                                     ].map((intent, idx) => (
                                         <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors border border-slate-200 dark:border-white/5">
                                             <div className="flex items-center gap-3">
-                                                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                                                <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                                                     <CheckCircle2 size={16} />
                                                 </div>
                                                 <div>
@@ -236,7 +246,7 @@ export const ProfileScreen = () => {
                                             </div>
                                             <div className="text-right">
                                                 <div className="text-slate-900 dark:text-white font-medium text-sm">{intent.value}</div>
-                                                <div className="text-emerald-400 text-xs">{intent.status}</div>
+                                                <div className="text-emerald-600 dark:text-emerald-400 text-xs">{intent.status}</div>
                                             </div>
                                         </div>
                                     ))}
@@ -255,7 +265,7 @@ export const ProfileScreen = () => {
                             <div className="space-y-4">
 
                                 <div className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
-                                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 dark:text-slate-500">
+                                    <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 dark:text-slate-500">
                                         <Phone size={16} />
                                     </div>
                                     <div className="flex-1">
@@ -269,6 +279,15 @@ export const ProfileScreen = () => {
                 </div>
 
             </div>
+
+            {/* Share Profile Modal */}
+            {showShareModal && (
+                <ShareProfileModal
+                    onClose={() => setShowShareModal(false)}
+                    userName={currentUser.name}
+                    profileUrl="https://gigmind.net/profile/iwan-mask"
+                />
+            )}
         </div>
     );
 };

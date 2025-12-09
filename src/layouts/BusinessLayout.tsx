@@ -36,7 +36,7 @@ export default function BusinessLayout() {
     return (
         <div className="h-full flex flex-col">
             {/* Tabs Navigation */}
-            <div className="glass-panel p-1 rounded-xl flex overflow-x-auto no-scrollbar gap-1 mb-4 md:mb-6 sticky top-0 z-20 w-full sm:static mx-4 md:mx-6 mt-4">
+            <div className="glass-panel p-1 rounded-xl flex overflow-x-auto no-scrollbar gap-1 mb-2 md:mb-6 sticky top-0 z-20 w-full sm:static mx-2 md:mx-6 mt-2 md:mt-4">
                 {tabs.map(tab => (
                     <TabButton
                         key={tab.path}

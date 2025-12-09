@@ -91,7 +91,7 @@ export const BusinessMarketingPage = () => {
 
     return (
         <div className="h-full overflow-y-auto no-scrollbar min-h-0">
-            <div className="px-4 md:px-6 pt-0 space-y-3 md:space-y-4 pb-28 max-w-7xl mx-auto">
+            <div className="px-2 md:px-6 pt-0 space-y-2 md:space-y-4 pb-28 max-w-7xl mx-auto">
                 <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {/* Campaign Mode Selection */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
