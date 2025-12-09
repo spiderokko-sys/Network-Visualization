@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { PlusCircle, Layers, Circle, Edit2, Trash2 } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { PlusCircle, Layers, Circle, Edit2, Trash2, Search } from 'lucide-react';
 import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
 import { EditCircleModal } from '../../components/modals/EditCircleModal';
 
 const INITIAL_CIRCLES = [
@@ -27,6 +28,7 @@ export const BusinessCirclesPage = () => {
     const [circles, setCircles] = useState(INITIAL_CIRCLES);
     const [showEditCircleModal, setShowEditCircleModal] = useState(false);
     const [editingCircle, setEditingCircle] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleDeleteCircle = (id: string) => {
         setCircles(circles.filter(c => c.id !== id));
@@ -43,6 +45,17 @@ export const BusinessCirclesPage = () => {
         setShowEditCircleModal(true);
     };
 
+    // Filter circles based on search term
+    const filteredCircles = useMemo(() => {
+        if (!searchTerm.trim()) return circles;
+
+        const lowerSearch = searchTerm.toLowerCase();
+        return circles.filter(circle =>
+            circle.name.toLowerCase().includes(lowerSearch) ||
+            circle.desc.toLowerCase().includes(lowerSearch)
+        );
+    }, [circles, searchTerm]);
+
     return (
         <div className="h-full overflow-y-auto no-scrollbar min-h-0">
             <div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
@@ -52,8 +65,20 @@ export const BusinessCirclesPage = () => {
                         <Button size="sm" variant="outline" className="glass-button"><PlusCircle size={16} className="mr-2" /> New Circle</Button>
                     </div>
 
+                    {/* Search Bar */}
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500" size={18} />
+                        <Input
+                            type="text"
+                            placeholder="Circle name, Contact details, Phone number, E-mail"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-10 glass-card border-slate-200 dark:border-white/10 focus:border-indigo-500 dark:focus:border-indigo-400"
+                        />
+                    </div>
+
                     <div className="grid gap-3 sm:gap-4">
-                        {circles.map(circle => (
+                        {filteredCircles.map(circle => (
                             <div key={circle.id} className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 relative group overflow-hidden">
                                 {/* Type Label */}
                                 {circle.type === 'custom' && (

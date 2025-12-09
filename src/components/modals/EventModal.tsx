@@ -11,6 +11,9 @@ export interface CalendarEvent {
     location: string;
     attendees: string;
     color: string;
+    type?: string;
+    priority?: string;
+    category?: string;
 }
 
 interface EventModalProps {
@@ -199,8 +202,8 @@ export const EventModal: React.FC<EventModalProps> = ({ onClose, onSave, onDelet
                                     type="button"
                                     onClick={() => setForm({ ...form, color: color.value })}
                                     className={`w-10 h-10 rounded-full ${color.value} transition-all ${form.color === color.value
-                                            ? 'ring-4 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 ring-slate-300 dark:ring-slate-600 scale-110'
-                                            : 'hover:scale-105'
+                                        ? 'ring-4 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 ring-slate-300 dark:ring-slate-600 scale-110'
+                                        : 'hover:scale-105'
                                         }`}
                                     title={color.name}
                                 />

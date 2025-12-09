@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
 	Phone, Video, PlusSquare, CalendarIcon, Monitor, Plus,
 	Filter, ArrowUpRight, Clock
@@ -17,6 +18,7 @@ const MOCK_CALL_HISTORY = [
 
 export const CallsModule = ({ customers }: any) => {
 
+	const navigate = useNavigate();
 	const [historyFilter, setHistoryFilter] = useState('all');
 
 	const filteredHistory = historyFilter === 'all'
@@ -32,10 +34,17 @@ export const CallsModule = ({ customers }: any) => {
 
 			{/* Main Actions */}
 			<div className="flex gap-3">
-				<Button className="flex-1 h-12 glass-button-primary bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20">
+				<Button
+					className="flex-1 h-12 glass-button-primary bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20"
+					onClick={() => navigate('/calls/new-meeting')}
+				>
 					<Video className="mr-2" size={18} /> New Meeting
 				</Button>
-				<Button variant="glass" className="flex-1 h-12 text-base text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10">
+				<Button
+					variant="glass"
+					className="flex-1 h-12 text-base text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+					onClick={() => navigate('/calls/join')}
+				>
 					<PlusSquare className="mr-2" size={18} /> Join
 				</Button>
 			</div>
@@ -56,7 +65,12 @@ export const CallsModule = ({ customers }: any) => {
 			<div>
 				<div className="flex justify-between items-center mb-3 px-1">
 					<h3 className="text-slate-500 text-xs uppercase tracking-wider font-bold mb-3">Favorites</h3>
-					<button className="text-indigo-400 text-xs hover:text-indigo-300 font-bold uppercase transition-colors">Edit</button>
+					<button
+						onClick={() => navigate('/calls/favorites')}
+						className="text-indigo-400 text-xs hover:text-indigo-300 font-bold uppercase transition-colors"
+					>
+						Edit
+					</button>
 				</div>
 				<div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
 					<div className="flex flex-col items-center gap-1.5 cursor-pointer group min-w-[56px]">

@@ -14,10 +14,17 @@ import { ContactsScreen } from './pages/ContactsPage';
 import { ProfileScreen } from './pages/ProfilePage';
 import { SettingsScreen } from './pages/SettingsPage';
 
+// Calls Pages
+import { NewMeetingPage } from './pages/calls/NewMeetingPage';
+import { JoinMeetingPage } from './pages/calls/JoinMeetingPage';
+import { ManageFavoritesPage } from './pages/calls/ManageFavoritesPage';
+
 // Business Pages
 import { BusinessOverviewPage } from './pages/business/BusinessOverviewPage';
 import { BusinessIntentsPage } from './pages/business/BusinessIntentsPage';
+import { IntentDetailsPage } from './pages/business/IntentDetailsPage';
 import { BusinessCalendarPage } from './pages/business/BusinessCalendarPage';
+import { EventDetailsPage } from './pages/business/EventDetailsPage';
 import { BusinessContactsPage } from './pages/business/BusinessContactsPage';
 import { BusinessCirclesPage } from './pages/business/BusinessCirclesPage';
 import { BusinessMarketingPage } from './pages/business/BusinessMarketingPage';
@@ -36,7 +43,9 @@ export default function App() {
 					<Route path="business" element={<BusinessLayout />}>
 						<Route index element={<BusinessOverviewPage />} />
 						<Route path="intents" element={<BusinessIntentsPage />} />
+						<Route path="intents/:intentId" element={<IntentDetailsPage />} />
 						<Route path="calendar" element={<BusinessCalendarPage />} />
+						<Route path="calendar/:eventId" element={<EventDetailsPage />} />
 						<Route path="contacts" element={<BusinessContactsPage />} />
 						<Route path="circles" element={<BusinessCirclesPage />} />
 						<Route path="marketing" element={<BusinessMarketingPage />} />
@@ -47,7 +56,15 @@ export default function App() {
 					<Route path="channels" element={<ChannelsModule />} />
 					<Route path="circles" element={<NetworkCircles />} />
 					<Route path="intents" element={<IntentsPage />} />
-					<Route path="calls" element={<CallsModule customers={MOCK_CUSTOMERS} />} />
+
+					{/* Calls Section with Nested Routes */}
+					<Route path="calls">
+						<Route index element={<CallsModule customers={MOCK_CUSTOMERS} />} />
+						<Route path="new-meeting" element={<NewMeetingPage />} />
+						<Route path="join" element={<JoinMeetingPage />} />
+						<Route path="favorites" element={<ManageFavoritesPage />} />
+					</Route>
+
 					<Route path="wallet" element={<WalletScreen />} />
 					<Route path="events" element={<EventsScreen />} />
 					<Route path="contacts" element={<ContactsScreen contacts={MOCK_CUSTOMERS} />} />

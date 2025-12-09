@@ -25,12 +25,12 @@ export const ProfileScreen = () => {
 
 
     const currentUser = {
-        name: "Alex Morgan",
-        role: "Senior Broker",
+        name: "Iwan Mask",
+        role: "Developer",
         location: "Toronto, ON",
         email: "alex.morgan@gigmind.net",
         phone: "+1 (416) 555-0199",
-        avatar: null, // Placeholder logic for now
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces",
         joined: "March 2023",
         status: "Active",
         level: "Platinum",
@@ -49,10 +49,10 @@ export const ProfileScreen = () => {
             <div className="max-w-5xl mx-auto space-y-4">
 
                 {/* Profile Header Card */}
-                <div className="relative group rounded-2xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 overflow-hidden">
-                    {/* Compact Cover Image */}
-                    <div className="h-24 w-full bg-gradient-to-r from-indigo-900/50 via-purple-900/50 to-slate-900/50 relative">
-                        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+                <div className="relative group rounded-2xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 overflow-hidden backdrop-blur-xl">
+                    {/* Glass Effect Cover */}
+                    <div className="h-32 w-full bg-gradient-to-br from-slate-100/80 via-slate-50/60 to-white/40 dark:from-slate-800/80 dark:via-slate-900/60 dark:to-slate-950/40 relative backdrop-blur-md">
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10"></div>
                     </div>
 
                     <div className="px-4 md:px-6 pb-4 pt-0 relative -mt-10">
@@ -64,7 +64,7 @@ export const ProfileScreen = () => {
                                     {currentUser.avatar ? (
                                         <img src={currentUser.avatar} alt="Profile" className="w-full h-full object-cover" />
                                     ) : (
-                                        <span className="text-2xl font-bold bg-gradient-to-br from-indigo-400 to-cyan-400 bg-clip-text text-transparent">AM</span>
+                                        <span className="text-2xl font-bold text-slate-700 dark:text-slate-300">IM</span>
                                     )}
                                     <div className="absolute inset-0 bg-black/10 dark:bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer">
                                         <Camera className="text-slate-900 dark:text-white" size={18} />
@@ -87,7 +87,7 @@ export const ProfileScreen = () => {
                                                 <SettingsIcon size={16} />
                                             </button>
                                         </div>
-                                        <p className="text-indigo-400 font-medium flex items-center gap-1.5 text-sm mt-0.5">
+                                        <p className="text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1.5 text-sm mt-0.5">
                                             <Briefcase size={14} />
                                             {currentUser.role}
                                         </p>
@@ -201,7 +201,7 @@ export const ProfileScreen = () => {
                                             </div>
                                             <div>
                                                 <p className="text-slate-600 dark:text-slate-300 text-sm">
-                                                    <span className="text-indigo-400 font-medium cursor-pointer hover:underline">Alex Morgan</span> closed a deal with <span className="text-slate-900 dark:text-white font-medium">TechFlow Inc.</span>
+                                                    <span className="text-indigo-400 font-medium cursor-pointer hover:underline">Iwan Mask</span> closed a deal with <span className="text-slate-900 dark:text-white font-medium">TechFlow Inc.</span>
                                                 </p>
                                                 <span className="text-xs text-slate-500 dark:text-slate-500">2 hours ago</span>
                                             </div>

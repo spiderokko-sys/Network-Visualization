@@ -413,7 +413,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
         <div className="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-6 pb-24 md:pb-6">
 
           {/* Control Bar */}
-          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 py-2 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
+          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 py-2 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0 md:justify-center">
             <div className="glass-panel p-1 rounded-xl flex gap-1 shrink-0 w-full md:w-auto">
               {[
                 { id: 'incoming', label: 'Activity' },

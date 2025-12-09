@@ -22,15 +22,15 @@ const SidebarItem = ({ icon: Icon, label, isActive, onClick, collapsed }: any) =
         onClick={onClick}
         className={`
 			relative flex items-center gap-3 p-3 rounded-xl transition-all duration-300 w-full group cursor-pointer
-			${isActive ? 'bg-indigo-500/10 text-indigo-400' : 'text-slate-400 hover:text-slate-100 hover:bg-white/5'}
+			${isActive ? 'bg-indigo-100 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/5'}
 			${collapsed ? 'justify-center' : ''}
 		`}
         title={collapsed ? label : undefined}
     >
-        {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-500 rounded-r-full shadow-[0_0_10px_#6366f1]" />}
-        <Icon size={22} className={`${isActive ? "text-indigo-400 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]" : ""} transition-all duration-300`} />
+        {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-indigo-600 dark:bg-indigo-500 rounded-r-full shadow-[0_0_10px_rgba(99,102,241,0.6)]" />}
+        <Icon size={22} className={`${isActive ? "text-indigo-600 dark:text-indigo-400 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]" : ""} transition-all duration-300`} />
         {!collapsed && (
-            <span className={`font-medium tracking-wide ${isActive ? "text-indigo-100" : ""}`}>{label}</span>
+            <span className={`font-medium tracking-wide ${isActive ? "text-indigo-700 dark:text-indigo-100" : ""}`}>{label}</span>
         )}
     </button>
 );
@@ -71,17 +71,17 @@ export default function MainLayout() {
                 `}
             >
                 {/* Sidebar Header */}
-                <div className="h-20 flex items-center px-6 border-b border-white/5">
+                <div className="h-20 flex items-center px-6 border-b border-slate-200 dark:border-white/5">
                     <div
                         className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-                        onClick={() => navigate('/business')}
+                        onClick={() => navigate('/chats')}
                     >
                         <div className="h-10 w-10 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)] ring-1 ring-white/10 shrink-0">
                             <Radar className="text-white" size={22} />
                         </div>
                         {!sidebarCollapsed && (
-                            <span className="font-extrabold text-xl tracking-tight text-white drop-shadow-md whitespace-nowrap">
-                                GIGMIND<span className="text-indigo-400">x</span>
+                            <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white drop-shadow-md whitespace-nowrap">
+                                GIGMIND
                             </span>
                         )}
                     </div>
@@ -129,7 +129,7 @@ export default function MainLayout() {
                         collapsed={sidebarCollapsed}
                     />
 
-                    <div className="my-4 border-t border-white/5 mx-2" />
+                    <div className="my-4 border-t border-slate-200 dark:border-white/5 mx-2" />
 
                     <div className={`px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ${sidebarCollapsed ? 'text-center' : ''}`}>
                         {sidebarCollapsed ? 'Apps' : 'Explore'}
@@ -145,10 +145,10 @@ export default function MainLayout() {
                 </div>
 
                 {/* Sidebar Footer */}
-                <div className="p-4 border-t border-white/5">
+                <div className="p-4 border-t border-slate-200 dark:border-white/5">
                     <button
                         onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                        className="w-full flex items-center justify-center p-2 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors"
+                        className="w-full flex items-center justify-center p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors"
                     >
                         {sidebarCollapsed ? <ChevronLeft size={20} className="rotate-180" /> : <ChevronLeft size={20} />}
                     </button>
@@ -164,12 +164,12 @@ export default function MainLayout() {
                     {/* Mobile Menu Toggle (Visible only on mobile) */}
                     <div
                         className="md:hidden flex items-center gap-3 cursor-pointer"
-                        onClick={() => navigate('/business')}
+                        onClick={() => navigate('/chats')}
                     >
                         <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
                             <Radar className="text-white" size={16} />
                         </div>
-                        <span className="font-bold text-lg">GIGMIND</span>
+                        <span className="font-bold text-lg text-slate-900 dark:text-white">GIGMIND</span>
                     </div>
 
                     {/* Context Title / Breadcrumbs */}
@@ -181,11 +181,11 @@ export default function MainLayout() {
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setShowExploreMenu(true)}
-                            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
+                            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-sm hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
                         >
                             <Search size={14} />
                             <span className="text-xs font-medium">Search...</span>
-                            <span className="ml-2 text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-slate-400">⌘K</span>
+                            <span className="ml-2 text-[10px] bg-slate-200 dark:bg-white/10 px-1.5 py-0.5 rounded text-slate-500 dark:text-slate-400">⌘K</span>
                         </button>
 
                         <button
@@ -201,12 +201,12 @@ export default function MainLayout() {
                         </button>
 
                         <div
-                            className="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[2px] ring-2 ring-transparent hover:ring-white/20 transition-all cursor-pointer hover:scale-105 active:scale-95"
+                            className="h-9 w-9 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 p-[2px] ring-2 ring-transparent hover:ring-indigo-300 dark:hover:ring-white/20 transition-all cursor-pointer hover:scale-105 active:scale-95"
                             onClick={() => navigate('/profile')}
                             title="Go to Profile"
                         >
-                            <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
-                                <User size={16} className="text-cyan-400" />
+                            <div className="h-full w-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center">
+                                <User size={16} className="text-cyan-500 dark:text-cyan-400" />
                             </div>
                         </div>
                     </div>
@@ -222,35 +222,35 @@ export default function MainLayout() {
 
                     <button
                         onClick={() => navigate('/chats')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/chats') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${isActive('/chats') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5'}`}
                     >
                         <MessageSquare size={20} />
                         <span className="text-[10px] font-medium mt-1">Chats</span>
                     </button>
                     <button
                         onClick={() => navigate('/channels')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/channels') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${isActive('/channels') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5'}`}
                     >
                         <List size={20} />
                         <span className="text-[10px] font-medium mt-1">Channels</span>
                     </button>
                     <button
                         onClick={() => navigate('/circles')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/circles') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${isActive('/circles') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5'}`}
                     >
                         <Layers size={20} />
                         <span className="text-[10px] font-medium mt-1">Circles</span>
                     </button>
                     <button
                         onClick={() => navigate('/calls')}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${isActive('/calls') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${isActive('/calls') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5'}`}
                     >
                         <Phone size={20} />
                         <span className="text-[10px] font-medium mt-1">Calls</span>
                     </button>
                     <button
                         onClick={() => setShowExploreMenu(true)}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${showExploreMenu ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
+                        className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${showExploreMenu ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5'}`}
                     >
                         <Search size={20} />
                         <span className="text-[10px] font-medium mt-1">Explore</span>
