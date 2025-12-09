@@ -11,7 +11,7 @@ const TabButton = ({ icon: Icon, label, path, currentPath }: any) => {
             className={`
 				px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all whitespace-nowrap flex-shrink-0
 				${isActive
-                    ? 'bg-indigo-600/80 text-slate-900 dark:text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/20'
+                    ? 'bg-indigo-600/80 text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/20'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}
 			`}
         >

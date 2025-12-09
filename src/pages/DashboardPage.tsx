@@ -198,7 +198,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 									{/* QR Button */}
 									<Button
 										size="sm"
-										className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
+										className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
 										onClick={() => setShowLargeQR(true)}
 									>
 										<QrCode size={16} className="mr-2" />
@@ -373,7 +373,7 @@ export const BusinessDashboard = ({ customers: initialCustomers, initialTab = 'o
 								<DollarSign className="mr-2" /> Receive $
 							</Button>
 							<Button
-								className="h-16 bg-indigo-600/80 hover:bg-indigo-500 font-bold text-lg shadow-[0_0_20px_rgba(99,102,241,0.2)] border border-indigo-500/30"
+								className="h-16 bg-indigo-600/80 hover:bg-indigo-500 font-bold text-lg text-white shadow-[0_0_20px_rgba(99,102,241,0.2)] border border-indigo-500/30"
 								onClick={() => openFinancialModal('invoice')}
 							>
 								<FileText className="mr-2" /> Send Invoice

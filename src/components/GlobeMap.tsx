@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 
+
 // --- Gemini API Configuration ---
 const apiKey = ""; // Set by runtime environment
 
@@ -387,13 +388,13 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
 
   // Filter/Search
   const [filterType, setFilterType] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+
 
   const filteredIntents = intents.filter(intent => {
     if (activeTab === 'mine' && intent.user !== 'You') return false;
     if (activeTab === 'incoming' && intent.user === 'You') return false;
     if (filterType !== 'all' && intent.type !== filterType) return false;
-    if (searchTerm && !intent.context.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+
     return true;
   });
 
@@ -412,21 +413,25 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
         <div className="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-6 pb-24 md:pb-6">
 
           {/* Control Bar */}
-          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 pb-2 pt-0 md:pt-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
-            <div className="glass-panel p-1 rounded-xl flex shrink-0">
-              <button onClick={() => setActiveTab('incoming')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'incoming' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>Feed</button>
-              <button onClick={() => setActiveTab('mine')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'mine' ? 'bg-indigo-600 shadow-lg text-white' : 'text-slate-400 hover:text-white'}`}>My Signals</button>
-            </div>
-
-            <div className="glass-panel p-1 rounded-xl flex-1 flex items-center px-3 gap-2">
-              <Search size={16} className="text-slate-500" />
-              <input
-                type="text"
-                placeholder="Search intents..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-none outline-none text-sm text-slate-900 dark:text-white w-full placeholder:text-slate-500 dark:placeholder:text-slate-600"
-              />
+          <div className="flex flex-col md:flex-row gap-4 sticky top-0 z-10 py-2 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl md:bg-transparent -mx-4 px-4 md:-mx-6 md:px-0">
+            <div className="glass-panel p-1 rounded-xl flex gap-1 shrink-0 w-full md:w-auto">
+              {[
+                { id: 'incoming', label: 'Activity' },
+                { id: 'mine', label: 'My Intents' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`
+                    px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all whitespace-nowrap flex-1 md:flex-none
+                    ${activeTab === tab.id
+                      ? 'bg-indigo-600/80 text-white shadow-lg shadow-indigo-500/20 ring-1 ring-white/20'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'}
+                  `}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
 

@@ -79,7 +79,7 @@ export const WalletScreen = () => {
                         <div className="p-3 bg-pink-500/20 rounded-2xl text-pink-400 ring-1 ring-pink-500/30">
                             <Wallet size={32} />
                         </div>
-                        Digital Wallet
+                        Wallet
                     </h2>
                     <p className="text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1">Manage your funds and transactions</p>
                 </div>
@@ -97,7 +97,7 @@ export const WalletScreen = () => {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-6 overflow-y-auto lg:overflow-hidden pb-20 lg:pb-0">
+            <div className="flex-1 flex flex-col gap-6 overflow-y-auto pb-20">
 
                 {/* Balance Card Section (Full Width) */}
                 <div className="shrink-0 animate-in slide-in-from-left-4 duration-500 delay-100">
@@ -139,7 +139,7 @@ export const WalletScreen = () => {
                 <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in slide-in-from-bottom-4 duration-500 delay-200">
 
                     {/* Actions Panel */}
-                    <Card className="flex flex-col h-[600px] lg:h-full bg-white/80 dark:bg-slate-900/50 border-slate-200 dark:border-white/5 backdrop-blur-xl">
+                    <Card className="flex flex-col h-[600px] bg-white/80 dark:bg-slate-900/50 border-slate-200 dark:border-white/5 backdrop-blur-xl">
                         <CardContent className="p-6 h-full flex flex-col">
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
                                 <TabsList className="grid w-full grid-cols-4 bg-slate-100 dark:bg-slate-950/50 p-1 mb-6 rounded-xl shrink-0">
@@ -266,7 +266,7 @@ export const WalletScreen = () => {
                     </Card>
 
                     {/* Recent Activity Card */}
-                    <Card className="flex flex-col h-[600px] lg:h-full bg-white/80 dark:bg-slate-900/50 border-slate-200 dark:border-white/5 backdrop-blur-xl">
+                    <Card className="flex flex-col h-[600px] bg-white/80 dark:bg-slate-900/50 border-slate-200 dark:border-white/5 backdrop-blur-xl">
                         <CardHeader className="shrink-0">
                             <CardTitle className="text-lg font-medium text-slate-900 dark:text-white">Recent Activity</CardTitle>
                             <CardDescription className="text-slate-500 dark:text-slate-400">Latest transactions</CardDescription>

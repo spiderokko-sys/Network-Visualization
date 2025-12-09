@@ -10,7 +10,6 @@ import {
     Phone,
     ChevronLeft,
     Radar,
-    LayoutDashboard,
     Layers,
     Sun,
     Moon
@@ -94,13 +93,6 @@ export default function MainLayout() {
                         {sidebarCollapsed ? 'Menu' : 'Main'}
                     </div>
 
-                    <SidebarItem
-                        icon={LayoutDashboard}
-                        label="Dashboard"
-                        isActive={isActive('/business')}
-                        onClick={() => navigate('/business')}
-                        collapsed={sidebarCollapsed}
-                    />
                     <SidebarItem
                         icon={MessageSquare}
                         label="Chats"

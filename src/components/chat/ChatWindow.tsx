@@ -302,7 +302,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 					{inputText.trim() ? (
 						<Button
 							onClick={() => handleSend()}
-							className="h-14 w-14 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white shadow-lg shadow-indigo-600/20 glass-button-primary"
+							className="h-14 w-14 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20 glass-button-primary"
 						>
 							<Send size={22} className="translate-x-0.5 translate-y-[-1px]" />
 						</Button>

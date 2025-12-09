@@ -91,65 +91,65 @@ export const BusinessMarketingPage = () => {
 
     return (
         <div className="h-full overflow-y-auto no-scrollbar min-h-0">
-            <div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="px-4 md:px-6 pt-0 space-y-3 md:space-y-4 pb-28 max-w-7xl mx-auto">
+                <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {/* Campaign Mode Selection */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <button
                             onClick={() => setCampaignMode('retention')}
                             className={`
-								p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center gap-3 group
+								p-3 rounded-lg border transition-all duration-300 flex flex-col items-center text-center gap-1.5 group
 								${campaignMode === 'retention'
                                     ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-400 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.15)]'
                                     : 'glass-card opacity-60 hover:opacity-100'}
 							`}
                         >
-                            <Megaphone size={32} className="group-hover:scale-110 transition-transform" />
+                            <Megaphone size={24} className="group-hover:scale-110 transition-transform" />
                             <div>
-                                <div className="font-bold text-lg">RETENTION</div>
+                                <div className="font-bold text-sm">RETENTION</div>
                                 <div className="text-xs opacity-70">Free • Existing L1</div>
                             </div>
                         </button>
                         <button
                             onClick={() => setCampaignMode('growth')}
                             className={`
-								p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center gap-3 group
+								p-3 rounded-lg border transition-all duration-300 flex flex-col items-center text-center gap-1.5 group
 								${campaignMode === 'growth'
                                     ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-400 dark:border-indigo-500/50 text-indigo-600 dark:text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.15)]'
                                     : 'glass-card opacity-60 hover:opacity-100'}
 							`}
                         >
-                            <Globe size={32} className="group-hover:scale-110 transition-transform" />
+                            <Globe size={24} className="group-hover:scale-110 transition-transform" />
                             <div>
-                                <div className="font-bold text-lg">GROWTH</div>
+                                <div className="font-bold text-sm">GROWTH</div>
                                 <div className="text-xs opacity-70">Paid • Targeted</div>
                             </div>
                         </button>
                     </div>
 
                     {/* Campaign Configuration Panel */}
-                    <div className="glass-panel p-6 rounded-2xl">
-                        <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200 dark:border-white/5">
-                            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                {campaignMode === 'retention' ? <Zap className="text-emerald-500 dark:text-emerald-400" /> : <Target className="text-indigo-500 dark:text-indigo-400" />}
+                    <div className="glass-panel p-4 rounded-xl">
+                        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-white/5">
+                            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                {campaignMode === 'retention' ? <Zap size={18} className="text-emerald-500 dark:text-emerald-400" /> : <Target size={18} className="text-indigo-500 dark:text-indigo-400" />}
                                 {campaignMode === 'retention' ? 'Direct Blast' : 'Targeted Signal'}
                             </h3>
                             <span className="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase">{campaignMode === 'retention' ? 'L1 Only' : 'L2/L3 Reach'}</span>
                         </div>
 
                         {campaignMode === 'retention' ? (
-                            <div className="p-4 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl flex gap-4 items-start mb-6">
-                                <CheckCircle2 className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-1" />
+                            <div className="p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-lg flex gap-3 items-start mb-4">
+                                <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                                 <div>
-                                    <h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-1">Free for Business Nodes</h4>
-                                    <p className="text-sm text-emerald-600 dark:text-emerald-200/70">Send unlimited status updates to customers who have physically tethered.</p>
+                                    <h4 className="font-bold text-sm text-emerald-700 dark:text-emerald-300 mb-0.5">Free for Business Nodes</h4>
+                                    <p className="text-xs text-emerald-600 dark:text-emerald-200/70">Send unlimited status updates to customers who have physically tethered.</p>
                                 </div>
                             </div>
                         ) : (
-                            <div className="space-y-6 mb-6">
+                            <div className="space-y-4 mb-4">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-3 block">Target Circles</label>
-                                    <div className="grid gap-3 max-h-60 overflow-y-auto pr-2">
+                                    <label className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-2 block">Target Circles</label>
+                                    <div className="grid gap-2 max-h-48 overflow-y-auto pr-2">
                                         {circles.map(c => {
                                             const isSelected = selectedMarketingCircles.includes(c.id);
                                             const colors = getCircleColors(c.color, isSelected);
@@ -158,14 +158,14 @@ export const BusinessMarketingPage = () => {
                                                     key={c.id}
                                                     onClick={() => toggleMarketingCircle(c.id)}
                                                     className={`
-														p-3 rounded-xl border cursor-pointer flex items-center justify-between transition-all
+														p-2.5 rounded-lg border cursor-pointer flex items-center justify-between transition-all
 														${colors.bg} ${colors.border}
 														${!isSelected && 'hover:bg-slate-50 dark:hover:bg-white/10'}
 													`}
                                                 >
-                                                    <div className="flex items-center gap-3">
-                                                        <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${colors.icon}`}>
-                                                            {c.type === 'system' ? <Layers size={18} /> : <Circle size={18} />}
+                                                    <div className="flex items-center gap-2.5">
+                                                        <div className={`h-9 w-9 rounded-lg flex items-center justify-center ${colors.icon}`}>
+                                                            {c.type === 'system' ? <Layers size={16} /> : <Circle size={16} />}
                                                         </div>
                                                         <div>
                                                             <div className="text-sm font-bold text-slate-900 dark:text-white">{c.name}</div>
@@ -182,10 +182,10 @@ export const BusinessMarketingPage = () => {
                         )}
 
                         {/* Message Payload */}
-                        <div className="space-y-3 pt-6 border-t border-slate-200 dark:border-white/5">
+                        <div className="space-y-2 pt-4 border-t border-slate-200 dark:border-white/5">
                             <label className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase">Message Payload</label>
                             <textarea
-                                className="w-full bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-xl p-4 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 text-sm focus:outline-none focus:border-indigo-500 transition-colors resize-none h-32"
+                                className="w-full bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 text-sm focus:outline-none focus:border-indigo-500 transition-colors resize-none h-24"
                                 placeholder={campaignMode === 'retention' ? "Write your update here..." : "Describe your offer..."}
                                 value={messagePayload}
                                 onChange={(e) => setMessagePayload(e.target.value)}
@@ -193,16 +193,16 @@ export const BusinessMarketingPage = () => {
                         </div>
 
                         {/* Summary Section */}
-                        <div className="mt-6 flex items-center justify-between bg-slate-50 dark:bg-black/40 rounded-xl p-4 border border-slate-200 dark:border-white/10">
+                        <div className="mt-4 flex items-center justify-between bg-slate-50 dark:bg-black/40 rounded-lg p-3 border border-slate-200 dark:border-white/10">
                             <div>
                                 <div className="text-[10px] font-bold text-slate-500 dark:text-slate-500 uppercase">Est. Reach</div>
-                                <div className="text-xl font-mono font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                    {getTotalReach()} <Users size={16} className="text-slate-500 dark:text-slate-600" />
+                                <div className="text-lg font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                    {getTotalReach()} <Users size={14} className="text-slate-500 dark:text-slate-600" />
                                 </div>
                             </div>
                             <div className="text-right">
                                 <div className="text-[10px] font-bold text-slate-500 dark:text-slate-500 uppercase">Total Cost</div>
-                                <div className={`text-2xl font-mono font-bold ${campaignMode === 'retention' ? 'text-emerald-600 dark:text-emerald-400' : 'text-indigo-600 dark:text-indigo-400'}`}>
+                                <div className={`text-xl font-mono font-bold ${campaignMode === 'retention' ? 'text-emerald-600 dark:text-emerald-400' : 'text-indigo-600 dark:text-indigo-400'}`}>
                                     {getTotalPrice()}
                                 </div>
                             </div>
@@ -210,7 +210,7 @@ export const BusinessMarketingPage = () => {
 
                         {/* Submit Button */}
                         <Button
-                            className={`w-full h-14 mt-6 text-lg font-bold shadow-xl ${campaignMode === 'retention' ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'glass-button-primary'}`}
+                            className={`w-full h-12 mt-4 text-base font-bold shadow-xl ${campaignMode === 'retention' ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'glass-button-primary'}`}
                         >
                             <Send className="mr-2" /> {campaignMode === 'retention' ? 'Post Update' : 'Broadcast Signal'}
                         </Button>
