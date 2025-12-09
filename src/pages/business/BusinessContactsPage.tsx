@@ -1,47 +1,18 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { DollarSign, FileText, PlusCircle, Edit2, Heart, Phone, CalendarDays, Search } from 'lucide-react';
 import { Button } from '../../components/ui/button';
-import { AddCustomerModal } from '../../components/modals/AddCustomerModal';
 import { FinancialModal } from '../../components/modals/FinancialModal';
 import { MOCK_CUSTOMERS } from '../../data/mockData';
 
 export const BusinessContactsPage = () => {
+    const navigate = useNavigate();
     const [customers, setCustomers] = useState(MOCK_CUSTOMERS);
-    const [showAddCustomer, setShowAddCustomer] = useState(false);
-    const [editingCustomer, setEditingCustomer] = useState(null);
     const [showFinancialModal, setShowFinancialModal] = useState(false);
     const [financialType, setFinancialType] = useState('payment');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleAddCustomer = (data: any) => {
-        if (data.id) {
-            // Edit existing
-            setCustomers(customers.map((c: any) => c.id === data.id ? {
-                ...c,
-                name: data.name,
-                tags: data.tags.split(',').map((t: string) => t.trim()).filter((t: string) => t),
-                emails: data.email ? [{ ...c.emails[0], value: data.email }] : c.emails,
-                phones: data.phone ? [{ ...c.phones[0], value: data.phone }] : c.phones,
-            } : c));
-        } else {
-            // Add new
-            const newCust = {
-                id: Date.now(),
-                name: data.name,
-                status: 'L1',
-                tags: data.tags.split(',').map((t: string) => t.trim()).filter((t: string) => t),
-                visits: 0,
-                last_seen: 'Just added',
-                emails: data.email ? [{ id: Date.now() + 'e', value: data.email, isPrimary: true }] : [],
-                phones: data.phone ? [{ id: Date.now() + 'p', value: data.phone, isPrimary: true }] : [],
-                memberSince: new Date().toLocaleString('default', { month: 'short', year: 'numeric' }),
-                isFavorite: false
-            };
-            setCustomers([newCust, ...customers]);
-        }
-        setShowAddCustomer(false);
-        setEditingCustomer(null);
-    };
+
 
     const toggleFavorite = (e: any, id: number) => {
         e.stopPropagation();
@@ -105,7 +76,7 @@ export const BusinessContactsPage = () => {
 
                     <div className="flex justify-between items-center mt-8">
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white">L1 Direct Nodes</h3>
-                        <Button size="sm" variant="ghost" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20" onClick={() => { setEditingCustomer(null); setShowAddCustomer(true); }}>
+                        <Button size="sm" variant="ghost" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20" onClick={() => navigate('/business/contacts/new')}>
                             <PlusCircle size={16} className="mr-2" /> Add Contact
                         </Button>
                     </div>
@@ -131,6 +102,7 @@ export const BusinessContactsPage = () => {
 									p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer group
 									${idx !== filteredCustomers.length - 1 ? 'border-b border-slate-200 dark:border-white/5' : ''}
 								`}
+                                    onClick={() => navigate(`/business/contacts/${cust.id}`)}
                                 >
                                     <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-slate-800 dark:to-slate-700 border border-slate-200 dark:border-white/10 flex items-center justify-center text-lg font-bold text-indigo-700 dark:text-white shadow-md">
                                         {cust.name[0]}
@@ -155,7 +127,7 @@ export const BusinessContactsPage = () => {
                                                 {tag}
                                             </span>
                                         ))}
-                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10" onClick={(e) => { e.stopPropagation(); setEditingCustomer(cust); setShowAddCustomer(true); }}>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10" onClick={(e) => { e.stopPropagation(); navigate(`/business/contacts/${cust.id}/edit`); }}>
                                             <Edit2 size={16} />
                                         </Button>
                                         <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10" onClick={(e) => toggleFavorite(e, cust.id)}>
@@ -168,7 +140,6 @@ export const BusinessContactsPage = () => {
                     </div>
                 </div>
 
-                {showAddCustomer && <AddCustomerModal onClose={() => { setShowAddCustomer(false); setEditingCustomer(null); }} onSave={handleAddCustomer} initialData={editingCustomer} />}
                 {showFinancialModal && <FinancialModal type={financialType} initialCustomer={null} customers={customers} onClose={() => setShowFinancialModal(false)} onSave={handleSaveFinancial} />}
             </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { QrCode, Clock, ChevronRight, Star, Award, AlertTriangle, Zap, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { QrCode, Clock, ChevronRight, Star, Award, AlertTriangle, Zap, CheckCircle2, Settings } from 'lucide-react';
 import { QRModal } from '../../components/modals/QRModal';
 import { Button } from '../../components/ui/button';
 
@@ -31,6 +32,7 @@ const getActivityColors = (color: string) => {
 };
 
 export const BusinessOverviewPage = () => {
+    const navigate = useNavigate();
     const [showLargeQR, setShowLargeQR] = useState(false);
 
     return (
@@ -75,15 +77,27 @@ export const BusinessOverviewPage = () => {
                                     </div>
                                 </div>
 
-                                {/* QR Button */}
-                                <Button
-                                    size="sm"
-                                    className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
-                                    onClick={() => setShowLargeQR(true)}
-                                >
-                                    <QrCode size={16} className="mr-2" />
-                                    <span className="hidden sm:inline">Show </span>QR
-                                </Button>
+                                {/* Action Buttons */}
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="h-10 px-4 font-bold border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10"
+                                        onClick={() => navigate('/business/settings')}
+                                    >
+                                        <Settings size={16} className="mr-2" />
+                                        <span className="hidden sm:inline">Edit </span>Business
+                                    </Button>
+
+                                    <Button
+                                        size="sm"
+                                        className="h-10 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
+                                        onClick={() => setShowLargeQR(true)}
+                                    >
+                                        <QrCode size={16} className="mr-2" />
+                                        <span className="hidden sm:inline">Show </span>QR
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>

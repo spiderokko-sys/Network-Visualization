@@ -26,11 +26,29 @@ import { IntentDetailsPage } from './pages/business/IntentDetailsPage';
 import { BusinessCalendarPage } from './pages/business/BusinessCalendarPage';
 import { EventDetailsPage } from './pages/business/EventDetailsPage';
 import { BusinessContactsPage } from './pages/business/BusinessContactsPage';
+import { ContactDetailsPage } from './pages/business/ContactDetailsPage';
+import { CreateContactPage } from './pages/business/CreateContactPage';
+import { EditContactPage } from './pages/business/EditContactPage';
 import { BusinessCirclesPage } from './pages/business/BusinessCirclesPage';
+import { CircleDetailsPage } from './pages/business/CircleDetailsPage';
 import { BusinessMarketingPage } from './pages/business/BusinessMarketingPage';
+import { BusinessSettingsPage } from './pages/business/BusinessSettingsPage';
+
+// Business Settings Pages
+import { GeneralSettingsPage as BusinessGeneralSettingsPage } from './pages/business/settings/GeneralSettingsPage';
+import { LocationsSettingsPage } from './pages/business/settings/LocationsSettingsPage';
+import { BrandingSettingsPage } from './pages/business/settings/BrandingSettingsPage';
+import { NotificationsSettingsPage as BusinessNotificationsSettingsPage } from './pages/business/settings/NotificationsSettingsPage';
+import { SecuritySettingsPage } from './pages/business/settings/SecuritySettingsPage';
 
 // Data
 import { MOCK_CUSTOMERS } from './data/mockData';
+
+// Settings Pages
+import { GeneralSettingsPage } from './pages/settings/GeneralSettingsPage';
+import { NotificationsSettingsPage } from './pages/settings/NotificationsSettingsPage';
+import { PrivacySettingsPage } from './pages/settings/PrivacySettingsPage';
+import { AppearanceSettingsPage } from './pages/settings/AppearanceSettingsPage';
 
 export default function App() {
 	return (
@@ -47,8 +65,20 @@ export default function App() {
 						<Route path="calendar" element={<BusinessCalendarPage />} />
 						<Route path="calendar/:eventId" element={<EventDetailsPage />} />
 						<Route path="contacts" element={<BusinessContactsPage />} />
+						<Route path="contacts/:contactId" element={<ContactDetailsPage />} />
+						<Route path="contacts/new" element={<CreateContactPage />} />
+						<Route path="contacts/:contactId/edit" element={<EditContactPage />} />
 						<Route path="circles" element={<BusinessCirclesPage />} />
+						<Route path="circles/:circleId" element={<CircleDetailsPage />} />
 						<Route path="marketing" element={<BusinessMarketingPage />} />
+						<Route path="settings">
+							<Route index element={<BusinessSettingsPage />} />
+							<Route path="general" element={<BusinessGeneralSettingsPage />} />
+							<Route path="locations" element={<LocationsSettingsPage />} />
+							<Route path="branding" element={<BrandingSettingsPage />} />
+							<Route path="notifications" element={<BusinessNotificationsSettingsPage />} />
+							<Route path="security" element={<SecuritySettingsPage />} />
+						</Route>
 					</Route>
 
 					{/* Other Routes */}
@@ -69,7 +99,15 @@ export default function App() {
 					<Route path="events" element={<EventsScreen />} />
 					<Route path="contacts" element={<ContactsScreen contacts={MOCK_CUSTOMERS} />} />
 					<Route path="profile" element={<ProfileScreen />} />
-					<Route path="settings" element={<SettingsScreen />} />
+
+					<Route path="settings" element={<SettingsScreen />}>
+						<Route index element={<Navigate to="general" replace />} />
+						<Route path="general" element={<GeneralSettingsPage />} />
+						<Route path="notifications" element={<NotificationsSettingsPage />} />
+						<Route path="privacy" element={<PrivacySettingsPage />} />
+						<Route path="appearance" element={<AppearanceSettingsPage />} />
+					</Route>
+
 					<Route path="*" element={<Navigate to="/business" replace />} />
 				</Route>
 			</Routes>

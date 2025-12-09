@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PlusCircle, Layers, Circle, Edit2, Trash2, Search } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
@@ -25,6 +26,7 @@ const getCircleIconColors = (color: string) => {
 };
 
 export const BusinessCirclesPage = () => {
+    const navigate = useNavigate();
     const [circles, setCircles] = useState(INITIAL_CIRCLES);
     const [showEditCircleModal, setShowEditCircleModal] = useState(false);
     const [editingCircle, setEditingCircle] = useState(null);
@@ -79,7 +81,11 @@ export const BusinessCirclesPage = () => {
 
                     <div className="grid gap-3 sm:gap-4">
                         {filteredCircles.map(circle => (
-                            <div key={circle.id} className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 relative group overflow-hidden">
+                            <div
+                                key={circle.id}
+                                className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 relative group overflow-hidden cursor-pointer hover:shadow-xl transition-all"
+                                onClick={() => navigate(`/business/circles/${circle.id}`)}
+                            >
                                 {/* Type Label */}
                                 {circle.type === 'custom' && (
                                     <div className="absolute top-0 right-0 px-2 py-1 sm:px-3 bg-indigo-500 dark:bg-indigo-600/80 text-[10px] font-bold text-white rounded-bl-xl shadow-lg z-10">

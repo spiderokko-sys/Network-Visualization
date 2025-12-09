@@ -37,29 +37,29 @@ const ChatListItem = ({ chat, isSelected, onClick }: any) => {
 			className={`
 				p-4 flex items-center gap-4 border rounded-2xl cursor-pointer transition-all min-h-[80px] group
 				${isSelected
-					? 'glass-card-active border-indigo-500/50 bg-indigo-900/20'
-					: 'glass-card border-transparent hover:bg-white/5 hover:border-slate-200 dark:border-white/10'
+					? 'glass-card-active border-indigo-500/50 bg-indigo-50 dark:bg-indigo-900/20'
+					: 'glass-card border-transparent hover:bg-slate-50 dark:hover:bg-white/5 hover:border-slate-200 dark:border-white/10'
 				}
 			`}
 			onClick={() => onClick(chat.id)}
 		>
-			<div className={`h-14 w-14 rounded-full flex items-center justify-center font-bold text-xl relative flex-shrink-0 border border-slate-200 dark:border-white/10 shadow-lg transition-transform group-hover:scale-105 ${chat.isGroup ? 'bg-emerald-900/40 text-emerald-400' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-slate-900 dark:text-white'}`}>
+			<div className={`h-14 w-14 rounded-full flex items-center justify-center font-bold text-xl relative flex-shrink-0 border border-slate-200 dark:border-white/10 shadow-lg transition-transform group-hover:scale-105 ${chat.isGroup ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white'}`}>
 				{chat.isGroup ? <AvatarIcon size={24} /> : chat.name[0]}
 				{chat.unread > 0 && (
-					<span className="absolute -top-1 -right-1 h-5 w-5 bg-rose-500 rounded-full text-[10px] flex items-center justify-center text-slate-900 dark:text-white ring-2 ring-slate-950 font-bold shadow-lg">
+					<span className="absolute -top-1 -right-1 h-5 w-5 bg-rose-500 rounded-full text-[10px] flex items-center justify-center text-white ring-2 ring-white dark:ring-slate-950 font-bold shadow-lg">
 						{chat.unread}
 					</span>
 				)}
 			</div>
 			<div className="flex-1 min-w-0">
 				<div className="flex justify-between items-center mb-1">
-					<h4 className={`text-base font-bold truncate flex items-center gap-1.5 ${isSelected ? 'text-slate-900 dark:text-white' : 'text-slate-200 dark:text-slate-200 group-hover:text-slate-900 dark:text-white'}`}>
+					<h4 className={`text-base font-bold truncate flex items-center gap-1.5 ${isSelected ? 'text-indigo-900 dark:text-white' : 'text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white'}`}>
 						{chat.name}
 						{chat.isFavorite && <Heart size={14} className="text-rose-500 fill-rose-500" />}
 					</h4>
 					<span className="text-xs text-slate-500 dark:text-slate-500 whitespace-nowrap ml-2 font-medium">{chat.timestamp}</span>
 				</div>
-				<p className={`text-sm truncate font-medium ${isSelected ? 'text-indigo-200' : 'text-slate-500 dark:text-slate-500 group-hover:text-slate-600 dark:text-slate-400'}`}>
+				<p className={`text-sm truncate font-medium ${isSelected ? 'text-indigo-600 dark:text-indigo-200' : 'text-slate-500 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-400'}`}>
 					{chat.lastMessage}
 				</p>
 			</div>
@@ -137,7 +137,7 @@ export const ChatsModule = () => {
 								key={f}
 								onClick={() => setFilter(f.toLowerCase())}
 								className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
-									${filter === f.toLowerCase() ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-white/5'}
+									${filter === f.toLowerCase() ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/5'}
 								`}
 							>
 								{f}

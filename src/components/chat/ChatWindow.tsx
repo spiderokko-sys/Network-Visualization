@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, Users, Search, Phone, Video, MoreVertical, Send, Smile, Mic, X, Image as ImageIcon, Sticker as StickerIcon, CornerUpLeft, Heart, Palette } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, Users, Search, Phone, Video, MoreVertical, Send, Smile, Mic, X, CornerUpLeft, Palette } from 'lucide-react';
 import { Button } from '../ui/button';
 import { ChatProfileModal } from './ChatProfileModal';
 
@@ -84,19 +84,19 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 				</button>
 
 				<div className={`max-w-[75%] px-5 py-4 rounded-3xl shadow-md backdrop-blur-sm relative ${message.isMe
-					? 'bg-indigo-600/90 text-slate-900 dark:text-white rounded-br-sm border border-indigo-500/50 shadow-[0_4px_15px_rgba(99,102,241,0.3)]'
-					: 'bg-white/10 dark:bg-white/10 text-slate-800 dark:text-slate-100 rounded-tl-sm border border-slate-200 dark:border-white/10'
+					? 'bg-indigo-600/90 text-white rounded-br-sm border border-indigo-500/50 shadow-[0_4px_15px_rgba(99,102,241,0.3)]'
+					: 'bg-white dark:bg-white/10 text-slate-800 dark:text-slate-100 rounded-tl-sm border border-slate-200 dark:border-white/10'
 					}`}
 					onDoubleClick={() => onReaction(message.id, '❤️')}
 				>
 					{repliedMessage && (
-						<div className={`text-xs mb-2 p-2 rounded-lg border-l-2 ${message.isMe ? 'bg-slate-50 dark:bg-black/20 border-white/30' : 'bg-white/5 dark:bg-white/5 border-indigo-400/50'}`}>
+						<div className={`text-xs mb-2 p-2 rounded-lg border-l-2 ${message.isMe ? 'bg-white/20 text-indigo-50 border-white/30' : 'bg-slate-50 dark:bg-white/5 border-indigo-400/50'}`}>
 							<div className="font-bold opacity-70 mb-0.5">{repliedMessage.sender}</div>
 							<div className="truncate opacity-50">{repliedMessage.text}</div>
 						</div>
 					)}
 
-					{!message.isMe && <div className="text-xs font-bold text-indigo-300 mb-1">{message.sender}</div>}
+					{!message.isMe && <div className="text-xs font-bold text-indigo-500 dark:text-indigo-300 mb-1">{message.sender}</div>}
 
 					{message.type === 'image' && (
 						<div className="mb-2 rounded-lg overflow-hidden">
@@ -113,11 +113,11 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 					{message.type === 'audio' && (
 						<div className="flex items-center gap-3 min-w-[150px]">
 							<div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/20 flex items-center justify-center">
-								<Send size={14} className="ml-0.5" />
+								<Send size={14} className="ml-0.5 text-slate-900 dark:text-white" />
 							</div>
 							<div className="flex-1 h-8 flex items-center gap-0.5">
 								{[1, 2, 3, 4, 5, 3, 2, 4, 6, 3].map((h, i) => (
-									<div key={i} className="w-1 bg-white/5 dark:bg-white/50 rounded-full animate-pulse" style={{ height: `${h * 4}px`, animationDelay: `${i * 0.1}s` }}></div>
+									<div key={i} className="w-1 bg-current opacity-50 rounded-full animate-pulse" style={{ height: `${h * 4}px`, animationDelay: `${i * 0.1}s` }}></div>
 								))}
 							</div>
 							<span className="text-xs font-mono opacity-80">0:05</span>
@@ -128,7 +128,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, onReaction, onChatUp
 						<p className="text-base leading-relaxed font-medium">{message.text}</p>
 					)}
 
-					<div className={`text-[10px] mt-2 font-bold opacity-70 ${message.isMe ? 'text-indigo-100' : 'text-slate-600 dark:text-slate-400'} text-right`}>{message.time}</div>
+					<div className={`text-[10px] mt-2 font-bold opacity-70 ${message.isMe ? 'text-indigo-100' : 'text-slate-400 dark:text-slate-400'} text-right`}>{message.time}</div>
 
 					{/* Reactions */}
 					{message.reactions && Object.keys(message.reactions).length > 0 && (

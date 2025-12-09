@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     ArrowLeft,
-    Target,
     Calendar,
     MapPin,
     Briefcase,
@@ -11,16 +10,25 @@ import {
     XCircle,
     Edit3,
     Users,
-    ClipboardList
+    ClipboardList,
+    UserPlus,
+    DollarSign,
+    Package,
+    Clock
 } from 'lucide-react';
 
 type IntentStatus = 'in_progress' | 'completed' | 'cancelled';
+
+type ContributionType = 'services' | 'monetary' | 'goods';
 
 interface Party {
     id: string;
     name: string;
     role: string;
     avatar?: string;
+    contributionType?: ContributionType;
+    contributionDescription?: string;
+    wantsInReturn?: string;
 }
 
 interface Obligation {
@@ -59,8 +67,8 @@ const sampleIntents: Intent[] = [
         createdDate: '2024-11-15',
         progress: 65,
         parties: [
-            { id: 'p1', name: 'Dr. Smith', role: 'Dentist (Service Provider)' },
-            { id: 'p2', name: 'John Doe', role: 'Patient (Service Recipient)' }
+            { id: 'p1', name: 'Dr. Smith', role: 'Dentist (Service Provider)', contributionType: 'services', contributionDescription: 'Professional dental treatment and expertise', wantsInReturn: 'Payment of $1,200' },
+            { id: 'p2', name: 'John Doe', role: 'Patient (Service Recipient)', contributionType: 'monetary', contributionDescription: 'Payment for services', wantsInReturn: 'Healthy teeth and pain relief' }
         ],
         obligations: [
             { id: 'o1', description: 'Complete initial examination and X-rays', assignedTo: 'p1', status: 'completed' },
@@ -283,6 +291,14 @@ export const IntentDetailsPage = () => {
     const { intentId } = useParams<{ intentId: string }>();
     const navigate = useNavigate();
     const [showModifyDialog, setShowModifyDialog] = useState(false);
+    const [showAddParticipantModal, setShowAddParticipantModal] = useState(false);
+
+    // Add Participant Form State
+    const [newParticipantName, setNewParticipantName] = useState('');
+    const [newParticipantRole, setNewParticipantRole] = useState('');
+    const [contributionType, setContributionType] = useState<ContributionType>('services');
+    const [contributionDescription, setContributionDescription] = useState('');
+    const [wantsInReturn, setWantsInReturn] = useState('');
 
     const intent = sampleIntents.find(i => i.id === intentId);
 
@@ -306,20 +322,20 @@ export const IntentDetailsPage = () => {
     const getStatusBadge = (status: IntentStatus) => {
         if (status === 'in_progress') {
             return (
-                <span className="px-3 py-1.5 rounded-full text-sm font-semibold bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
+                <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30">
                     In Progress
                 </span>
             );
         }
         if (status === 'cancelled') {
             return (
-                <span className="px-3 py-1.5 rounded-full text-sm font-semibold bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-500/30">
+                <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-500/30">
                     Cancelled
                 </span>
             );
         }
         return (
-            <span className="px-3 py-1.5 rounded-full text-sm font-semibold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">
+            <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">
                 Completed
             </span>
         );
@@ -332,8 +348,8 @@ export const IntentDetailsPage = () => {
             low: 'bg-slate-100 dark:bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-500/30'
         };
         return (
-            <span className={`px-3 py-1.5 rounded-full text-sm font-medium border ${styles[priority as keyof typeof styles]}`}>
-                {priority.charAt(0).toUpperCase() + priority.slice(1)} Priority
+            <span className={`px-2 py-0.5 rounded-md text-xs font-medium border ${styles[priority as keyof typeof styles]}`}>
+                {priority.charAt(0).toUpperCase() + priority.slice(1)}
             </span>
         );
     };
@@ -376,6 +392,51 @@ export const IntentDetailsPage = () => {
         setShowModifyDialog(true);
     };
 
+    const handleAddParticipant = () => {
+        // TODO: Implement add participant functionality
+        console.log('Adding participant:', {
+            name: newParticipantName,
+            role: newParticipantRole,
+            contributionType,
+            contributionDescription,
+            wantsInReturn
+        });
+        alert('Participant added successfully!');
+        // Reset form
+        setNewParticipantName('');
+        setNewParticipantRole('');
+        setContributionType('services');
+        setContributionDescription('');
+        setWantsInReturn('');
+        setShowAddParticipantModal(false);
+    };
+
+    const getContributionIcon = (type?: ContributionType) => {
+        switch (type) {
+            case 'services':
+                return <Clock size={16} className="text-blue-600 dark:text-blue-400" />;
+            case 'monetary':
+                return <DollarSign size={16} className="text-emerald-600 dark:text-emerald-400" />;
+            case 'goods':
+                return <Package size={16} className="text-purple-600 dark:text-purple-400" />;
+            default:
+                return null;
+        }
+    };
+
+    const getContributionLabel = (type?: ContributionType) => {
+        switch (type) {
+            case 'services':
+                return 'Services';
+            case 'monetary':
+                return 'Monetary';
+            case 'goods':
+                return 'Goods';
+            default:
+                return '';
+        }
+    };
+
     const getPartyName = (partyId: string) => {
         const party = intent.parties.find(p => p.id === partyId);
         return party?.name || 'Unknown';
@@ -384,60 +445,55 @@ export const IntentDetailsPage = () => {
     return (
         <div className="h-full overflow-y-auto no-scrollbar min-h-0">
             <div className="px-4 md:px-6 pt-0 space-y-4 md:space-y-6 pb-28 max-w-7xl mx-auto">
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    {/* Header */}
-                    <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 flex-1">
+                <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    {/* Compact Header */}
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
                             <button
                                 onClick={() => navigate('/business/intents')}
-                                className="p-3 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-xl border border-slate-200 dark:border-white/10 transition-colors"
+                                className="p-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg border border-slate-200 dark:border-white/10 transition-colors flex-shrink-0"
                             >
-                                <ArrowLeft className="text-slate-600 dark:text-slate-400" size={20} />
+                                <ArrowLeft className="text-slate-600 dark:text-slate-400" size={18} />
                             </button>
-                            <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="p-3 bg-rose-100 dark:bg-rose-500/20 rounded-xl border border-rose-200 dark:border-rose-500/30 shadow-lg">
-                                        <Target className="text-rose-600 dark:text-rose-400" size={24} />
-                                    </div>
-                                    <div>
-                                        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{intent.title}</h1>
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Intent Details</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-2 flex-wrap">
-                                    {getStatusBadge(intent.status)}
-                                    {getPriorityBadge(intent.priority)}
-                                </div>
+                            <div className="flex-1 min-w-0">
+                                <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate">{intent.title}</h1>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                                {getStatusBadge(intent.status)}
+                                {getPriorityBadge(intent.priority)}
                             </div>
                         </div>
-                    </div>
 
-                    {/* Action Buttons */}
-                    {intent.status === 'in_progress' && (
-                        <div className="flex gap-3 flex-wrap">
-                            <button
-                                onClick={handleComplete}
-                                className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-colors shadow-lg hover:shadow-xl"
-                            >
-                                <CheckCircle2 size={20} />
-                                <span>Mark as Completed</span>
-                            </button>
-                            <button
-                                onClick={handleModify}
-                                className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors shadow-lg hover:shadow-xl"
-                            >
-                                <Edit3 size={20} />
-                                <span>Modify Intent</span>
-                            </button>
-                            <button
-                                onClick={handleCancel}
-                                className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-colors shadow-lg hover:shadow-xl"
-                            >
-                                <XCircle size={20} />
-                                <span>Cancel Intent</span>
-                            </button>
-                        </div>
-                    )}
+                        {/* Action Buttons - Inline */}
+                        {intent.status === 'in_progress' && (
+                            <div className="flex gap-2 flex-shrink-0">
+                                <button
+                                    onClick={handleComplete}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    title="Mark as Completed"
+                                >
+                                    <CheckCircle2 size={16} />
+                                    <span className="hidden sm:inline">Complete</span>
+                                </button>
+                                <button
+                                    onClick={handleModify}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    title="Modify Intent"
+                                >
+                                    <Edit3 size={16} />
+                                    <span className="hidden sm:inline">Modify</span>
+                                </button>
+                                <button
+                                    onClick={handleCancel}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    title="Cancel Intent"
+                                >
+                                    <XCircle size={16} />
+                                    <span className="hidden sm:inline">Cancel</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Main Content Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -452,41 +508,68 @@ export const IntentDetailsPage = () => {
                                 <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{intent.description}</p>
                             </div>
 
-                            {/* Progress */}
-                            {intent.status === 'in_progress' && (
-                                <div className="glass-panel p-6 rounded-2xl">
-                                    <div className="flex items-center justify-between mb-3">
-                                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Overall Progress</h2>
-                                        <span className="text-2xl font-bold text-slate-900 dark:text-white">{intent.progress}%</span>
-                                    </div>
-                                    <div className="w-full h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500"
-                                            style={{ width: `${intent.progress}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
                             {/* Parties Involved */}
                             <div className="glass-panel p-6 rounded-2xl">
-                                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                                    <Users size={20} className="text-rose-600 dark:text-rose-400" />
-                                    Parties Involved
-                                </h2>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                        <Users size={20} className="text-rose-600 dark:text-rose-400" />
+                                        Parties Involved
+                                    </h2>
+                                    <button
+                                        onClick={() => setShowAddParticipantModal(true)}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    >
+                                        <UserPlus size={16} />
+                                        <span>Add Participant</span>
+                                    </button>
+                                </div>
                                 <div className="space-y-3">
                                     {intent.parties.map((party) => (
                                         <div
                                             key={party.id}
                                             className="p-4 bg-white dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10"
                                         >
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                            <div className="flex items-start gap-3">
+                                                <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                                                     {party.name.charAt(0)}
                                                 </div>
-                                                <div>
+                                                <div className="flex-1 min-w-0">
                                                     <h3 className="font-bold text-slate-900 dark:text-white">{party.name}</h3>
-                                                    <p className="text-sm text-slate-600 dark:text-slate-400">{party.role}</p>
+                                                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{party.role}</p>
+
+                                                    {party.contributionType && (
+                                                        <div className="space-y-2 mt-3">
+                                                            <div className="flex items-start gap-2">
+                                                                {getContributionIcon(party.contributionType)}
+                                                                <div className="flex-1">
+                                                                    <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                                        {getContributionLabel(party.contributionType)} Contribution
+                                                                    </p>
+                                                                    {party.contributionDescription && (
+                                                                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                                                                            {party.contributionDescription}
+                                                                        </p>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+
+                                                            {party.wantsInReturn && (
+                                                                <div className="flex items-start gap-2 pt-2 border-t border-slate-200 dark:border-white/10">
+                                                                    <div className="w-4 h-4 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                                        <div className="w-1.5 h-1.5 rounded-full bg-amber-600 dark:bg-amber-400"></div>
+                                                                    </div>
+                                                                    <div className="flex-1">
+                                                                        <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                                                                            Wants in Return
+                                                                        </p>
+                                                                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                                                                            {party.wantsInReturn}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -644,6 +727,206 @@ export const IntentDetailsPage = () => {
                             >
                                 Save Changes
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Participant Modal */}
+            {showAddParticipantModal && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowAddParticipantModal(false)}>
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                        <div className="p-6">
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Add Participant</h2>
+                            <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                                Add a new participant to this intent and define their contribution
+                            </p>
+
+                            <div className="space-y-5">
+                                {/* Basic Info */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                        Participant Name *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newParticipantName}
+                                        onChange={(e) => setNewParticipantName(e.target.value)}
+                                        placeholder="Enter participant name"
+                                        className="w-full px-4 py-2.5 bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                        Role *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newParticipantRole}
+                                        onChange={(e) => setNewParticipantRole(e.target.value)}
+                                        placeholder="e.g., Service Provider, Client, Partner"
+                                        className="w-full px-4 py-2.5 bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                                    />
+                                </div>
+
+                                {/* Contribution Type */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-3">
+                                        Step 1: Define Contribution Type *
+                                    </label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                        <button
+                                            onClick={() => setContributionType('services')}
+                                            className={`p-4 rounded-xl border-2 transition-all ${contributionType === 'services'
+                                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10'
+                                                    : 'border-slate-200 dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-500/50'
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-2">
+                                                <div className={`p-3 rounded-lg ${contributionType === 'services'
+                                                        ? 'bg-blue-100 dark:bg-blue-500/20'
+                                                        : 'bg-slate-100 dark:bg-white/5'
+                                                    }`}>
+                                                    <Clock size={24} className={
+                                                        contributionType === 'services'
+                                                            ? 'text-blue-600 dark:text-blue-400'
+                                                            : 'text-slate-600 dark:text-slate-400'
+                                                    } />
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className={`font-bold text-sm ${contributionType === 'services'
+                                                            ? 'text-blue-900 dark:text-blue-300'
+                                                            : 'text-slate-900 dark:text-white'
+                                                        }`}>
+                                                        Services
+                                                    </p>
+                                                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                                                        Time or effort pledged
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button
+                                            onClick={() => setContributionType('monetary')}
+                                            className={`p-4 rounded-xl border-2 transition-all ${contributionType === 'monetary'
+                                                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10'
+                                                    : 'border-slate-200 dark:border-white/10 hover:border-emerald-300 dark:hover:border-emerald-500/50'
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-2">
+                                                <div className={`p-3 rounded-lg ${contributionType === 'monetary'
+                                                        ? 'bg-emerald-100 dark:bg-emerald-500/20'
+                                                        : 'bg-slate-100 dark:bg-white/5'
+                                                    }`}>
+                                                    <DollarSign size={24} className={
+                                                        contributionType === 'monetary'
+                                                            ? 'text-emerald-600 dark:text-emerald-400'
+                                                            : 'text-slate-600 dark:text-slate-400'
+                                                    } />
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className={`font-bold text-sm ${contributionType === 'monetary'
+                                                            ? 'text-emerald-900 dark:text-emerald-300'
+                                                            : 'text-slate-900 dark:text-white'
+                                                        }`}>
+                                                        Monetary Instruments
+                                                    </p>
+                                                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                                                        Cash, gift cards, bill covering
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button
+                                            onClick={() => setContributionType('goods')}
+                                            className={`p-4 rounded-xl border-2 transition-all ${contributionType === 'goods'
+                                                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10'
+                                                    : 'border-slate-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50'
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center gap-2">
+                                                <div className={`p-3 rounded-lg ${contributionType === 'goods'
+                                                        ? 'bg-purple-100 dark:bg-purple-500/20'
+                                                        : 'bg-slate-100 dark:bg-white/5'
+                                                    }`}>
+                                                    <Package size={24} className={
+                                                        contributionType === 'goods'
+                                                            ? 'text-purple-600 dark:text-purple-400'
+                                                            : 'text-slate-600 dark:text-slate-400'
+                                                    } />
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className={`font-bold text-sm ${contributionType === 'goods'
+                                                            ? 'text-purple-900 dark:text-purple-300'
+                                                            : 'text-slate-900 dark:text-white'
+                                                        }`}>
+                                                        Goods
+                                                    </p>
+                                                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                                                        Specific physical item
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Contribution Description */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                        Contribution Description
+                                    </label>
+                                    <textarea
+                                        value={contributionDescription}
+                                        onChange={(e) => setContributionDescription(e.target.value)}
+                                        placeholder="Describe what this participant is contributing..."
+                                        rows={3}
+                                        className="w-full px-4 py-2.5 bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 resize-none"
+                                    />
+                                </div>
+
+                                {/* Wants in Return */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                                        What They Want in Return
+                                    </label>
+                                    <textarea
+                                        value={wantsInReturn}
+                                        onChange={(e) => setWantsInReturn(e.target.value)}
+                                        placeholder="What does this participant expect to receive in return?"
+                                        rows={3}
+                                        className="w-full px-4 py-2.5 bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 resize-none"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-3 mt-6 pt-6 border-t border-slate-200 dark:border-white/10">
+                                <button
+                                    onClick={() => {
+                                        setShowAddParticipantModal(false);
+                                        // Reset form
+                                        setNewParticipantName('');
+                                        setNewParticipantRole('');
+                                        setContributionType('services');
+                                        setContributionDescription('');
+                                        setWantsInReturn('');
+                                    }}
+                                    className="flex-1 px-4 py-2.5 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-900 dark:text-white font-medium rounded-xl transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleAddParticipant}
+                                    disabled={!newParticipantName || !newParticipantRole}
+                                    className="flex-1 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
+                                >
+                                    Add Participant
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
