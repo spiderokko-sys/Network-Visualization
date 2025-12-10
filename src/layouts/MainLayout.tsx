@@ -54,7 +54,7 @@ export default function MainLayout() {
     };
 
     return (
-        <div className="bg-slate-50 dark:bg-slate-950 h-screen text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden flex relative transition-colors duration-300">
+        <div className="bg-slate-50 dark:bg-slate-950 h-[100dvh] text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden flex relative transition-colors duration-300">
 
             {/* Persistent Ambient Background */}
             <div className="fixed inset-0 z-0 pointer-events-none">
@@ -202,7 +202,7 @@ export default function MainLayout() {
                 </header>
 
                 {/* View Content */}
-                <div className="flex-1 overflow-hidden relative">
+                <div className="flex-1 overflow-hidden relative pb-[80px] md:pb-0">
                     <Outlet />
                 </div>
 
