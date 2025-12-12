@@ -53,7 +53,13 @@ import { NotificationsSettingsPage } from './pages/settings/NotificationsSetting
 import { PrivacySettingsPage } from './pages/settings/PrivacySettingsPage';
 import { AppearanceSettingsPage } from './pages/settings/AppearanceSettingsPage';
 
+import { useTranslation } from 'react-i18next';
+
 export default function App() {
+	const { t, i18n } = useTranslation();
+	console.log('Current language:', i18n.language);
+	console.log('Welcome message:', t('welcome'));
+
 	return (
 		<BrowserRouter>
 			<Routes>
