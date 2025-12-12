@@ -5,13 +5,16 @@ import {
   Mail, Star, Share2, Briefcase, DollarSign, Package,
   Sparkles, Loader2, Pencil, CheckCircle, MessageSquare,
   Send, UserPlus, MessageCircle, Hash, ChevronRight,
-  Zap, Gavel, Users, Settings
+  Zap, Gavel, Users, Settings, MapPin, Filter
 } from 'lucide-react';
 import { Button } from './ui/button';
+// Local types removed in favor of shared type
+import { Intent } from './shared/IntentEditor';
+import { EditIntentModal, IntentWizard, GlassModal } from './shared/IntentEditor';
 
 
 // --- Gemini API Configuration ---
-const apiKey = ""; // Set by runtime environment
+// const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ''; // Moved to backend/shared
 
 // --- Types ---
 interface Contribution {
@@ -38,46 +41,42 @@ interface Channel {
 
 
 
-interface Intent {
-  id: number | string;
-  type: string; // 'ask' | 'offer' | 'rally'
-  level: string;
-  user: string;
-  avatar: string;
-  imageUrl?: string;
-  tags: string[];
-  context: string;
-  endorsedBy?: string | null;
-  isInterested: boolean;
-  timestamp: string;
-  status: string;
-  contributions?: Contribution[];
-  channels?: Channel[];
-  outcome?: {
-    reason: string;
-    comment: string;
-    rating: number;
-  };
-}
 
-const callGemini = async (prompt: string) => {
+
+// --- Geocoding Utility ---
+const geocodeCity = async (city: string): Promise<{ lat: number, lng: number, displayName: string } | null> => {
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-        }),
-      }
-    );
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`);
     const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (data && data.length > 0) {
+      return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon),
+        displayName: data[0].display_name
+      };
+    }
+    return null;
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    console.error("Geocoding error:", error);
     return null;
   }
+};
+
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  const R = 6371; // Radius of the earth in km
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c; // Distance in km
+  return d;
+};
+
+const deg2rad = (deg: number) => {
+  return deg * (Math.PI / 180);
 };
 
 // --- Mock Data ---
@@ -96,7 +95,9 @@ const INITIAL_INTENTS: Intent[] = [
     isInterested: false,
     timestamp: '2h ago',
     status: 'active',
-    contributions: []
+
+    contributions: [],
+    location: { city: 'Toronto', country: 'CA', lat: 43.6532, lng: -79.3832 } // Downtown
   },
   {
     id: 5,
@@ -118,7 +119,8 @@ const INITIAL_INTENTS: Intent[] = [
       { id: 1, contributor: 'Alice Smith', type: 'services', pledge: '3 hours setup', status: 'Received', return: 'Nothing' },
       { id: 2, contributor: 'Bob Johnson', type: 'monetary', pledge: '$50.00', status: 'Received', return: 'Credit/Recognition' },
       { id: 3, contributor: 'Charlie Brown', type: 'goods', pledge: 'Folding Table', status: 'Pledged', return: 'Specific Return' },
-    ]
+    ],
+    location: { city: 'Toronto', country: 'CA', lat: 43.6510, lng: -79.3470 } // Riverdale (approx 3-4km from downtown)
   },
   {
     id: 2,
@@ -131,7 +133,8 @@ const INITIAL_INTENTS: Intent[] = [
     endorsedBy: 'Mike Ross',
     isInterested: false,
     timestamp: '4h ago',
-    status: 'active'
+    status: 'active',
+    location: { city: 'Toronto', country: 'CA', lat: 43.7001, lng: -79.4163 } // Midtown
   },
   {
     id: 3,
@@ -144,7 +147,8 @@ const INITIAL_INTENTS: Intent[] = [
     endorsedBy: null,
     isInterested: false,
     timestamp: '12m ago',
-    status: 'active'
+    status: 'active',
+    location: { city: 'Toronto', country: 'CA', lat: 43.6667, lng: -79.4032 } // Annex
   },
   {
     id: 4,
@@ -157,7 +161,8 @@ const INITIAL_INTENTS: Intent[] = [
     endorsedBy: 'Sarah Jenkins',
     isInterested: false,
     timestamp: '1d ago',
-    status: 'active'
+    status: 'active',
+    location: { city: 'Vancouver', country: 'CA', lat: 49.2827, lng: -123.1207 }
   },
   {
     id: 6,
@@ -170,7 +175,8 @@ const INITIAL_INTENTS: Intent[] = [
     endorsedBy: null,
     isInterested: false,
     timestamp: '1h ago',
-    status: 'active'
+    status: 'active',
+    location: { city: 'Toronto', country: 'CA', lat: 43.6532, lng: -79.3832 }
   },
   {
     id: 7,
@@ -183,11 +189,151 @@ const INITIAL_INTENTS: Intent[] = [
     endorsedBy: null,
     isInterested: false,
     timestamp: '1h ago',
-    status: 'completed'
-  }
+    status: 'completed',
+    location: { city: 'Toronto', country: 'CA', lat: 43.6532, lng: -79.3832 }
+  },
 ];
 
 
+
+// --- Filter Bottom Sheet ---
+const FilterBottomSheet = ({ isOpen, onClose, filters, onApply }: { isOpen: boolean, onClose: () => void, filters: any, onApply: (newFilters: any) => void }) => {
+  const [localFilters, setLocalFilters] = useState(filters);
+  const [isLoading, setIsLoading] = useState(false);
+  const [geoError, setGeoError] = useState('');
+
+  // Snychronize when opening
+  React.useEffect(() => { if (isOpen) setLocalFilters(filters); }, [isOpen, filters]);
+
+  if (!isOpen) return null;
+
+  const handleGeoApply = async () => {
+    // If city is empty, clear geo
+    if (!localFilters.city) {
+      onApply({ ...localFilters, geo: null });
+      onClose();
+      return;
+    }
+
+    // If city hasn't changed from what's active and we have coords, use existing
+    if (filters.geo?.city === localFilters.city && filters.geo?.lat) {
+      onApply({ ...localFilters, geo: filters.geo }); // minimal update
+      onClose();
+      return;
+    }
+
+    setIsLoading(true);
+    setGeoError('');
+    const result = await geocodeCity(localFilters.city);
+    setIsLoading(false);
+
+    if (result) {
+      const newGeo = {
+        city: result.displayName.split(',')[0],
+        radius: localFilters.radius || 10,
+        lat: result.lat,
+        lng: result.lng
+      };
+      onApply({ ...localFilters, geo: newGeo });
+      onClose();
+    } else {
+      setGeoError('City not found');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="absolute inset-0" onClick={onClose} />
+      <div className="glass-panel w-full sm:max-w-md sm:mx-auto sm:rounded-2xl rounded-t-2xl shadow-2xl relative animate-in slide-in-from-bottom duration-300 max-h-[85vh] overflow-y-auto">
+        {/* Header */}
+        <div className="p-4 border-b border-slate-200 dark:border-white/10 flex justify-between items-center sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-10">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"><Filter size={18} className="text-indigo-500" /> Filters</h2>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full text-slate-500"><X size={20} /></button>
+        </div>
+
+        <div className="p-6 space-y-8">
+          {/* Type Selection */}
+          <div className="space-y-3">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Intent Type</label>
+            <div className="grid grid-cols-4 gap-2 bg-slate-100 dark:bg-black/30 p-1 rounded-xl">
+              {[{ id: 'all', label: 'All' }, { id: 'ask', label: 'Ask' }, { id: 'offer', label: 'Offer' }, { id: 'rally', label: 'Rally' }].map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setLocalFilters({ ...localFilters, type: t.id })}
+                  className={`py-2 rounded-lg text-xs font-bold transition-all ${localFilters.type === t.id ? 'bg-white dark:bg-slate-800 text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Level Selection */}
+          <div className="space-y-3">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Social Circle</label>
+            <div className="grid grid-cols-4 gap-2">
+              {[{ id: 'all', label: 'All Layers' }, { id: 'L1', label: 'L1 Direct' }, { id: 'L2', label: 'L2 Network' }, { id: 'L3', label: 'L3 Public' }].map(l => (
+                <button
+                  key={l.id}
+                  onClick={() => setLocalFilters({ ...localFilters, level: l.id })}
+                  className={`py-2 px-1 rounded-lg text-xs font-bold border transition-all ${localFilters.level === l.id
+                    ? 'bg-indigo-500/10 border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                    : 'bg-transparent border-slate-200 dark:border-white/10 text-slate-500'}`}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Geographic Filter */}
+          <div className="space-y-4 pt-2 border-t border-slate-200 dark:border-white/5">
+            <div className="flex justify-between items-center">
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1"><MapPin size={12} /> Geographic Filter</label>
+              {localFilters.geo && <button onClick={() => setLocalFilters({ ...localFilters, city: '', geo: null })} className="text-[10px] text-rose-500 font-bold hover:underline">Clear Location</button>}
+            </div>
+
+            <div className="space-y-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={localFilters.city || ''}
+                  onChange={(e) => setLocalFilters({ ...localFilters, city: e.target.value })}
+                  placeholder="Enter City (e.g. Toronto)"
+                  className="w-full bg-slate-50 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500 transition-colors"
+                />
+                {isLoading && <div className="absolute right-3 top-3"><Loader2 size={16} className="animate-spin text-indigo-500" /></div>}
+              </div>
+              {geoError && <p className="text-xs text-rose-500 font-medium ml-1">{geoError}</p>}
+
+              <div className={`transition-opacity duration-300 ${!localFilters.city ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+                <div className="flex justify-between mb-2">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Search Radius</label>
+                  <span className="text-xs font-mono text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded">{localFilters.radius || 10} km</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="200"
+                  value={localFilters.radius || 10}
+                  onChange={(e) => setLocalFilters({ ...localFilters, radius: parseInt(e.target.value) })}
+                  className="w-full h-1.5 bg-slate-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-indigo-600 [&::-webkit-slider-thumb]:shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Action */}
+        <div className="p-4 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5">
+          <Button onClick={handleGeoApply} disabled={isLoading} className="w-full h-12 text-sm font-bold glass-button-primary bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20">
+            {isLoading ? 'Updating Location...' : 'Apply Filters'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // --- Helper Components ---
 
@@ -228,9 +374,9 @@ const IntentCard = ({ intent, onSelect }: { intent: Intent; onSelect: (intent: I
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-3">
             {isIncomingL1 && profileImage ? (
-              <img src={profileImage} alt={intent.avatar} className="w-10 h-10 rounded-xl object-cover ring-1 ring-white/10" />
+              <img src={profileImage} alt={typeof intent.avatar === 'string' ? intent.avatar : 'User Avatar'} className="w-10 h-10 rounded-xl object-cover ring-1 ring-white/10" />
             ) : (
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-inner ${isL1 ? 'bg-gradient-to-br from-indigo-500 to-purple-600' : 'bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shadow-inner ${isL1 ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                 {displayAvatar}
               </div>
             )}
@@ -272,31 +418,12 @@ const IntentCard = ({ intent, onSelect }: { intent: Intent; onSelect: (intent: I
           {intent.context}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
 
 // --- Modals (Refactored to Premium Glass) ---
-
-const GlassModal = ({ isOpen, onClose, title, children }: { isOpen: boolean, onClose: () => void, title: string, children: React.ReactNode }) => {
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="glass-panel w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl relative animate-in zoom-in-95 duration-200">
-        <div className="p-5 border-b border-slate-200 dark:border-white/5 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900/50 backdrop-blur-xl z-10">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">{title}</h2>
-          <button onClick={onClose} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors p-1 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="p-6">
-          {children}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 // --- Share Modal ---
 const ShareIntentModal = ({ isOpen, onClose, intent }: { isOpen: boolean; onClose: () => void; intent: Intent }) => {
@@ -306,7 +433,7 @@ const ShareIntentModal = ({ isOpen, onClose, intent }: { isOpen: boolean; onClos
   return (
     <GlassModal isOpen={isOpen} onClose={onClose} title="Share Intent">
       <div className="flex justify-center mb-6">
-        <div className="p-3 bg-white rounded-xl shadow-lg">
+        <div className="p-3 bg-white dark:bg-white rounded-xl shadow-lg">
           <div className="w-32 h-32 bg-zinc-900 flex items-center justify-center text-white text-xs">QR Code</div>
         </div>
       </div>
@@ -376,95 +503,6 @@ const CompletionModal = ({ isOpen, onClose, intentId, onCompleteAction }: { isOp
   );
 };
 
-
-// --- Edit Intent Modal ---
-const EditIntentModal = ({ isOpen, onClose, intent, onSave }: { isOpen: boolean, onClose: () => void, intent: Intent, onSave: (id: number | string, context: string, tags: string[]) => void }) => {
-  const [context, setContext] = useState(intent.context);
-  const [tagsString, setTagsString] = useState(intent.tags.join(', '));
-  const [isPolishing, setIsPolishing] = useState(false);
-
-  // Re-sync if intent changes while modal is closed/re-opened
-  React.useEffect(() => {
-    if (isOpen) {
-      setContext(intent.context);
-      setTagsString(intent.tags.join(', '));
-    }
-  }, [isOpen, intent]);
-
-  const handlePolish = async () => {
-    if (context.length < 5) return;
-    setIsPolishing(true);
-
-    // Simulating AI call for now or use the real one if API key is set
-    const prompt = `Rewrite for clarity and suggest 3 tags (Skill, Location, Urgency): "${context}"`;
-    const result = await callGemini(prompt);
-
-    if (result) {
-      // Mock parsing logic assuming Gemini returns JSON or just text. 
-      // For safety in this demo, let's just pretend it worked or append a star.
-      // In real implementation, parse JSON.
-      setContext(prev => prev.trim() + " (Polished)");
-    } else {
-      // Fallback simulation
-      setTimeout(() => {
-        setContext(prev => prev.trim() + " ✨");
-        setIsPolishing(false);
-      }, 1000);
-      return;
-    }
-    setIsPolishing(false);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const updatedTags = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-    onSave(intent.id, context, updatedTags);
-    onClose();
-  };
-
-  return (
-    <GlassModal isOpen={isOpen} onClose={onClose} title={`Edit ${intent.type.toUpperCase()}`}>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <div className="flex justify-between items-end mb-2">
-            <label className="text-xs font-bold text-slate-500 uppercase">Context</label>
-            <button
-              type="button"
-              onClick={handlePolish}
-              disabled={isPolishing || context.length < 5}
-              className="text-xs flex items-center gap-1.5 px-3 py-1 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-500 rounded-lg transition-all disabled:opacity-50"
-            >
-              {isPolishing ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-              {isPolishing ? "Polishing..." : "Refine with AI"}
-            </button>
-          </div>
-          <textarea
-            rows={4}
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-            className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-slate-700 dark:text-slate-300 text-sm outline-none resize-none"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Tags (Comma Separated)</label>
-          <input
-            type="text"
-            value={tagsString}
-            onChange={(e) => setTagsString(e.target.value)}
-            className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-slate-700 dark:text-slate-300 text-sm outline-none"
-            placeholder="e.g. Skill, Location, Urgency"
-            required
-          />
-        </div>
-
-        <Button type="submit" className="w-full glass-button-primary">Save Changes</Button>
-      </form>
-    </GlassModal>
-  );
-};
-
 // --- Pledge Contribution Modal ---
 const PledgeContributionModal = ({ isOpen, onClose, intent, onPledge }: { isOpen: boolean, onClose: () => void, intent: Intent, onPledge: (intentId: number | string, data: any) => void }) => {
   const [step, setStep] = useState(1);
@@ -507,26 +545,26 @@ const PledgeContributionModal = ({ isOpen, onClose, intent, onPledge }: { isOpen
                   <arch.icon size={20} />
                   <div>
                     <div className="text-xs font-bold">{arch.title}</div>
-                    <div className="text-[10px] opacity-70">{arch.sub}</div>
+                    <div className="text-[10px] text-slate-400">{arch.sub}</div>
                   </div>
                 </button>
               ))}
             </div>
+
             {contribution.type && (
-              <div>
+              <div className="animate-in fade-in duration-300">
                 <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">Details</label>
                 <textarea
                   value={contribution.details}
                   onChange={e => setContribution({ ...contribution, details: e.target.value })}
-                  placeholder={contribution.type === 'monetary' ? "Amount and Payment Method" : "Description of service/goods"}
-                  className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-sm outline-none resize-none h-24"
-                  required
+                  className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-3 text-sm outline-none"
+                  placeholder="Describe your contribution..."
                 />
+                <div className="flex justify-end pt-2">
+                  <Button type="button" onClick={() => setStep(2)} disabled={!contribution.details}>Next</Button>
+                </div>
               </div>
             )}
-            <div className="flex justify-end pt-2">
-              <Button type="button" onClick={() => setStep(2)} disabled={!contribution.type || !contribution.details}>Next: Reciprocity</Button>
-            </div>
           </div>
         )}
 
@@ -568,91 +606,16 @@ const PledgeContributionModal = ({ isOpen, onClose, intent, onPledge }: { isOpen
 
 // --- Wizard Steps ---
 
-const WizardStep1 = ({ onNext, updateData }: { onNext: () => void, updateData: (data: any) => void }) => {
-  const archetypes = [
-    { id: 'ask', title: 'The Ask', icon: Hand, sub: 'I need help or resources' },
-    { id: 'offer', title: 'The Offer', icon: Gift, sub: 'I have skills/goods to give' },
-    { id: 'rally', title: 'The Rally', icon: Flag, sub: 'I am gathering people' },
-  ];
 
-  return (
-    <div className="animate-in fade-in slide-in-from-right duration-500">
-      <h2 className="text-xl font-bold text-white mb-2">Step 1: Define the Intent</h2>
-      <p className="text-slate-400 text-sm mb-6">Select a archetype for your signal.</p>
-      <div className="space-y-4">
-        {archetypes.map((type) => (
-          <button key={type.id} onClick={() => { updateData({ type: type.id }); onNext(); }} className="w-full p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/50 rounded-xl text-left transition-all group relative overflow-hidden backdrop-blur-md">
-            <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"><type.icon size={64} /></div>
-            <div className="flex items-center gap-4 relative z-10">
-              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-indigo-500 group-hover:text-indigo-400 transition-colors shadow-inner"><type.icon size={24} /></div>
-              <div><h3 className="font-bold text-slate-200 text-lg">{type.title}</h3><p className="text-slate-400 text-sm">{type.sub}</p></div>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const WizardStep2 = ({ onNext, onBack, data, updateData }: { onNext: () => void, onBack: () => void, data: any, updateData: (data: any) => void }) => {
-  const [localTags, setLocalTags] = useState({ skill: data.tempTags?.skill || '', location: data.tempTags?.location || '', urgency: data.tempTags?.urgency || 'Medium' });
-  const [context, setContext] = useState(data.context || '');
-  const [isPolishing, setIsPolishing] = useState(false);
-
-  const isValid = localTags.skill && localTags.location && context.length > 10;
-
-  const handlePolish = async () => {
-    if (context.length < 5) return;
-    setIsPolishing(true);
-    // Simulating AI
-    setTimeout(() => {
-      setContext(prev => prev.trim() + " (AI Polished)");
-      setIsPolishing(false);
-    }, 800);
-  };
-
-  return (
-    <div className="animate-in fade-in slide-in-from-right duration-500">
-      <div className="flex justify-between items-end mb-2">
-        <h2 className="text-xl font-bold text-white">Step 2: Details</h2>
-        <button onClick={handlePolish} disabled={isPolishing} className="text-xs flex items-center gap-1 text-indigo-400 font-bold uppercase"><Sparkles size={12} /> Auto-Fill</button>
-      </div>
-
-      <div className="space-y-4 mb-6">
-        <div><label className="text-xs text-slate-500 uppercase font-bold mb-1 block">Context</label>
-          <textarea className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-slate-200 text-sm h-24 resize-none outline-none" placeholder="Describe your intent..." value={context} onChange={(e) => setContext(e.target.value)} />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-xs text-slate-500 uppercase font-bold mb-1 block">Topic</label><input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-slate-200 outline-none" value={localTags.skill} onChange={(e) => setLocalTags({ ...localTags, skill: e.target.value })} /></div>
-          <div><label className="text-xs text-slate-500 uppercase font-bold mb-1 block">Location</label><input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-slate-200 outline-none" value={localTags.location} onChange={(e) => setLocalTags({ ...localTags, location: e.target.value })} /></div>
-        </div>
-      </div>
-      <div className="flex gap-3"><Button variant="secondary" onClick={onBack}>Back</Button><Button onClick={() => { updateData({ tempTags: localTags, tags: [localTags.skill, localTags.location, `Urgency: ${localTags.urgency}`], context }); onNext(); }} disabled={!isValid} className="w-full glass-button-primary">Next Step</Button></div>
-    </div>
-  );
-};
-
-const WizardStep3 = ({ onBack, onSubmit }: { onBack: () => void, onSubmit: (level: number) => void }) => {
-  const [level, setLevel] = useState(1);
-  return (
-    <div className="animate-in fade-in slide-in-from-right duration-500">
-      <h2 className="text-xl font-bold text-white mb-2">Step 3: Blast Radius</h2>
-      <div className="flex justify-between items-center mb-8 relative px-4"><div className="absolute top-1/2 left-4 right-4 h-1 bg-white/10 -z-10 rounded-full"></div>{[1, 2, 3].map((l) => (<button key={l} onClick={() => setLevel(l)} className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 z-10 backdrop-blur-md ${level === l ? 'bg-indigo-500/20 border-indigo-500 text-indigo-400 scale-110 shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 'bg-black/40 border-white/10 text-slate-500 hover:border-white/30'}`}><span className="font-bold font-mono">L{l}</span></button>))}</div>
-      <div className="p-5 border border-white/10 rounded-xl bg-white/5 backdrop-blur-md mb-8"><h3 className="font-bold text-white mb-1">Level {level} Propagation</h3><p className="text-slate-400 text-sm">Warnings and social costs apply based on depth.</p></div>
-      <div className="flex gap-3"><Button variant="secondary" onClick={onBack}>Back</Button><Button onClick={() => onSubmit(level)} className="w-full bg-white text-black hover:bg-slate-200">Broadcast</Button></div>
-    </div>
-  );
-};
 
 // --- Discussion & Contact Components ---
 
 const DiscussionChannelView = ({ channel, onBack }: { channel: Channel, onBack: () => void, intent: Intent }) => (
   <div className="h-full flex flex-col animate-in slide-in-from-right duration-300 bg-slate-50 dark:bg-black/40 backdrop-blur-xl">
-    <div className="p-4 border-b border-white/10 flex items-center justify-between sticky top-0 bg-white/5 backdrop-blur-md z-10">
+    <div className="p-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between sticky top-0 bg-white/80 dark:bg-slate-900/50 backdrop-blur-md z-10">
       <div className="flex items-center gap-3">
-        <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full text-slate-400 hover:text-white"><ArrowLeft size={20} /></button>
-        <h2 className="font-bold text-lg dark:text-white"># {channel.name}</h2>
+        <button onClick={onBack} className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white"><ArrowLeft size={20} /></button>
+        <h2 className="font-bold text-lg text-slate-900 dark:text-white"># {channel.name}</h2>
       </div>
       <button className="text-slate-400"><Settings size={18} /></button>
     </div>
@@ -661,7 +624,7 @@ const DiscussionChannelView = ({ channel, onBack }: { channel: Channel, onBack: 
       {/* Mock Msgs */}
       <div className="flex justify-start"><div className="bg-white/10 px-4 py-2 rounded-xl rounded-tl-none text-slate-200 text-sm"><p>Welcome to #{channel.name}</p></div></div>
     </div>
-    <div className="p-4 border-t border-white/10"><div className="relative"><input type="text" placeholder={`Message #${channel.name}...`} className="w-full bg-black/30 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white outline-none" /><button className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-400"><Send size={18} /></button></div></div>
+    <div className="p-4 border-t border-slate-200 dark:border-white/10"><div className="relative"><input type="text" placeholder={`Message #${channel.name}...`} className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-slate-900 dark:text-white outline-none" /><button className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-500 dark:text-indigo-400"><Send size={18} /></button></div></div>
   </div>
 );
 
@@ -669,17 +632,17 @@ const DiscussionChannelsMenu = ({ intent, onSelectChannel, onCreateChannel }: { 
   <div className="mt-8 space-y-4">
     <h3 className="text-xs uppercase font-bold text-slate-500 tracking-wider flex items-center gap-2"><MessageCircle size={16} /> Discussion Channels</h3>
     <div className="glass-panel p-2 rounded-xl space-y-1">
-      <button onClick={() => onSelectChannel({ id: 0, name: 'Main Discussion' })} className="w-full px-3 py-2 rounded-lg hover:bg-white/5 flex items-center justify-between group">
-        <div className="flex items-center gap-3"><MessageCircle size={16} className="text-indigo-500" /><span className="text-sm font-bold dark:text-slate-200">Main Discussion</span></div>
+      <button onClick={() => onSelectChannel({ id: 0, name: 'Main Discussion' })} className="w-full px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 flex items-center justify-between group">
+        <div className="flex items-center gap-3"><MessageCircle size={16} className="text-indigo-500" /><span className="text-sm font-bold text-slate-700 dark:text-slate-200">Main Discussion</span></div>
         <ChevronRight size={14} className="opacity-0 group-hover:opacity-50" />
       </button>
       {intent.channels?.map(c => (
-        <button key={c.id} onClick={() => onSelectChannel(c)} className="w-full px-3 py-2 rounded-lg hover:bg-white/5 flex items-center justify-between group">
-          <div className="flex items-center gap-3"><Hash size={16} className="text-slate-500" /><span className="text-sm dark:text-slate-300">#{c.name}</span></div>
+        <button key={c.id} onClick={() => onSelectChannel(c)} className="w-full px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 flex items-center justify-between group">
+          <div className="flex items-center gap-3"><Hash size={16} className="text-slate-500" /><span className="text-sm text-slate-600 dark:text-slate-300">#{c.name}</span></div>
           <span className="text-[10px] text-slate-500">{c.lastMessage}</span>
         </button>
       ))}
-      <button onClick={onCreateChannel} className="w-full py-2 text-xs font-bold text-indigo-400 hover:text-indigo-300 border-t border-white/5 mt-1 pt-2 flex items-center justify-center gap-1"><Plus size={12} /> Add Channel</button>
+      <button onClick={onCreateChannel} className="w-full py-2 text-xs font-bold text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 border-t border-slate-200 dark:border-white/5 mt-1 pt-2 flex items-center justify-center gap-1"><Plus size={12} /> Add Channel</button>
     </div>
   </div>
 );
@@ -688,13 +651,13 @@ const InviteContactsMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="mt-8 space-y-4">
-      <button onClick={() => setIsOpen(!isOpen)} className="w-full py-3 px-4 bg-white/5 border border-white/10 rounded-xl font-bold text-sm flex items-center justify-between hover:bg-white/10 text-slate-200">
-        <div className="flex items-center gap-2"><UserPlus size={18} className="text-indigo-400" /> Invite Contacts</div>
+      <button onClick={() => setIsOpen(!isOpen)} className="w-full py-3 px-4 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl font-bold text-sm flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200">
+        <div className="flex items-center gap-2"><UserPlus size={18} className="text-indigo-500 dark:text-indigo-400" /> Invite Contacts</div>
         <ChevronRight size={18} className={`transition-transform ${isOpen ? 'rotate-90' : ''}`} />
       </button>
       {isOpen && (
-        <div className="p-4 bg-white/5 rounded-xl border border-white/10 animate-in slide-in-from-top-2">
-          <input type="text" placeholder="Search..." className="w-full bg-black/30 border border-white/10 rounded-lg p-2 text-sm text-white mb-2 outline-none" />
+        <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 animate-in slide-in-from-top-2">
+          <input type="text" placeholder="Search..." className="w-full bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-sm text-slate-900 dark:text-white mb-2 outline-none" />
           <div className="text-center text-xs text-slate-500 py-2">No contacts found.</div>
         </div>
       )}
@@ -704,8 +667,8 @@ const InviteContactsMenu = () => {
 
 const InterestedUsersList = ({ intent }: { intent: Intent }) => (
   <div className="mb-8">
-    <h3 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-3 flex items-center gap-2"><Users size={16} /> Interested Users</h3>
-    <div className="p-4 bg-white/5 rounded-xl border border-white/10 text-center text-xs text-slate-500">No users yet.</div>
+    <h3 className="text-xs uppercase font-bold text-indigo-500 dark:text-indigo-400 tracking-wider mb-3 flex items-center gap-2"><Users size={16} /> Interested Users</h3>
+    <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 text-center text-xs text-slate-500">No users yet.</div>
   </div>
 );
 
@@ -716,10 +679,6 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
   const [selectedIntent, setSelectedIntent] = useState<Intent | null>(null);
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
 
-  // Wizard State
-  const [wizardStep, setWizardStep] = useState(1);
-  const [newDrive, setNewDrive] = useState<any>({});
-
   // Modals State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isPledgeModalOpen, setIsPledgeModalOpen] = useState(false);
@@ -728,33 +687,28 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
 
   // Filter/Search
   const [filterType, setFilterType] = useState('all');
+  const [filterLevel, setFilterLevel] = useState('all');
+  const [filterGeo, setFilterGeo] = useState<{ radius: number, city: string, lat?: number, lng?: number } | null>(null);
+  const [isGeoOpen, setIsGeoOpen] = useState(false); // Used for Bottom Sheet
 
   // --- Handlers ---
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const startWizard = () => setIsWizardOpen(true);
 
-  const startWizard = () => {
-    setNewDrive({});
-    setWizardStep(1);
-    setView('wizard');
-  };
-
-  const updateWizardData = (data: any) => {
-    setNewDrive((prev: any) => ({ ...prev, ...data }));
-  };
-
-  const submitDrive = (level: number) => {
+  const handleCreateIntent = (data: any) => {
     const created: Intent = {
       id: Date.now(),
-      type: newDrive.type,
-      level: `L${level}`,
+      type: data.type,
+      level: data.level,
       user: 'You',
       avatar: 'ME',
-      tags: newDrive.tags || [],
-      context: newDrive.context,
-      isInterested: false,
       timestamp: 'Just now',
       status: 'active',
-      channels: [],
-      contributions: []
+      tags: data.tags || [],
+      context: data.context || '',
+      isInterested: false,
+      contributions: [],
+      location: filterGeo ? { ...filterGeo, country: 'Unknown', lat: filterGeo.lat || 0, lng: filterGeo.lng || 0 } : undefined
     };
     setIntents([created, ...intents]);
     setActiveTab('mine');
@@ -785,7 +739,22 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
   const filteredIntents = intents.filter(intent => {
     if (activeTab === 'mine' && intent.user !== 'You') return false;
     if (activeTab === 'incoming' && intent.user === 'You') return false;
+
+    // Type Filter
     if (filterType !== 'all' && intent.type !== filterType) return false;
+
+    // Level Filter
+    if (filterLevel !== 'all') {
+      if (filterLevel === 'L1' && intent.level !== 'L1' && intent.user !== 'You') return false;
+      if (filterLevel === 'L2' && intent.level !== 'L2') return false;
+      if (filterLevel === 'L3' && intent.level !== 'L3') return false;
+    }
+
+    // Geo Filter
+    if (filterGeo && filterGeo.lat && filterGeo.lng && intent.location) {
+      const dist = calculateDistance(filterGeo.lat, filterGeo.lng, intent.location.lat, intent.location.lng);
+      if (dist > filterGeo.radius) return false;
+    }
 
     return true;
   });
@@ -794,6 +763,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
     <div className="h-full flex flex-col font-sans text-slate-700 dark:text-slate-200 relative overflow-hidden">
 
       {/* Modals */}
+      <IntentWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} onFinish={handleCreateIntent} />
       {selectedIntent && (
         <>
           <CompletionModal isOpen={isCompleteOpen} onClose={() => setIsCompleteOpen(false)} intentId={selectedIntent.id} onCompleteAction={handleCompleteAction} />
@@ -822,14 +792,44 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
             </div>
           </div>
 
-          {/* Filter Chips */}
-          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-            {[{ id: 'all', label: 'All', icon: Signal }, { id: 'ask', label: 'Asks', icon: Hand }, { id: 'offer', label: 'Offers', icon: Gift }, { id: 'rally', label: 'Rallies', icon: Flag }].map(f => (
-              <button key={f.id} onClick={() => setFilterType(f.id)} className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider transition-all ${filterType === f.id ? 'bg-indigo-100 dark:bg-indigo-500/20 border-indigo-500 text-indigo-600 dark:text-indigo-300' : 'bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-500 hover:border-slate-300 dark:hover:border-white/20'}`}><f.icon size={12} /> {f.label}</button>
-            ))}
+          {/* Filter Bar */}
+          <div className="flex justify-between items-center pb-4 px-1 relative z-20">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setIsGeoOpen(true)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${(filterType !== 'all' || filterLevel !== 'all' || filterGeo)
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                  : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10'
+                  }`}
+              >
+                <Filter size={16} />
+                <span>Filters</span>
+                {(filterType !== 'all' || filterLevel !== 'all' || filterGeo) && (
+                  <span className="ml-1 bg-white text-indigo-600 w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-extrabold">
+                    {[(filterType !== 'all'), (filterLevel !== 'all'), (!!filterGeo)].filter(Boolean).length}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {/* Active Filter Chips (Display Only) */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar max-w-[200px] sm:max-w-[400px]">
+              {filterType !== 'all' && <span className="px-3 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 text-xs font-bold whitespace-nowrap border border-indigo-100 dark:border-indigo-500/30">Type: {filterType}</span>}
+              {filterLevel !== 'all' && <span className="px-3 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 text-xs font-bold whitespace-nowrap border border-indigo-100 dark:border-indigo-500/30">Level: {filterLevel}</span>}
+              {filterGeo && <span className="px-3 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 text-xs font-bold whitespace-nowrap border border-indigo-100 dark:border-indigo-500/30">{filterGeo.city} ({filterGeo.radius}km)</span>}
+            </div>
           </div>
 
-          {/* Grid */}
+          <FilterBottomSheet
+            isOpen={isGeoOpen}
+            onClose={() => setIsGeoOpen(false)}
+            filters={{ type: filterType, level: filterLevel, geo: filterGeo, city: filterGeo?.city, radius: filterGeo?.radius }}
+            onApply={(newFilters) => {
+              setFilterType(newFilters.type || 'all');
+              setFilterLevel(newFilters.level || 'all');
+              setFilterGeo(newFilters.geo);
+            }}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredIntents.map(intent => (
               <IntentCard key={intent.id} intent={intent} onSelect={(i) => { setSelectedIntent(i); setView('details'); }} />
@@ -838,18 +838,6 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
           {filteredIntents.length === 0 && (
             <div className="text-center py-20 opacity-50"><div className="w-16 h-16 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 dark:border-white/10"><Search size={32} className="text-slate-600" /></div><p>No signals found.</p></div>
           )}
-        </div>
-      )}
-
-      {view === 'wizard' && (
-        <div className="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-black/40 backdrop-blur-xl">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex gap-1">{[1, 2, 3].map(s => (<div key={s} className={`h-1 w-8 rounded-full transition-colors duration-500 ${s <= wizardStep ? 'bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]' : 'bg-slate-200 dark:bg-white/10'}`} />))}</div>
-            <button onClick={() => setView('dashboard')} className="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full text-slate-500 transition-colors"><X size={20} /></button>
-          </div>
-          {wizardStep === 1 && <WizardStep1 onNext={() => setWizardStep(2)} updateData={updateWizardData} />}
-          {wizardStep === 2 && <WizardStep2 onNext={() => setWizardStep(3)} onBack={() => setWizardStep(1)} updateData={updateWizardData} data={newDrive} />}
-          {wizardStep === 3 && <WizardStep3 onBack={() => setWizardStep(2)} onSubmit={submitDrive} />}
         </div>
       )}
 
@@ -903,7 +891,7 @@ export const GlobeWithUI = ({ showHeader = false }: { showHeader?: boolean }) =>
                   selectedIntent.contributions.map((c: any, i: number) => (
                     <div key={i} className="p-3 bg-slate-50 dark:bg-black/30 rounded-lg border border-slate-200 dark:border-white/5 space-y-1">
                       <div className="flex justify-between items-center">
-                        <span className="font-bold text-sm dark:text-white">{c.type === 'monetary' ? c.value : c.details}</span>
+                        <span className="font-bold text-sm text-slate-900 dark:text-white">{c.type === 'monetary' ? c.value : c.details}</span>
                         <Badge color={c.status === 'Received' ? 'green' : 'amber'}>{c.status || 'Pledged'}</Badge>
                       </div>
                       <div className="flex justify-between text-xs text-slate-500">
